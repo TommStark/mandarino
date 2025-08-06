@@ -1,0 +1,28 @@
+import React from 'react';
+import { View, Button, Text } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation';
+
+type Props = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
+};
+
+const LoginScreen = ({ navigation }: Props) => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Text>Pantalla de Login</Text>
+      <Button
+        title="Entrar"
+        onPress={() => navigation.navigate('CryptoList')}
+      />
+    </View>
+  );
+};
+
+export default LoginScreen;
