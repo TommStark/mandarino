@@ -11,7 +11,7 @@ export default function HomeScreen() {
   const navigation = useNavigation();
   return (
     <ScreenWrapper>
-      <Header username="Alex" />
+      <Header username="Tomito" />
       <BigBanner balance={5612.05} changeAmount={234.56} changePercent={4.2} />
       <ActionNav />
       <HoldingsPreview
