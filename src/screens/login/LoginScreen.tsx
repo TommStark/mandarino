@@ -9,20 +9,21 @@ type Props = {
 
 const LoginScreen = ({ navigation }: Props) => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <View style={styles.container}>
       <Text>Pantalla de Login</Text>
-      <Button
-        title="Entrar"
-        onPress={() => navigation.navigate('CryptoList')}
-      />
+      <Button title="Entrar" onPress={() => navigation.navigate('Home')} />
     </View>
   );
 };
+
+import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default LoginScreen;
