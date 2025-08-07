@@ -7,7 +7,7 @@ type Props = {
   onPress: () => void;
 };
 
-export const CustomTabBarButton = ({ children, onPress }: Props) => (
+export const CustomTabBarButton = ({ onPress }: Props) => (
   <TouchableOpacity
     style={styles.container}
     activeOpacity={0.8}

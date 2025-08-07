@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ScreenBackground } from './ScreenBackground';
 
 type Props = {
   children: React.ReactNode;
@@ -27,11 +27,11 @@ export const ScreenWrapper = ({
   showBack = false,
 }: Props) => {
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
   const Wrapper = scroll ? ScrollView : View;
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <ScreenBackground />
       {title && (
         <View style={styles.header}>
           {showBack && (

@@ -33,13 +33,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: '#FF6600',
+    color: '#F66000',
     fontSize: 22,
     fontWeight: 'bold',
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
+    color: '#f49f6aff',
     marginTop: 2,
   },
   icons: {

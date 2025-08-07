@@ -5,7 +5,6 @@ import CryptoListScreen from '../screens/cryptolist/CryptoListScreen';
 import { CustomTabBarButton } from '../components/CustomTabBarButton';
 import type { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-paper';
-import Ionicons from '@react-native-vector-icons/ionicons';
 
 const Tab = createBottomTabNavigator();
 
