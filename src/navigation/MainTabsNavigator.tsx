@@ -2,9 +2,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/home/HomeScreen';
 import CryptoListScreen from '../screens/cryptolist/CryptoListScreen';
-import { CustomTabBarButton } from '../components/CustomTabBarButton';
 import type { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { CustomTabBarButton } from '../components/CustomTabBarButton';
+import { WalletHistoryScreen } from '../screens/wallet/WalletHistoryScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,18 +20,17 @@ const moreTabBarIcon = ({ color }: { color: string }) => (
   <Icon source="menu" color={color} size={20} />
 );
 const personTabBarIcon = ({ color }: { color: string }) => (
-  <Icon source="person" color={color} size={20} />
+  <Icon source="sync" color={color} size={20} />
 );
 
 const QRTabBarButton = (props: BottomTabBarButtonProps) => {
-  const { onPress, ...rest } = props;
+  const navigation = useNavigation();
   const handlePress = () => {
-    if (onPress) {
-      onPress({} as any);
-    }
+    navigation.navigate('QRCodeScanner');
   };
-  return <CustomTabBarButton {...rest} onPress={handlePress} />;
+  return <CustomTabBarButton {...props} onPress={handlePress} />;
 };
+const EmptyScreen = () => null;
 
 const MainTabsNavigator = () => {
   return (
@@ -42,7 +43,7 @@ const MainTabsNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="Inicio"
+        name="Home"
         component={HomeScreen}
         options={{
           tabBarIcon: homeTabBarIcon,
@@ -56,22 +57,22 @@ const MainTabsNavigator = () => {
         }}
       />
       <Tab.Screen
-        name=" "
-        component={HomeScreen}
+        name="ScanTrigger"
+        component={EmptyScreen}
         options={{
           tabBarButton: QRTabBarButton,
         }}
       />
       <Tab.Screen
-        name="Perfil"
+        name="Exchange"
         component={HomeScreen}
         options={{
           tabBarIcon: personTabBarIcon,
         }}
       />
       <Tab.Screen
-        name="Mas"
-        component={HomeScreen}
+        name="History"
+        component={WalletHistoryScreen}
         options={{
           tabBarIcon: moreTabBarIcon,
         }}
