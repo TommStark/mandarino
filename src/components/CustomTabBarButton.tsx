@@ -1,6 +1,6 @@
-// src/components/CustomTabBarButton.tsx
 import React from 'react';
 import { TouchableOpacity, View, StyleSheet, Platform } from 'react-native';
+import { Icon } from 'react-native-paper';
 
 type Props = {
   children: React.ReactNode;
@@ -14,7 +14,9 @@ export const CustomTabBarButton = ({ children, onPress }: Props) => (
     onPress={onPress}
   >
     <View style={styles.buttonLight}>
-      <View style={styles.button}> {children}</View>
+      <View style={styles.button}>
+        <Icon source="qr-code" color={'white'} size={34} />
+      </View>
     </View>
   </TouchableOpacity>
 );
@@ -28,16 +30,16 @@ const styles = StyleSheet.create({
   button: {
     width: 50,
     height: 50,
-    borderRadius: 32.5,
-    backgroundColor: '#00C853',
+    borderRadius: 32,
+    backgroundColor: '#f65621ff',
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonLight: {
-    width: 65,
-    height: 65,
-    borderRadius: 32.5,
-    backgroundColor: '#8fe9b5b0',
+    width: 63,
+    height: 63,
+    borderRadius: 32,
+    backgroundColor: '#f6562161',
     justifyContent: 'center',
     alignItems: 'center',
   },

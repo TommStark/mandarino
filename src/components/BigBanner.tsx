@@ -1,6 +1,6 @@
-// src/components/BigBanner.tsx
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-paper';
 // import { Feather } from '@expo/vector-icons';
 
 type Props = {
@@ -16,7 +16,8 @@ export const BigBanner = ({ balance, changeAmount, changePercent }: Props) => {
       <View style={styles.topRow}>
         <Text style={styles.label}>Total Balance</Text>
         <TouchableOpacity>
-          {/* <Feather name="eye" size={18} color="white" /> */}
+          {/* //TODO OCULTAR BALANCE */}
+          <Icon source="eye" size={28} color="white" />
         </TouchableOpacity>
       </View>
       <Text style={styles.balance}>
@@ -46,13 +47,15 @@ const styles = StyleSheet.create({
   label: {
     color: 'white',
     fontWeight: '600',
+    paddingTop: 4,
     fontSize: 14,
   },
   balance: {
     color: 'white',
     fontSize: 28,
     fontWeight: 'bold',
-    marginTop: 8,
+    marginTop: 1,
+    marginBottom: 4,
   },
   change: {
     fontSize: 14,

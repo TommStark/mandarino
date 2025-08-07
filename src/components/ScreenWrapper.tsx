@@ -1,4 +1,3 @@
-// src/components/ScreenWrapper.tsx
 import React from 'react';
 import {
   View,
@@ -10,7 +9,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-// import { Feather } from '@expo/vector-icons';
+import { Icon } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = {
   children: React.ReactNode;
@@ -19,7 +19,6 @@ type Props = {
   title?: string;
   showBack?: boolean;
 };
-
 export const ScreenWrapper = ({
   children,
   scroll = false,
@@ -28,6 +27,7 @@ export const ScreenWrapper = ({
   showBack = false,
 }: Props) => {
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const Wrapper = scroll ? ScrollView : View;
 
   return (
@@ -36,16 +36,24 @@ export const ScreenWrapper = ({
         <View style={styles.header}>
           {showBack && (
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              {/* <Feather name="arrow-left" size={22} /> */}
-              <Text style={styles.backArrow}>←</Text>
+              <Icon source="arrow-back" size={22} />
             </TouchableOpacity>
           )}
           <Text style={styles.title}>{title}</Text>
           {showBack ? <View style={styles.backArrowPlaceholder} /> : null}
         </View>
       )}
-
-      <Wrapper contentContainerStyle={[styles.content, style]}>
+      <Wrapper
+        contentContainerStyle={[
+          styles.content,
+          {
+            paddingBottom: 5,
+          },
+          style,
+        ]}
+        keyboardShouldPersistTaps="handled"
+        bounces={true}
+      >
         {children}
       </Wrapper>
     </SafeAreaView>
@@ -59,9 +67,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flexGrow: 1,
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 24,
+    paddingHorizontal: 10,
   },
   header: {
     paddingHorizontal: 16,

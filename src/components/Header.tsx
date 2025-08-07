@@ -1,7 +1,6 @@
-// src/components/Header.tsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-// import { Feather, Ionicons } from '@expo/vector-icons';
+import { Icon } from 'react-native-paper';
 
 type Props = {
   username: string;
@@ -15,8 +14,10 @@ export const Header = ({ username }: Props) => {
         <Text style={styles.subtitle}>Good morning, {username}</Text>
       </View>
       <View style={styles.icons}>
-        {/* <Feather name="search" size={20} style={styles.icon} />
-        <Ionicons name="notifications-outline" size={20} /> */}
+        <View style={styles.icon}>
+          <Icon source="search" size={20} />
+        </View>
+        <Icon source="notifications-outline" size={20} />
       </View>
     </View>
   );

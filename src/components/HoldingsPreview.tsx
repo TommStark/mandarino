@@ -1,15 +1,14 @@
-// src/components/HoldingsPreview.tsx
 import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
-  ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
 import { useCoinsMarketsQuery } from '../hooks/useCoinsMarketsQuery';
 import { CryptoCard } from './CryptoCard';
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 type Props = {
   onPressViewAll: () => void;
@@ -17,9 +16,9 @@ type Props = {
 
 export const HoldingsPreview = ({ onPressViewAll }: Props) => {
   const { data, isLoading, isError } = useCoinsMarketsQuery({
-    vs_currency: 'ars',
+    vs_currency: 'usd',
     page: 1,
-    per_page: 4,
+    per_page: 5,
     order: 'market_cap_desc',
   });
 
@@ -32,8 +31,12 @@ export const HoldingsPreview = ({ onPressViewAll }: Props) => {
         </TouchableOpacity>
       </View>
 
-      {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
+      {/* HACER UN COMPONENTE APARTE */}
+      {isLoading && (
+        <ActivityIndicator animating={true} color={MD2Colors.red800} />
+      )}
 
+      {/* TODO: hacer componente aparte */}
       {!isLoading && (isError || !data || data.length === 0) && (
         <Text style={styles.errorText}>
           Ups, tuvimos un problema cargando tus criptos.
@@ -98,7 +101,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     marginHorizontal: 16,
-    color: '#D32F2F',
+    color: '#979797ff',
     fontSize: 14,
     marginTop: 8,
   },

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 13,
+    padding: 7,
     elevation: 2,
     shadowColor: '#000',
     shadowOpacity: 0.05,
@@ -36,10 +36,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
   },
   iconWrapper: {
-    backgroundColor: '#f5f5f5',
     padding: 12,
     borderRadius: 12,
-    marginBottom: 6,
+    marginBottom: 2,
   },
   label: {
     fontSize: 13,

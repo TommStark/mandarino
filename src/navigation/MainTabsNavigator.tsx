@@ -1,49 +1,26 @@
-// MainTabsNavigator.tsx
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/home/HomeScreen';
 import CryptoListScreen from '../screens/cryptolist/CryptoListScreen';
-// import ScannerScreen from '../screens/scanner/ScannerScreen'; // (ejemplo)
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Text } from 'react-native';
 import { CustomTabBarButton } from '../components/CustomTabBarButton';
+import type { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
+import { Icon } from 'react-native-paper';
+import Ionicons from '@react-native-vector-icons/ionicons';
 
 const Tab = createBottomTabNavigator();
 
-const HomeTabBarIcon = ({ color }: { color: string }) => (
-  //   <Icon name="home-outline" color={color} size={24} />
-  <Text>HOME</Text>
-);
-
-const CryptoTabBarIcon = ({ color }: { color: string }) => (
-  //   <Icon name="currency-btc" color={color} size={24} />
-  <Text>Crypto</Text>
-);
-
-const QRTabBarIcon = ({ color }: { color: string }) => (
-  //   <Icon name="qrcode-scan" color={color} size={30} />
-  <Text>QR</Text>
-);
-
-const MoreTabBarIcon = ({ color }: { color: string }) => (
-  //   <Icon name="qrcode-scan" color={color} size={30} />
-  <Text>Mas</Text>
-);
-
 const homeTabBarIcon = ({ color }: { color: string }) => (
-  <HomeTabBarIcon color={color} />
+  <Icon source="home" color={color} size={20} />
 );
 const cryptoTabBarIcon = ({ color }: { color: string }) => (
-  <CryptoTabBarIcon color={color} />
-);
-const qrTabBarIcon = ({ color }: { color: string }) => (
-  <QRTabBarIcon color={color} />
+  <Icon source="planet" color={color} size={20} />
 );
 const moreTabBarIcon = ({ color }: { color: string }) => (
-  <MoreTabBarIcon color={color} />
+  <Icon source="menu" color={color} size={20} />
 );
-
-import type { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
+const personTabBarIcon = ({ color }: { color: string }) => (
+  <Icon source="person" color={color} size={20} />
+);
 
 const QRTabBarButton = (props: BottomTabBarButtonProps) => {
   const { onPress, ...rest } = props;
@@ -61,7 +38,7 @@ const MainTabsNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarActiveTintColor: '#00C853',
+        tabBarActiveTintColor: '#f65621ff',
         tabBarInactiveTintColor: '#B0BEC5',
       }}
     >
@@ -80,10 +57,9 @@ const MainTabsNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="QR"
-        component={HomeScreen} // Temporal
+        name=" "
+        component={HomeScreen}
         options={{
-          tabBarIcon: qrTabBarIcon,
           tabBarButton: QRTabBarButton,
         }}
       />
@@ -91,7 +67,7 @@ const MainTabsNavigator = () => {
         name="Perfil"
         component={HomeScreen}
         options={{
-          tabBarIcon: moreTabBarIcon,
+          tabBarIcon: personTabBarIcon,
         }}
       />
       <Tab.Screen
