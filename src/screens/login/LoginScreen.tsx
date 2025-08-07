@@ -11,7 +11,10 @@ const LoginScreen = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
       <Text>Pantalla de Login</Text>
-      <Button title="Entrar" onPress={() => navigation.navigate('Home')} />
+      <Button
+        title="Entrar"
+        onPress={() => navigation.navigate('MainScreen')}
+      />
     </View>
   );
 };

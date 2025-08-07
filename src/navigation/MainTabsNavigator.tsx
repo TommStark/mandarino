@@ -7,6 +7,8 @@ import { Icon } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { CustomTabBarButton } from '../components/CustomTabBarButton';
 import { WalletHistoryScreen } from '../screens/wallet/WalletHistoryScreen';
+import { RootStackParamList } from '.';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +26,8 @@ const personTabBarIcon = ({ color }: { color: string }) => (
 );
 
 const QRTabBarButton = (props: BottomTabBarButtonProps) => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const handlePress = () => {
     navigation.navigate('QRCodeScanner');
   };

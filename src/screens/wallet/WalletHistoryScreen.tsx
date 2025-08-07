@@ -11,7 +11,7 @@ import {
 import { useScannedWallets } from '../../hooks/useScannedWallets';
 import { ScreenWrapper } from '../../components/ScreenWrapper';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { EmptyList } from '../../assets/images/svg';
+import { EmptyList } from '../../assets/svg';
 import { Icon } from 'react-native-paper';
 
 export const WalletHistoryScreen = () => {

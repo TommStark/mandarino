@@ -15,9 +15,9 @@ export const Header = ({ username }: Props) => {
       </View>
       <View style={styles.icons}>
         <View style={styles.icon}>
-          <Icon source="search" size={20} />
+          <Icon source="search" size={20} color="#0d0c0cff" />
         </View>
-        <Icon source="notifications-outline" size={20} />
+        <Icon source="notifications-outline" size={20} color="#0d0c0cff" />
       </View>
     </View>
   );

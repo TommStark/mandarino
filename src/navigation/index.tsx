@@ -11,6 +11,7 @@ export type RootStackParamList = {
   CryptoList: undefined;
   Home: undefined;
   QRCodeScanner: undefined;
+  MainScreen: undefined;
   QRResultScreen: { address: string };
 };
 
@@ -23,7 +24,7 @@ const AppNavigator = () => {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Home" component={MainTabsNavigator} />
+      <Stack.Screen name="MainScreen" component={MainTabsNavigator} />
       <Stack.Screen name="CryptoList" component={CryptoListScreen} />
       <Stack.Screen name="QRCodeScanner" component={QRCodeScannerScreen} />
       <Stack.Screen name="QRResultScreen" component={QRResultScreen} />

@@ -9,6 +9,7 @@ import {
 import { useCoinsMarketsQuery } from '../hooks/useCoinsMarketsQuery';
 import { CryptoCard } from './CryptoCard';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { useUser } from '../context/UserContext';
 
 type Props = {
   onPressViewAll: () => void;
@@ -22,6 +23,7 @@ export const HoldingsPreview = ({ onPressViewAll }: Props) => {
     order: 'market_cap_desc',
   });
 
+  const { user, showBalances } = useUser();
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
@@ -31,12 +33,14 @@ export const HoldingsPreview = ({ onPressViewAll }: Props) => {
         </TouchableOpacity>
       </View>
 
-      {/* HACER UN COMPONENTE APARTE */}
       {isLoading && (
-        <ActivityIndicator animating={true} color={MD2Colors.red800} />
+        <ActivityIndicator
+          animating={true}
+          color={MD2Colors.red800}
+          style={styles.loadingIndicator}
+        />
       )}
 
-      {/* TODO: hacer componente aparte */}
       {!isLoading && (isError || !data || data.length === 0) && (
         <Text style={styles.errorText}>
           Ups, tuvimos un problema cargando tus criptos.
@@ -48,33 +52,24 @@ export const HoldingsPreview = ({ onPressViewAll }: Props) => {
           scrollEnabled={false}
           data={data}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <CryptoCard
-              coin={item}
-              userAmount={getUserAmountMock(item.symbol)}
-            />
-          )}
+          renderItem={({ item }) => {
+            const symbol = item.symbol.toUpperCase();
+            const userAmount =
+              user.holdings[symbol as keyof typeof user.holdings] ?? 0;
+
+            return (
+              <CryptoCard
+                coin={item}
+                userAmount={showBalances ? userAmount : undefined}
+              />
+            );
+          }}
           ItemSeparatorComponent={Separator}
         />
       )}
     </View>
   );
 };
-
-function getUserAmountMock(symbol: string): number {
-  switch (symbol.toLowerCase()) {
-    case 'btc':
-      return 0.0234;
-    case 'eth':
-      return 0.8456;
-    case 'sol':
-      return 12.45;
-    case 'ada':
-      return 2450;
-    default:
-      return 0.003 * Math.random();
-  }
-}
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -106,7 +101,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   separator: {
-    height: 8,
+    height: 4,
   },
   loadingIndicator: {
     marginVertical: 16,
