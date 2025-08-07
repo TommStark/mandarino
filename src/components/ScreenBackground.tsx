@@ -1,4 +1,3 @@
-// src/components/ScreenBackground.tsx
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
