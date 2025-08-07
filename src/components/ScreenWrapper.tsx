@@ -27,11 +27,10 @@ export const ScreenWrapper = ({
   showBack = false,
 }: Props) => {
   const navigation = useNavigation();
-  const Wrapper = scroll ? ScrollView : View;
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScreenBackground />
+
       {title && (
         <View style={styles.header}>
           {showBack && (
@@ -43,19 +42,18 @@ export const ScreenWrapper = ({
           {showBack ? <View style={styles.backArrowPlaceholder} /> : null}
         </View>
       )}
-      <Wrapper
-        contentContainerStyle={[
-          styles.content,
-          {
-            paddingBottom: 5,
-          },
-          style,
-        ]}
-        keyboardShouldPersistTaps="handled"
-        bounces={true}
-      >
-        {children}
-      </Wrapper>
+
+      {scroll ? (
+        <ScrollView
+          contentContainerStyle={[styles.content, styles.paddingBottom, style]}
+          keyboardShouldPersistTaps="handled"
+          bounces={true}
+        >
+          {children}
+        </ScrollView>
+      ) : (
+        <View style={[styles.content, style]}>{children}</View>
+      )}
     </SafeAreaView>
   );
 };
@@ -68,6 +66,9 @@ const styles = StyleSheet.create({
   content: {
     flexGrow: 1,
     paddingHorizontal: 10,
+  },
+  paddingBottom: {
+    paddingBottom: 5,
   },
   header: {
     paddingHorizontal: 16,
