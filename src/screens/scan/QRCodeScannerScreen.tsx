@@ -36,7 +36,6 @@ export const QRCodeScannerScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Cámara en background */}
       <Camera
         style={StyleSheet.absoluteFill}
         device={device!}
@@ -44,14 +43,12 @@ export const QRCodeScannerScreen = () => {
         codeScanner={codeScanner}
       />
 
-      {/* Botón cerrar */}
       <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>
         <Text style={styles.closeButtonText}>
           <Icon source="close" size={30} />
         </Text>
       </Pressable>
 
-      {/* Máscara oscura con flexbox */}
       <View style={styles.maskContainer}>
         <View style={styles.maskRow} />
         <View style={styles.qrRow}>
@@ -86,7 +83,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  // NUEVOS estilos con Flexbox
   maskContainer: {
     ...StyleSheet.absoluteFillObject,
     flexDirection: 'column',

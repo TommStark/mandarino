@@ -31,10 +31,12 @@ export const CryptoCard = ({ coin, userAmount }: Props) => {
         </View>
         <View>
           <Text style={styles.name}>{coin.name}</Text>
-          {userAmount !== undefined && (
+          {userAmount !== undefined ? (
             <Text style={styles.amount}>
               {userAmount.toFixed(4)} {coin.symbol.toUpperCase()}
             </Text>
+          ) : (
+            <Text style={styles.amount}>•••••••</Text>
           )}
         </View>
       </View>
