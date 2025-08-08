@@ -6,10 +6,13 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import { useCoinsMarketsQuery } from '../hooks/useCoinsMarketsQuery';
-import { CryptoCard } from './CryptoCard';
+import { useCoinsMarketsQuery } from '../../hooks/useCoinsMarketsQuery';
+import { CryptoCard } from '../CryptoCard';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../../context/UserContext';
+import { EmptyList, HttpLost } from '../../assets/svg';
+import HttpErrorModal from '../Shared/HttpErrorModal';
+import LoadingState from '../Shared/LoadingState';
 
 type Props = {
   onPressViewAll: () => void;
@@ -27,24 +30,16 @@ export const HoldingsPreview = ({ onPressViewAll }: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Text style={styles.title}>Your Holdings</Text>
+        <Text style={styles.title}>Tus Crypto</Text>
         <TouchableOpacity onPress={onPressViewAll}>
-          <Text style={styles.viewAll}>View All</Text>
+          <Text style={styles.viewAll}>Ver Todo</Text>
         </TouchableOpacity>
       </View>
 
-      {isLoading && (
-        <ActivityIndicator
-          animating={true}
-          color={MD2Colors.red800}
-          style={styles.loadingIndicator}
-        />
-      )}
+      {isLoading && <LoadingState />}
 
       {!isLoading && (isError || !data || data.length === 0) && (
-        <Text style={styles.errorText}>
-          Ups, tuvimos un problema cargando tus criptos.
-        </Text>
+        <HttpErrorModal />
       )}
 
       {!isLoading && data && data.length > 0 && (
@@ -61,6 +56,7 @@ export const HoldingsPreview = ({ onPressViewAll }: Props) => {
               <CryptoCard
                 coin={item}
                 userAmount={showBalances ? userAmount : undefined}
+                showUserAmount={showBalances}
               />
             );
           }}
@@ -93,12 +89,6 @@ const styles = StyleSheet.create({
   viewAll: {
     fontSize: 14,
     color: '#FF6600',
-  },
-  errorText: {
-    marginHorizontal: 16,
-    color: '#979797ff',
-    fontSize: 14,
-    marginTop: 8,
   },
   separator: {
     height: 4,

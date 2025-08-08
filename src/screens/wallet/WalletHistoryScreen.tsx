@@ -6,13 +6,13 @@ import {
   FlatList,
   Pressable,
   Alert,
-  Switch,
 } from 'react-native';
 import { useScannedWallets } from '../../hooks/useScannedWallets';
-import { ScreenWrapper } from '../../components/ScreenWrapper';
+import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { EmptyList } from '../../assets/svg';
 import { Icon } from 'react-native-paper';
+import { Switch } from 'react-native-paper';
 
 export const WalletHistoryScreen = () => {
   const { wallets, toggleFavorite, removeWallet } = useScannedWallets();
@@ -70,7 +70,7 @@ export const WalletHistoryScreen = () => {
   };
 
   return (
-    <ScreenWrapper title="Historial de direcciones">
+    <ScreenWrapper title="Historial">
       <View style={styles.headerRow}>
         <Text style={styles.filterLabel}>Mostrar solo favoritos</Text>
         <Switch
