@@ -11,7 +11,7 @@ export const Header = ({ username }: Props) => {
     <View style={styles.container}>
       <View>
         <Text style={styles.title}>Mandarino</Text>
-        <Text style={styles.subtitle}>Good morning, {username}</Text>
+        <Text style={styles.subtitle}>Buenos dias, {username}</Text>
       </View>
       <View style={styles.icons}>
         <View style={styles.icon}>

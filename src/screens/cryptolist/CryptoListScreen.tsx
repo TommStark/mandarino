@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, ActivityIndicator, Text, StyleSheet } from 'react-native';
 import { useCoinsMarketsQuery } from '../../hooks/useCoinsMarketsQuery';
 import { CryptoCard } from '../../components/CryptoCard';
-import { ScreenWrapper } from '../../components/ScreenWrapper';
+import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
 
 export default function CryptoListScreen() {
   const [page, setPage] = useState(1);
@@ -18,7 +18,7 @@ export default function CryptoListScreen() {
   if (isError) return <Text>Error cargando criptos</Text>;
 
   return (
-    <ScreenWrapper title="Crypto List" showBack>
+    <ScreenWrapper title="Crypto List">
       <FlatList
         data={data}
         keyExtractor={item => item.id}

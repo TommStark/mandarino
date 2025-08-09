@@ -5,9 +5,14 @@ import { CryptoMarket } from '../types/crypto';
 type Props = {
   coin: CryptoMarket;
   userAmount?: number;
+  showUserAmount?: boolean;
 };
 
-export const CryptoCard = ({ coin, userAmount }: Props) => {
+export const CryptoCard = ({
+  coin,
+  userAmount,
+  showUserAmount = false,
+}: Props) => {
   const isPositive = coin.price_change_percentage_24h_in_currency >= 0;
 
   const priceFormatted = `$${coin.current_price.toLocaleString('es-AR', {
@@ -29,15 +34,17 @@ export const CryptoCard = ({ coin, userAmount }: Props) => {
             resizeMode="contain"
           />
         </View>
+
         <View>
           <Text style={styles.name}>{coin.name}</Text>
-          {userAmount !== undefined ? (
-            <Text style={styles.amount}>
-              {userAmount.toFixed(4)} {coin.symbol.toUpperCase()}
-            </Text>
-          ) : (
-            <Text style={styles.amount}>•••••••</Text>
-          )}
+          {showUserAmount &&
+            (userAmount !== undefined ? (
+              <Text style={styles.amount}>
+                {userAmount.toFixed(4)} {coin.symbol.toUpperCase()}
+              </Text>
+            ) : (
+              <Text style={styles.amount}>•••••••</Text>
+            ))}
         </View>
       </View>
 

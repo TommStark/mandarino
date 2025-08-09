@@ -9,6 +9,7 @@ import { CustomTabBarButton } from '../components/CustomTabBarButton';
 import { WalletHistoryScreen } from '../screens/wallet/WalletHistoryScreen';
 import { RootStackParamList } from '.';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ExchangeScreen } from '../screens/exchange/ExchangeScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -68,13 +69,13 @@ const MainTabsNavigator = () => {
       />
       <Tab.Screen
         name="Exchange"
-        component={HomeScreen}
+        component={ExchangeScreen}
         options={{
           tabBarIcon: personTabBarIcon,
         }}
       />
       <Tab.Screen
-        name="History"
+        name="Historial"
         component={WalletHistoryScreen}
         options={{
           tabBarIcon: moreTabBarIcon,

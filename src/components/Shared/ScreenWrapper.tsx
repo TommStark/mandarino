@@ -19,6 +19,7 @@ type Props = {
   title?: string;
   showBack?: boolean;
 };
+
 export const ScreenWrapper = ({
   children,
   scroll = false,
@@ -27,6 +28,7 @@ export const ScreenWrapper = ({
   showBack = false,
 }: Props) => {
   const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScreenBackground />
@@ -34,12 +36,15 @@ export const ScreenWrapper = ({
       {title && (
         <View style={styles.header}>
           {showBack && (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}
+            >
               <Icon source="arrow-back" size={22} />
             </TouchableOpacity>
           )}
+
           <Text style={styles.title}>{title}</Text>
-          {showBack ? <View style={styles.backArrowPlaceholder} /> : null}
         </View>
       )}
 
@@ -74,19 +79,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 12,
     paddingTop: 16,
-    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    position: 'relative',
   },
   title: {
     fontWeight: '600',
     fontSize: 18,
+    textAlign: 'center',
   },
-  backArrow: {
-    fontSize: 22,
-    color: '#FF6600',
-  },
-  backArrowPlaceholder: {
-    width: 22,
+  backButton: {
+    position: 'absolute',
+    left: 16,
   },
 });
