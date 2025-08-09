@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		3C740307A78E4213B315F538 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5FE021CAF484EBCAD0988CE /* BootSplash.storyboard */; };
 		6C0849F710D83E5BB307A328 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -15,6 +16,7 @@
 		87CDAA962E465A9500ACEF8D /* note_sell_b5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 87CDAA932E465A9500ACEF8D /* note_sell_b5.mp3 */; };
 		87CDAA972E465A9500ACEF8D /* note_receive_g6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 87CDAA922E465A9500ACEF8D /* note_receive_g6.mp3 */; };
 		87CDAA982E465A9500ACEF8D /* note_buy_g5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 87CDAA912E465A9500ACEF8D /* note_buy_g5.mp3 */; };
+		885E1F2C2C2E42A194D35498 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D778A78665474836A242EA64 /* Colors.xcassets */; };
 		B7B0DDFD3D240C8AF23F754E /* libPods-Mandarino.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89D80A3D9D7815F9D1E607C5 /* libPods-Mandarino.a */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +34,8 @@
 		87CDAA932E465A9500ACEF8D /* note_sell_b5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = note_sell_b5.mp3; sourceTree = "<group>"; };
 		87CDAA942E465A9500ACEF8D /* note_send_c6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = note_send_c6.mp3; sourceTree = "<group>"; };
 		89D80A3D9D7815F9D1E607C5 /* libPods-Mandarino.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mandarino.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5FE021CAF484EBCAD0988CE /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = Mandarino/BootSplash.storyboard; sourceTree = "<group>"; };
+		D778A78665474836A242EA64 /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = Mandarino/Colors.xcassets; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -55,6 +59,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				B5FE021CAF484EBCAD0988CE /* BootSplash.storyboard */,
+				D778A78665474836A242EA64 /* Colors.xcassets */,
 			);
 			name = Mandarino;
 			sourceTree = "<group>";
@@ -185,6 +191,8 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				6C0849F710D83E5BB307A328 /* PrivacyInfo.xcprivacy in Resources */,
+				3C740307A78E4213B315F538 /* BootSplash.storyboard in Resources */,
+				885E1F2C2C2E42A194D35498 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,13 +223,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -258,13 +262,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -410,7 +410,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -479,7 +482,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
