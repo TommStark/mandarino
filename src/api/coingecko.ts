@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { CryptoMarket } from '../types/crypto';
+import cg from './http';
 
 export const fetchCoinsMarkets = async (params: {
   vs_currency: string;
@@ -7,16 +7,54 @@ export const fetchCoinsMarkets = async (params: {
   per_page: number;
   order: string;
 }): Promise<CryptoMarket[]> => {
-  const { data } = await axios.get<CryptoMarket[]>(
-    'https://api.coingecko.com/api/v3/coins/markets',
-    {
-      params: {
-        ...params,
-        sparkline: false,
-        price_change_percentage: '24h',
-      },
+  const { data } = await cg.get<CryptoMarket[]>('/coins/markets', {
+    params: { ...params, sparkline: false, price_change_percentage: '24h' },
+  });
+  return data;
+};
+
+export const searchCoins = async (query: string) => {
+  const { data } = await cg.get('/search', {
+    params: { query },
+  });
+  return data as {
+    coins: Array<{
+      id: string;
+      name: string;
+      symbol: string;
+      thumb: string;
+      market_cap_rank: number | null;
+    }>;
+  };
+};
+
+export const fetchCoinsMarketsByIds = async ({
+  vs_currency,
+  ids,
+  order = 'market_cap_desc',
+}: {
+  vs_currency: string;
+  ids: string[];
+  order?:
+    | 'market_cap_desc'
+    | 'market_cap_asc'
+    | 'price_desc'
+    | 'price_asc'
+    | 'volume_desc'
+    | 'volume_asc';
+}): Promise<CryptoMarket[]> => {
+  if (!ids.length) return [];
+  const { data } = await cg.get<CryptoMarket[]>('/coins/markets', {
+    params: {
+      vs_currency,
+      ids: ids.join(','),
+      order,
+      per_page: Math.min(ids.length, 250),
+      page: 1,
+      sparkline: false,
+      price_change_percentage: '24h',
     },
-  );
+  });
   return data;
 };
 
@@ -27,21 +65,13 @@ export const fetchExchangeRate = async ({
   from: string;
   to: string;
 }): Promise<number> => {
-  const { data } = await axios.get(
-    'https://api.coingecko.com/api/v3/simple/price',
-    {
-      params: {
-        ids: from,
-        vs_currencies: to,
-      },
-    },
-  );
+  const { data } = await cg.get('/simple/price', {
+    params: { ids: from, vs_currencies: to },
+  });
   return data?.[from]?.[to];
 };
 
 export const fetchSupportedFiatCurrencies = async (): Promise<string[]> => {
-  const { data } = await axios.get<string[]>(
-    'https://api.coingecko.com/api/v3/simple/supported_vs_currencies',
-  );
+  const { data } = await cg.get<string[]>('/simple/supported_vs_currencies');
   return data;
 };
