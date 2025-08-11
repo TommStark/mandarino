@@ -63,8 +63,8 @@ export const CryptoCard = ({
         <Text
           style={[
             styles.price,
-            priceFormatted.length > 12 && styles.priceSmall, // más chico si es largo
-            priceFormatted.length > 16 && styles.priceXSmall, // aún más chico si es muy largo
+            priceFormatted.length > 12 && styles.priceSmall,
+            priceFormatted.length > 16 && styles.priceXSmall,
           ]}
           numberOfLines={1}
         >
