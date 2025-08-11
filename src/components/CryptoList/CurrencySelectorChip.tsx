@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Chip, Menu, Divider, Text } from 'react-native-paper';
 import { getCurrencyName, getFlag } from '../../utils/fiat';
+import { CURRENCY_OPTIONS } from '../../constants/currencies';
+import { StyleSheet } from 'react-native';
 
 type Props = {
   value: string;
@@ -10,8 +12,6 @@ type Props = {
   showNameOnChip?: boolean;
   testID?: string;
 };
-
-const DEFAULTS = ['usd', 'ars', 'eur', 'brl'];
 
 function CurrencyMenuItemRow({
   flag,
@@ -38,7 +38,7 @@ function CurrencyMenuItemRow({
 export default function CurrencySelectorChip({
   value,
   onChange,
-  options = DEFAULTS,
+  options = CURRENCY_OPTIONS,
   showNameOnChip = false,
   testID,
 }: Props) {
@@ -66,14 +66,14 @@ export default function CurrencySelectorChip({
           <Chip
             testID={testID}
             selected
-            style={{ backgroundColor: '#FFF3EA', maxWidth: 240 }}
+            style={styles.chip}
             onPress={toggle}
             selectedColor="#B95C00"
             icon={() => <Text>{flag}</Text>}
           >
             {showNameOnChip ? (
               <Text numberOfLines={1} ellipsizeMode="tail">
-                {code} · {name}
+                {flag} {code} · {name}
               </Text>
             ) : (
               code
@@ -82,9 +82,13 @@ export default function CurrencySelectorChip({
         }
       >
         <Text
-          style={{ paddingHorizontal: 12, paddingVertical: 6, opacity: 0.6 }}
+          style={{
+            paddingHorizontal: 12,
+            paddingVertical: 6,
+            color: 'rgba(0,0,0,0.6)',
+          }}
         >
-          Seleccionar moneda
+          Seleccionar moneda Vs
         </Text>
         <Divider />
         {options.map(opt => {
@@ -112,3 +116,17 @@ export default function CurrencySelectorChip({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  list: {
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+    gap: 8,
+  },
+  chip: {
+    backgroundColor: '#FFF3EA',
+    marginRight: 8,
+    borderColor: '#B95C00',
+    borderWidth: 1,
+  },
+});

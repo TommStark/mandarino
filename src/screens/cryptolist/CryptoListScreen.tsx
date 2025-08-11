@@ -8,8 +8,7 @@ import ResultsList from '../../components/CryptoList/ResultsList';
 import { SkeletonCoinList } from '../../components/Shared/SkeletonCoinRow';
 import { useCryptoListData } from '../../hooks/useCryptoListData';
 import type { SortBy, SortDir } from '../../hooks/useMarketsInfinite';
-
-const CURRENCY_OPTIONS = ['usd', 'ars', 'eur', 'mxn', 'brl', 'btc', 'eth'];
+import { CURRENCY_OPTIONS } from '../../constants/currencies';
 
 export default function CryptoListScreen() {
   const [search, setSearch] = useState('');

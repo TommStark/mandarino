@@ -60,7 +60,14 @@ export const CryptoCard = ({
       </View>
 
       <View style={styles.right}>
-        <Text style={styles.price} numberOfLines={1}>
+        <Text
+          style={[
+            styles.price,
+            priceFormatted.length > 12 && styles.priceSmall, // más chico si es largo
+            priceFormatted.length > 16 && styles.priceXSmall, // aún más chico si es muy largo
+          ]}
+          numberOfLines={1}
+        >
           {priceFormatted}
         </Text>
         <Text
@@ -136,6 +143,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#000',
     maxWidth: 140,
+  },
+  priceSmall: {
+    fontSize: 14,
+  },
+  priceXSmall: {
+    fontSize: 12,
   },
   change: {
     marginTop: 4,

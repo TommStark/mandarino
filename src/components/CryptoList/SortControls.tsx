@@ -1,6 +1,5 @@
-// src/components/CryptoList/SortControls.tsx
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, FlatList, ListRenderItem } from 'react-native';
 import { Chip, Divider } from 'react-native-paper';
 import type { SortBy, SortDir } from '../../hooks/useMarketsInfinite';
 import CurrencySelectorChip from './CurrencySelectorChip';
@@ -10,12 +9,16 @@ type Props = {
   sortDir: SortDir;
   onChangeSortBy: (s: SortBy) => void;
   onToggleDir: () => void;
-
   vsCurrency: string;
   onChangeCurrency: (c: string) => void;
   currencyOptions?: string[];
   showCurrencyNameOnChip?: boolean;
 };
+
+type ControlItem =
+  | { type: 'currency' }
+  | { type: 'sort'; key: SortBy; label: string }
+  | { type: 'dir' };
 
 export default function SortControls({
   sortBy,
@@ -27,9 +30,16 @@ export default function SortControls({
   currencyOptions,
   showCurrencyNameOnChip = false,
 }: Props) {
-  return (
-    <>
-      <View style={styles.row}>
+  const controls: ControlItem[] = [
+    { type: 'currency' },
+    { type: 'dir' },
+    { type: 'sort', key: 'market_cap', label: 'Mkt Cap' },
+    { type: 'sort', key: 'volume', label: 'Volumen' },
+  ];
+
+  const renderItem: ListRenderItem<ControlItem> = ({ item }) => {
+    if (item.type === 'currency') {
+      return (
         <CurrencySelectorChip
           value={vsCurrency}
           onChange={onChangeCurrency}
@@ -37,27 +47,10 @@ export default function SortControls({
           showNameOnChip={showCurrencyNameOnChip}
           testID="currency-chip"
         />
-
-        <Chip
-          selected={sortBy === 'market_cap'}
-          onPress={() => onChangeSortBy('market_cap')}
-          style={styles.chip}
-          selectedColor="#B95C00"
-          icon={sortBy === 'market_cap' ? 'check' : undefined}
-        >
-          Mkt Cap
-        </Chip>
-
-        <Chip
-          selected={sortBy === 'volume'}
-          onPress={() => onChangeSortBy('volume')}
-          style={styles.chip}
-          selectedColor="#B95C00"
-          icon={sortBy === 'volume' ? 'check' : undefined}
-        >
-          Volumen
-        </Chip>
-
+      );
+    }
+    if (item.type === 'dir') {
+      return (
         <Chip
           onPress={onToggleDir}
           style={styles.chip}
@@ -67,20 +60,51 @@ export default function SortControls({
         >
           {sortDir === 'desc' ? 'Desc' : 'Asc'}
         </Chip>
-      </View>
+      );
+    }
+    if (item.type === 'sort') {
+      return (
+        <Chip
+          selected={sortBy === item.key}
+          onPress={() => onChangeSortBy(item.key)}
+          style={styles.chip}
+          selectedColor="#B95C00"
+          icon={sortBy === item.key ? 'checkmark' : undefined}
+        >
+          {item.label}
+        </Chip>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <>
+      <FlatList
+        data={controls}
+        renderItem={renderItem}
+        keyExtractor={(item, index) =>
+          item.type === 'sort' ? item.key : item.type + index
+        }
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.list}
+      />
       <Divider />
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  list: {
     paddingHorizontal: 16,
     paddingBottom: 8,
-    flexWrap: 'wrap',
+    gap: 8,
   },
-  chip: { backgroundColor: '#FFF3EA' },
+  chip: {
+    backgroundColor: '#FFF3EA',
+    marginRight: 8,
+    borderColor: '#B95C00',
+    borderWidth: 1,
+  },
 });

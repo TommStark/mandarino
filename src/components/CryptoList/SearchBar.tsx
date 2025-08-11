@@ -15,7 +15,6 @@ export default function SearchBar({
   return (
     <View style={styles.wrapper}>
       <TextInput
-        mode="outlined"
         placeholder={placeholder}
         value={value}
         onChangeText={onChange}
@@ -36,5 +35,9 @@ export default function SearchBar({
 }
 const styles = StyleSheet.create({
   wrapper: { paddingHorizontal: 16, paddingTop: 8 },
-  input: { backgroundColor: 'white' },
+  input: {
+    backgroundColor: '#FFF3EA',
+    borderColor: '#B95C00',
+    borderWidth: 1,
+  },
 });
