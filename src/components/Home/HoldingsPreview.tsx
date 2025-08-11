@@ -1,24 +1,12 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useCoinsMarketsQuery } from '../../hooks/useCoinsMarketsQuery';
 import { CryptoCard } from '../CryptoCard';
-import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 import { useUser } from '../../context/UserContext';
-import { EmptyList, HttpLost } from '../../assets/svg';
 import HttpErrorModal from '../Shared/HttpErrorModal';
-import LoadingState from '../Shared/LoadingState';
+import { SkeletonCoinList } from '../Shared/SkeletonCoinRow';
 
-type Props = {
-  onPressViewAll: () => void;
-};
-
-export const HoldingsPreview = ({ onPressViewAll }: Props) => {
+export const HoldingsPreview = () => {
   const { data, isLoading, isError } = useCoinsMarketsQuery({
     vs_currency: 'usd',
     page: 1,
@@ -31,12 +19,10 @@ export const HoldingsPreview = ({ onPressViewAll }: Props) => {
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Text style={styles.title}>Tus Crypto</Text>
-        <TouchableOpacity onPress={onPressViewAll}>
-          <Text style={styles.viewAll}>Ver Todo</Text>
-        </TouchableOpacity>
+        <Text style={styles.viewAll}>Ver Todo</Text>
       </View>
 
-      {isLoading && <LoadingState />}
+      {isLoading && <SkeletonCoinList count={5} />}
 
       {!isLoading && (isError || !data || data.length === 0) && (
         <HttpErrorModal />
@@ -56,7 +42,7 @@ export const HoldingsPreview = ({ onPressViewAll }: Props) => {
               <CryptoCard
                 coin={item}
                 userAmount={showBalances ? userAmount : undefined}
-                showUserAmount={showBalances}
+                showUserAmount={true}
               />
             );
           }}

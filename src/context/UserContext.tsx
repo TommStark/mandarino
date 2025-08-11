@@ -56,7 +56,6 @@ const UserContext = createContext<UserContextType | null>(null);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [showBalances, setShowBalances] = useState(true);
 
-  // Cargar del localStorage al iniciar
   useEffect(() => {
     const loadVisibility = async () => {
       const stored = await AsyncStorage.getItem('showBalances');

@@ -1,39 +1,71 @@
 import React, { useState } from 'react';
-import { FlatList, ActivityIndicator, Text, StyleSheet } from 'react-native';
-import { useCoinsMarketsQuery } from '../../hooks/useCoinsMarketsQuery';
-import { CryptoCard } from '../../components/CryptoCard';
+import { View, StyleSheet } from 'react-native';
 import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
+import HttpErrorModal from '../../components/Shared/HttpErrorModal';
+import SearchBar from '../../components/CryptoList/SearchBar';
+import SortControls from '../../components/CryptoList/SortControls';
+import ResultsList from '../../components/CryptoList/ResultsList';
+import { SkeletonCoinList } from '../../components/Shared/SkeletonCoinRow';
+import { useCryptoListData } from '../../hooks/useCryptoListData';
+import type { SortBy, SortDir } from '../../hooks/useMarketsInfinite';
+import { CURRENCY_OPTIONS } from '../../constants/currencies';
 
 export default function CryptoListScreen() {
-  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState<SortBy>('market_cap');
+  const [sortDir, setSortDir] = useState<SortDir>('desc');
+  const [vsCurrency, setVsCurrency] = useState('usd');
 
-  const { data, isLoading, isError, isFetching } = useCoinsMarketsQuery({
-    vs_currency: 'ars',
-    page,
-    per_page: 20,
-    order: 'market_cap_desc',
-  });
+  const {
+    items,
+    isFetchingList,
+    isFetchingNext,
+    hasNext,
+    showSkeleton,
+    error,
+    onLoadMore,
+    onRefresh,
+    onMomentumBegin,
+  } = useCryptoListData({ vsCurrency, search, sortBy, sortDir, perPage: 20 });
 
-  if (isLoading) return <ActivityIndicator />;
-  if (isError) return <Text>Error cargando criptos</Text>;
+  if (error) {
+    return (
+      <ScreenWrapper>
+        <HttpErrorModal />
+      </ScreenWrapper>
+    );
+  }
 
   return (
     <ScreenWrapper title="Crypto List">
-      <FlatList
-        data={data}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => <CryptoCard coin={item} />}
-        onEndReached={() => setPage(prev => prev + 1)}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
-        contentContainerStyle={styles.contentContainer}
+      <View style={styles.header}>
+        <SearchBar value={search} onChange={setSearch} />
+        <SortControls
+          sortBy={sortBy}
+          sortDir={sortDir}
+          onChangeSortBy={setSortBy}
+          onToggleDir={() => setSortDir(d => (d === 'desc' ? 'asc' : 'desc'))}
+          vsCurrency={vsCurrency}
+          onChangeCurrency={setVsCurrency}
+          currencyOptions={CURRENCY_OPTIONS}
+          showCurrencyNameOnChip={false}
+        />
+      </View>
+
+      <ResultsList
+        items={items}
+        isFetchingList={isFetchingList}
+        isFetchingNext={isFetchingNext}
+        hasNext={hasNext}
+        onLoadMore={onLoadMore}
+        onRefresh={onRefresh}
+        onMomentumBegin={onMomentumBegin}
+        showSkeleton={showSkeleton}
+        SkeletonComponent={<SkeletonCoinList count={8} />}
       />
     </ScreenWrapper>
   );
 }
-
 const styles = StyleSheet.create({
-  contentContainer: {
-    paddingBottom: 16,
-  },
+  header: { paddingBottom: 4, gap: 8 },
 });

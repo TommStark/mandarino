@@ -10,7 +10,6 @@ export const QRCodeScannerScreen = () => {
 
   const onCodeScanned = (value: string) => {
     Vibration.vibrate(100);
-    console.log('Código escaneado:', value);
     navigation.dispatch(
       StackActions.replace('QRResultScreen', { address: value }),
     );

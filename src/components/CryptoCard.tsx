@@ -1,6 +1,13 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { CryptoMarket } from '../types/crypto';
+import {
+  formatAmount,
+  formatPercent,
+  formatPrice,
+  isNum,
+  truncate,
+} from '../utils/cripto';
 
 type Props = {
   coin: CryptoMarket;
@@ -13,44 +20,67 @@ export const CryptoCard = ({
   userAmount,
   showUserAmount = false,
 }: Props) => {
-  const isPositive = coin.price_change_percentage_24h_in_currency >= 0;
+  const price = isNum(coin.current_price) ? coin.current_price : null;
+  const change = isNum(coin.price_change_percentage_24h_in_currency)
+    ? coin.price_change_percentage_24h_in_currency
+    : null;
 
-  const priceFormatted = `$${coin.current_price.toLocaleString('es-AR', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+  const isPositive = (change ?? 0) >= 0;
 
-  const changeFormatted = `${isPositive ? '▲' : '▼'} ${Math.abs(
-    coin.price_change_percentage_24h_in_currency,
-  ).toFixed(2)}%`;
+  const priceFormatted = `$${formatPrice(price)}`;
+  const changeFormatted = formatPercent(change);
+
+  const nameSafe = truncate(coin.name ?? '', 20);
+  const symbolSafe = (coin.symbol ?? '').toUpperCase().slice(0, 6);
 
   return (
     <View style={styles.container}>
       <View style={styles.left}>
         <View style={styles.iconWrapper}>
-          <Image
-            source={{ uri: coin.image }}
-            style={styles.iconImage}
-            resizeMode="contain"
-          />
+          {!!coin.image && (
+            <Image
+              source={{ uri: coin.image }}
+              style={styles.iconImage}
+              resizeMode="contain"
+            />
+          )}
         </View>
 
         <View>
-          <Text style={styles.name}>{coin.name}</Text>
-          {showUserAmount &&
-            (userAmount !== undefined ? (
-              <Text style={styles.amount}>
-                {userAmount.toFixed(4)} {coin.symbol.toUpperCase()}
-              </Text>
-            ) : (
-              <Text style={styles.amount}>•••••••</Text>
-            ))}
+          <Text style={styles.name} numberOfLines={1}>
+            {nameSafe}
+          </Text>
+
+          {showUserAmount && (
+            <Text style={styles.amount} numberOfLines={1}>
+              {formatAmount(userAmount)} {symbolSafe}
+            </Text>
+          )}
         </View>
       </View>
 
       <View style={styles.right}>
-        <Text style={styles.price}>{priceFormatted}</Text>
-        <Text style={[styles.change, isPositive ? styles.green : styles.red]}>
+        <Text
+          style={[
+            styles.price,
+            priceFormatted.length > 12 && styles.priceSmall,
+            priceFormatted.length > 16 && styles.priceXSmall,
+          ]}
+          numberOfLines={1}
+        >
+          {priceFormatted}
+        </Text>
+        <Text
+          style={[
+            styles.change,
+            change == null
+              ? styles.neutral
+              : isPositive
+              ? styles.green
+              : styles.red,
+          ]}
+          numberOfLines={1}
+        >
           {changeFormatted}
         </Text>
       </View>
@@ -77,6 +107,7 @@ const styles = StyleSheet.create({
   left: {
     flexDirection: 'row',
     alignItems: 'center',
+    maxWidth: '58%',
   },
   iconWrapper: {
     backgroundColor: '#fff5eb',
@@ -96,6 +127,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#000',
+    maxWidth: 170,
   },
   amount: {
     fontSize: 12,
@@ -104,21 +136,26 @@ const styles = StyleSheet.create({
   },
   right: {
     alignItems: 'flex-end',
+    maxWidth: '40%',
   },
   price: {
     fontSize: 16,
     fontWeight: '600',
     color: '#000',
+    maxWidth: 140,
+  },
+  priceSmall: {
+    fontSize: 14,
+  },
+  priceXSmall: {
+    fontSize: 12,
   },
   change: {
     marginTop: 4,
     fontSize: 13,
     fontWeight: '500',
   },
-  green: {
-    color: '#00c853',
-  },
-  red: {
-    color: '#d50000',
-  },
+  green: { color: '#00c853' },
+  red: { color: '#d50000' },
+  neutral: { color: '#999' },
 });
