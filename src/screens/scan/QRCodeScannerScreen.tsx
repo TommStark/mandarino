@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,9 +8,14 @@ import {
   Alert,
 } from 'react-native';
 import { Camera } from 'react-native-vision-camera';
-import { StackActions, useNavigation } from '@react-navigation/native';
+import {
+  StackActions,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import { useQRScanner } from '../../hooks/useQRScanner.ts';
 import { Icon } from 'react-native-paper';
+import { openAppSettings } from '../../utils/openAppSettings.ts';
 
 export const QRCodeScannerScreen = () => {
   const navigation = useNavigation();
@@ -22,7 +27,15 @@ export const QRCodeScannerScreen = () => {
     );
   };
 
-  const { device, status, codeScanner } = useQRScanner(onCodeScanned);
+  const { device, status, codeScanner, requestPermission, hasPermission } =
+    useQRScanner(onCodeScanned);
+  console.log('hasPermission: ', hasPermission);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!hasPermission) requestPermission();
+    }, [hasPermission, requestPermission]),
+  );
 
   const goWith = (val: string) => {
     if (!val) {
@@ -35,7 +48,24 @@ export const QRCodeScannerScreen = () => {
   if (status === 'denied') {
     return (
       <View style={styles.center}>
-        <Text>Necesitamos permiso para usar la cámara.</Text>
+        <Text style={styles.title}>
+          Necesitamos permiso para usar la cámara
+        </Text>
+        <Text style={styles.caption}>
+          Si lo negaste por error, podés intentarlo de nuevo o abrir Ajustes.
+        </Text>
+
+        <Pressable style={styles.primary} onPress={requestPermission}>
+          <Text style={styles.primaryText}>Permitir cámara</Text>
+        </Pressable>
+
+        <Pressable style={styles.secondary} onPress={openAppSettings}>
+          <Text style={styles.secondaryText}>Abrir Ajustes</Text>
+        </Pressable>
+
+        <Pressable style={styles.link} onPress={() => navigation.goBack()}>
+          <Text style={styles.linkText}>Cancelar</Text>
+        </Pressable>
       </View>
     );
   }
@@ -53,13 +83,8 @@ export const QRCodeScannerScreen = () => {
         >
           <Text style={styles.actionText}>Usar QR de prueba</Text>
         </Pressable>
-        <Pressable
-          style={styles.action}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Text style={styles.actionText}>Volver</Text>
+        <Pressable style={styles.link} onPress={() => navigation.goBack()}>
+          <Text style={styles.linkText}>Cancelar</Text>
         </Pressable>
 
         <Pressable
@@ -157,4 +182,32 @@ const styles = StyleSheet.create({
   qrRow: { flex: 4, flexDirection: 'row' },
   maskSide: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' },
   qrBox: { flex: 7, borderColor: 'white', borderWidth: 3, borderRadius: 12 },
+
+  caption: {
+    fontSize: 14,
+    opacity: 0.7,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  primary: {
+    width: '100%',
+    maxWidth: 320,
+    paddingVertical: 14,
+    borderRadius: 14,
+    backgroundColor: '#FF8C00',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  primaryText: { color: '#000', fontWeight: '700' },
+  secondary: {
+    width: '100%',
+    maxWidth: 320,
+    paddingVertical: 14,
+    borderRadius: 14,
+    backgroundColor: '#FFE1BF',
+    alignItems: 'center',
+  },
+  secondaryText: { color: '#000', fontWeight: '700' },
+  link: { marginTop: 16, padding: 8 },
+  linkText: { textDecorationLine: 'underline', opacity: 0.8 },
 });

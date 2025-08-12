@@ -69,5 +69,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>app-settings</string>
+</array>
 </dict>
 </plist>
