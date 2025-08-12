@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { PaperProvider } from 'react-native-paper';
+import { MD3LightTheme, PaperProvider } from 'react-native-paper';
 import { UserProvider } from './context/UserContext';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import RNBootSplash from 'react-native-bootsplash';
@@ -14,6 +14,14 @@ import Config from 'react-native-config';
 const queryClient = new QueryClient();
 const WEB_CLIENT_ID = Config.WEB_CLIENT_ID;
 const IOS_CLIENT_ID = Config.IOS_CLIENT_ID;
+
+const theme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: '#ff7b009d',
+  },
+};
 
 const App = () => {
   const [showMicroSplash, setShowMicroSplash] = useState(true);
@@ -41,7 +49,10 @@ const App = () => {
         }}
       >
         <UserProvider>
-          <PaperProvider settings={{ icon: props => <Ionicons {...props} /> }}>
+          <PaperProvider
+            settings={{ icon: props => <Ionicons {...props} /> }}
+            theme={theme}
+          >
             <NavigationContainer>
               <RootNavigator />
             </NavigationContainer>

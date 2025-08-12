@@ -6,6 +6,7 @@ import React, {
   ReactNode,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from './AuthContext';
 
 type Holdings = {
   BTC: number;
@@ -33,27 +34,18 @@ type UserContextType = {
   toggleShowBalances: () => void;
 };
 
-const mockUserData: UserData = {
-  name: 'Tomito',
-  email: 'Toku@mandarino.app',
-  avatarUrl: 'https://i.pravatar.cc/150?img=3',
-  totalBalanceUSD: 12452.55,
-  holdings: {
-    BTC: 0.712,
-    ETH: 5.1,
-    USDT: 125,
-    XRP: 8.3,
-    BNB: 5300,
-  },
-  balanceChange: {
-    amount: 512.35,
-    percent: 4.29,
-  },
+const mockHoldings: Holdings = {
+  BTC: 0.712,
+  ETH: 5.1,
+  USDT: 125,
+  XRP: 8.3,
+  BNB: 5300,
 };
 
 const UserContext = createContext<UserContextType | null>(null);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
+  const { user: authUser } = useAuth();
   const [showBalances, setShowBalances] = useState(true);
 
   useEffect(() => {
@@ -72,10 +64,26 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     await AsyncStorage.setItem('showBalances', String(next));
   };
 
+  const email = authUser?.user?.email ?? 'user@mandarino.app';
+  const name = email.split('@')[0];
+  const avatarUrl = authUser?.user?.photo ?? 'https://i.pravatar.cc/150?img=10';
+
+  const userData: UserData = {
+    name,
+    email,
+    avatarUrl,
+    totalBalanceUSD: 12452.55,
+    holdings: mockHoldings,
+    balanceChange: {
+      amount: 512.35,
+      percent: 4.29,
+    },
+  };
+
   return (
     <UserContext.Provider
       value={{
-        user: mockUserData,
+        user: userData,
         showBalances,
         toggleShowBalances,
       }}

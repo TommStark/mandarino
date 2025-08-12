@@ -27,18 +27,16 @@ export const Header = ({ username }: Props) => {
       <View style={styles.container}>
         <View>
           <Text style={styles.title}>Mandarino</Text>
-          <Text style={styles.subtitle}>Buenos dias, {username}</Text>
+          <Text style={styles.subtitle}>
+            Buenos dias, <Text style={styles.name}>{username}</Text>
+          </Text>
         </View>
 
         <View style={styles.icons}>
-          <View style={styles.icon}>
-            <Icon source="magnify" size={20} color="#0d0c0cff" />
-          </View>
-
           <IconButton
             icon="power"
             size={20}
-            iconColor="#0d0c0cff"
+            iconColor="#be4c06ff"
             onPress={openDialog}
             disabled={loading}
             style={{ margin: 0 }}
@@ -80,7 +78,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: '#f49f6aff',
+    color: '#c57d51ff',
     marginTop: 2,
   },
   icons: {
@@ -90,5 +88,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 12,
+  },
+  name: {
+    fontWeight: 'bold',
   },
 });
