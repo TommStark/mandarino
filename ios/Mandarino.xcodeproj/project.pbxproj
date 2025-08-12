@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		3C740307A78E4213B315F538 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5FE021CAF484EBCAD0988CE /* BootSplash.storyboard */; };
+		470A0C2B169CC8E8888D6DB8 /* libPods-Mandarino.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC50832A325B4CDA0958AE9 /* libPods-Mandarino.a */; };
 		6C0849F710D83E5BB307A328 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -17,7 +18,6 @@
 		87CDAA972E465A9500ACEF8D /* note_receive_g6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 87CDAA922E465A9500ACEF8D /* note_receive_g6.mp3 */; };
 		87CDAA982E465A9500ACEF8D /* note_buy_g5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 87CDAA912E465A9500ACEF8D /* note_buy_g5.mp3 */; };
 		885E1F2C2C2E42A194D35498 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D778A78665474836A242EA64 /* Colors.xcassets */; };
-		C903C5BCDD94493A3E5628B7 /* libPods-Mandarino.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E329A6082E8130130C5BB24 /* libPods-Mandarino.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,10 +25,10 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Mandarino/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Mandarino/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = Mandarino/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		47186BB129072A27A315C024 /* Pods-Mandarino.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mandarino.release.xcconfig"; path = "Target Support Files/Pods-Mandarino/Pods-Mandarino.release.xcconfig"; sourceTree = "<group>"; };
-		6E329A6082E8130130C5BB24 /* libPods-Mandarino.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mandarino.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D112E91B0EC4215C29A6E9F /* Pods-Mandarino.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mandarino.release.xcconfig"; path = "Target Support Files/Pods-Mandarino/Pods-Mandarino.release.xcconfig"; sourceTree = "<group>"; };
+		4EB8F4CA49C3DF2B1FDEC19E /* Pods-Mandarino.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mandarino.debug.xcconfig"; path = "Target Support Files/Pods-Mandarino/Pods-Mandarino.debug.xcconfig"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Mandarino/AppDelegate.swift; sourceTree = "<group>"; };
-		79D440EB392504E35E364A7D /* Pods-Mandarino.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mandarino.debug.xcconfig"; path = "Target Support Files/Pods-Mandarino/Pods-Mandarino.debug.xcconfig"; sourceTree = "<group>"; };
+		7EC50832A325B4CDA0958AE9 /* libPods-Mandarino.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mandarino.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Mandarino/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		87CDAA912E465A9500ACEF8D /* note_buy_g5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = note_buy_g5.mp3; sourceTree = "<group>"; };
 		87CDAA922E465A9500ACEF8D /* note_receive_g6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = note_receive_g6.mp3; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C903C5BCDD94493A3E5628B7 /* libPods-Mandarino.a in Frameworks */,
+				470A0C2B169CC8E8888D6DB8 /* libPods-Mandarino.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,7 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				6E329A6082E8130130C5BB24 /* libPods-Mandarino.a */,
+				7EC50832A325B4CDA0958AE9 /* libPods-Mandarino.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -118,8 +118,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				79D440EB392504E35E364A7D /* Pods-Mandarino.debug.xcconfig */,
-				47186BB129072A27A315C024 /* Pods-Mandarino.release.xcconfig */,
+				4EB8F4CA49C3DF2B1FDEC19E /* Pods-Mandarino.debug.xcconfig */,
+				3D112E91B0EC4215C29A6E9F /* Pods-Mandarino.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -131,13 +131,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Mandarino" */;
 			buildPhases = (
-				7F80CDF56EC5FC6A37D47DE6 /* [CP] Check Pods Manifest.lock */,
+				FC3586119356708D2D00E0FD /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				D5E2E98D15F3E54D1E286180 /* [CP] Embed Pods Frameworks */,
-				E427185CE9BD519AA38404C0 /* [CP] Copy Pods Resources */,
+				1DE56C51B94D09A5FEE6981D /* [CP] Embed Pods Frameworks */,
+				34DFA52C42B29F6847C0EE95 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -215,7 +215,41 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		7F80CDF56EC5FC6A37D47DE6 /* [CP] Check Pods Manifest.lock */ = {
+		1DE56C51B94D09A5FEE6981D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		34DFA52C42B29F6847C0EE95 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FC3586119356708D2D00E0FD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -237,48 +271,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D5E2E98D15F3E54D1E286180 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E427185CE9BD519AA38404C0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mandarino/Pods-Mandarino-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -295,7 +287,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 79D440EB392504E35E364A7D /* Pods-Mandarino.debug.xcconfig */;
+			baseConfigurationReference = 4EB8F4CA49C3DF2B1FDEC19E /* Pods-Mandarino.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -324,7 +316,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 47186BB129072A27A315C024 /* Pods-Mandarino.release.xcconfig */;
+			baseConfigurationReference = 3D112E91B0EC4215C29A6E9F /* Pods-Mandarino.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -418,7 +410,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -487,7 +482,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

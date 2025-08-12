@@ -1,96 +1,174 @@
+// src/components/ExchangeBox.tsx
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Image,
-} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
+import { ActivityIndicator, TextInput } from 'react-native-paper';
+import { useExchangeRateQuery } from '../hooks/useExchangeRateQuery';
+import { formatARS } from '../utils/format';
 
-type Props = {
-  label: string;
-  iconUri?: string;
-  currencyCode: string;
-  value: string;
-  editable?: boolean;
-  onPress: () => void;
-  onChangeText?: (text: string) => void;
-};
+type Props = { onError?: (msg: string) => void };
 
-export const ExchangeBox = ({
-  label,
-  iconUri,
-  currencyCode,
-  value,
-  editable = true,
-  onPress,
-  onChangeText,
-}: Props) => {
+const groupThousands = (intStr: string) =>
+  intStr.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+export const ExchangeBox: React.FC<Props> = ({ onError }) => {
+  const {
+    data: rate,
+    isFetching,
+    isError,
+    error,
+  } = useExchangeRateQuery('bitcoin', 'ars');
+
+  const [btcRaw, setBtcRaw] = React.useState('');
+  const [btcText, setBtcText] = React.useState('');
+  const [arsText, setArsText] = React.useState('');
+
+  React.useEffect(() => {
+    if (isError && onError)
+      onError((error as any)?.message ?? 'Error cargando precio');
+  }, [isError, error, onError]);
+
+  const recalcARS = React.useCallback(
+    (raw: string) => {
+      if (
+        rate &&
+        raw !== '' &&
+        !raw.endsWith(',') &&
+        !Number.isNaN(Number(raw.replace(',', '.')))
+      ) {
+        setArsText(formatARS(Number(raw.replace(',', '.')) * rate));
+      } else if (raw === '') {
+        setArsText('');
+      }
+    },
+    [rate],
+  );
+
+  const normalizeBtcInput = (src: string) => {
+    const endsWithComma = src.endsWith(',');
+    let only = src.replace(/[^0-9,]/g, '');
+
+    const commaIndex = only.indexOf(',');
+    let intPart = '';
+    let decPart = '';
+
+    if (commaIndex >= 0) {
+      intPart = only.slice(0, commaIndex);
+      decPart = only.slice(commaIndex + 1).replace(/,/g, '');
+    } else {
+      intPart = only;
+    }
+
+    if (decPart.length > 8) decPart = decPart.slice(0, 8);
+    intPart = intPart.replace(/^0+(?=\d)/, '') || '0';
+
+    const raw = commaIndex >= 0 ? `${intPart},${decPart}` : intPart;
+    const displayInt = Number(intPart) >= 1 ? groupThousands(intPart) : intPart;
+
+    let display = displayInt;
+    if (commaIndex >= 0) {
+      display += `,${decPart}`;
+      if (endsWithComma && decPart === '') {
+        display = `${displayInt},`;
+      }
+    }
+    return { raw, display };
+  };
+
+  const onChangeBTC = (text: string) => {
+    const { raw, display } = normalizeBtcInput(text);
+    setBtcRaw(raw);
+    setBtcText(display);
+    recalcARS(raw);
+  };
+
+  React.useEffect(() => {
+    recalcARS(btcRaw);
+  }, [rate]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <>
-      <Text style={styles.label}>{label}</Text>
-      <Pressable onPress={onPress} style={styles.box}>
-        <View style={styles.left}>
-          {iconUri ? (
-            <Image source={{ uri: iconUri }} style={styles.icon} />
-          ) : (
-            <Text style={styles.flag}>{currencyCode}</Text>
-          )}
-          <Text style={styles.currency}>{currencyCode?.toUpperCase()}</Text>
+    <View style={styles.wrapper}>
+      {/* BTC */}
+      <View style={styles.row}>
+        <View style={styles.currencyLabel}>
+          <Text style={styles.emoji}>🟠</Text>
+          <Text style={styles.acronym}>BTC</Text>
         </View>
         <TextInput
-          style={styles.input}
+          value={btcText}
+          onChangeText={onChangeBTC}
+          mode="flat"
           keyboardType="decimal-pad"
-          editable={editable}
-          value={value}
-          onChangeText={onChangeText}
+          placeholder="0,0"
+          style={styles.input}
+          underlineColor="transparent"
+          selectionColor="#00000055"
+          textColor="#151515"
+          placeholderTextColor="#00000033"
+          autoCapitalize="none"
+          autoCorrect={false}
+          right={
+            isFetching ? (
+              <TextInput.Icon icon={() => <ActivityIndicator />} />
+            ) : undefined
+          }
         />
-      </Pressable>
-    </>
+      </View>
+
+      {/* ARS */}
+      <View style={styles.row}>
+        <View style={styles.currencyLabel}>
+          <Text style={styles.emoji}>🇦🇷</Text>
+          <Text style={styles.acronym}>ARS</Text>
+        </View>
+        <TextInput
+          value={arsText}
+          editable={false}
+          mode="flat"
+          placeholder="0,00"
+          style={[styles.input, styles.readonly]}
+          underlineColor="transparent"
+          textColor="#151515"
+          placeholderTextColor="#00000033"
+        />
+      </View>
+
+      <Text style={styles.rateHint}>
+        {rate
+          ? `1 BTC ≈ ${formatARS(rate)} ARS`
+          : isFetching
+          ? 'Actualizando precio…'
+          : 'Sin precio'}
+      </Text>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  label: {
-    fontSize: 14,
-    color: '#999',
-  },
-  box: {
-    backgroundColor: '#f3f3f3',
-    borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    marginBottom: 12,
-  },
-  left: {
+  wrapper: { gap: 12, paddingHorizontal: 16 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  currencyLabel: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    flex: 1,
+    gap: 6,
+    minWidth: 72,
   },
-  icon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    marginRight: 8,
-  },
-  flag: {
-    fontSize: 28,
-    marginRight: 8,
-  },
-  currency: {
-    fontSize: 18,
+  emoji: { fontSize: 18 },
+  acronym: {
+    fontSize: 16,
     fontWeight: '600',
-    marginTop: 4,
+    color: '#222',
+    letterSpacing: 0.25,
   },
   input: {
-    fontSize: 32,
-    fontWeight: '500',
-    textAlign: 'right',
-    minWidth: 120,
-    color: '#000',
+    flex: 1,
+    backgroundColor: 'transparent',
+    fontSize: 28,
+    lineHeight: 34,
+    paddingVertical: 6,
+    paddingHorizontal: 0,
   },
+  readonly: { opacity: 0.9 },
+  rateHint: { marginTop: 2, fontSize: 12, color: '#00000066', paddingLeft: 12 },
 });
+
+export default ExchangeBox;
