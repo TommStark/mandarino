@@ -3,7 +3,7 @@ import { FlatList, RefreshControl } from 'react-native';
 import { CryptoCard } from '../../components/CryptoCard';
 import ListFooterLoading from '../../components/Shared/ListFooterLoading';
 import EmptyState from '../../components/Shared/EmptyState';
-import type { CryptoMarket } from '../../types/crypto';
+import type { CryptoMarket } from '../../types/coingecko';
 
 type Props = {
   items: CryptoMarket[];

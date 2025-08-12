@@ -123,6 +123,7 @@ export const ExchangeBox: React.FC<Props> = ({
           placeholderTextColor="#00000033"
           activeUnderlineColor="transparent"
           theme={{ colors: { primary: 'transparent', onSurface: '#151515' } }}
+          autoFocus
         />
       </Animated.View>
     </View>

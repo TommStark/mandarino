@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchCoinsMarkets } from '../api/coingecko';
-import type { CryptoMarket } from '../types/crypto';
+import type { CryptoMarket } from '../types/coingecko';
 
 type Params = {
   vs_currency: string;

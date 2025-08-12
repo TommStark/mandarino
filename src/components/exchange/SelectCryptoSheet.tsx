@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { useCoinsMarketsQuery } from '../../hooks/useCoinsMarketsQuery';
-import { CryptoMarket } from '../../types/crypto';
+import { CryptoMarket } from '../../types/coingecko';
 import ActionSheet, {
   SheetProps,
   ActionSheetRef,

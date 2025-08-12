@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
 import { useExchangeRate } from '../../hooks/useExchangeRate';
-import { CryptoMarket } from '../../types/crypto';
+import { CryptoMarket } from '../../types/coingecko';
 import { ActionSheetRef } from 'react-native-actions-sheet';
 import SelectCryptoSheet from '../../components/exchange/SelectCryptoSheet';
 import SelectFiatSheet from '../../components/exchange/SelectFiatSheet';
@@ -76,6 +76,17 @@ function buildBoxes(
     },
   };
 }
+
+const MottoSpyMode = () => {
+  return (
+    <Pressable accessibilityRole="summary" style={styles.motto} hitSlop={8}>
+      <Text style={styles.mottoTitle}>👀 Modo espiar precios</Text>
+      <Text style={styles.mottoSub}>
+        Te mostramos la cotización… pero la compra queda en tus manos.
+      </Text>
+    </Pressable>
+  );
+};
 
 export const ExchangeScreen = () => {
   const cryptoSheetRef = useRef<ActionSheetRef>(
@@ -176,6 +187,8 @@ export const ExchangeScreen = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView contentContainerStyle={styles.container}>
+          <MottoSpyMode />
+
           <ExchangeBox
             icon={top.icon}
             symbol={top.symbol}
@@ -255,6 +268,28 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 13,
     color: '#00000080',
+  },
+  motto: {
+    padding: 12,
+    borderRadius: 12,
+    backgroundColor: 'rgba(0,0,0,0.04)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(0,0,0,0.08)',
+    gap: 2,
+  },
+  mottoTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#000000CC',
+  },
+  mottoSub: {
+    fontSize: 12,
+    color: '#00000099',
+  },
+  mottoMeta: {
+    marginTop: 2,
+    fontSize: 11,
+    color: '#00000066',
   },
 });
 

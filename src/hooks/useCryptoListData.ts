@@ -5,7 +5,7 @@ import {
   type SortDir,
 } from './useMarketsInfinite';
 import { useMarketsSearch } from './useMarketsSearch';
-import type { CryptoMarket } from '../types/crypto';
+import type { CryptoMarket } from '../types/coingecko';
 
 export type UseCryptoListDataParams = {
   vsCurrency: string;

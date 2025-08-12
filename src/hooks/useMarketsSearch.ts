@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { searchCoins, fetchCoinsMarketsByIds } from '../api/coingecko';
-import type { CryptoMarket } from '../types/crypto';
+import type { CryptoMarket } from '../types/coingecko';
 import useDebouncedValue from './useDebouncedValue';
 
 export function useMarketsSearch({

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchCoinsMarkets } from '../api/coingecko';
-import type { CryptoMarket } from '../types/crypto';
+import type { CryptoMarket } from '../types/coingecko';
 
 export type SortBy = 'market_cap' | 'price' | 'volume';
 export type SortDir = 'asc' | 'desc';
