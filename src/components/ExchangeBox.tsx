@@ -1,5 +1,13 @@
-import React from 'react';
-import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
+import React, { useCallback } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  Image,
+  Animated,
+  Easing,
+} from 'react-native';
 import { Icon, TextInput } from 'react-native-paper';
 import {
   sanitize,
@@ -7,6 +15,7 @@ import {
   formatReadOnly,
   formatReadOnlyCrypto,
 } from '../utils/format';
+import { useFocusEffect } from '@react-navigation/native';
 
 type Props = {
   icon?: string;
@@ -31,6 +40,19 @@ export const ExchangeBox: React.FC<Props> = ({
 }) => {
   const [display, setDisplay] = React.useState('');
 
+  const SCALE_FOCUSED = 1.18;
+  const scale = React.useRef(new Animated.Value(1)).current;
+  const handleBlur = () => animateTo(1);
+  const animateTo = (to: number) => {
+    Animated.timing(scale, {
+      toValue: to,
+      duration: 160,
+      easing: Easing.out(Easing.quad),
+      useNativeDriver: true,
+    }).start();
+  };
+  const handleFocus = () => animateTo(SCALE_FOCUSED);
+
   const maxDecimalsEditable = isFiat ? 2 : 8;
   const decimalsReadonly = isFiat ? 2 : 8;
 
@@ -46,6 +68,15 @@ export const ExchangeBox: React.FC<Props> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, editable, isFiat]);
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        handleBlur();
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   const handleChange = (t: string) => {
     const sanitized = sanitize(t);
@@ -73,22 +104,27 @@ export const ExchangeBox: React.FC<Props> = ({
         <Icon source="chevron-down" size={16} color="#666" />
       </Pressable>
 
-      <TextInput
-        value={display}
-        onChangeText={handleChange}
-        editable={editable}
-        mode="flat"
-        keyboardType="decimal-pad"
-        placeholder={
-          placeholder ??
-          (editable ? (isFiat ? '0,00' : '0,0') : isFiat ? '0,00' : '0,0')
-        }
-        style={styles.input}
-        underlineColor="transparent"
-        selectionColor="#00000055"
-        textColor="#151515"
-        placeholderTextColor="#00000033"
-      />
+      <Animated.View style={[styles.inputWrapper, { transform: [{ scale }] }]}>
+        <TextInput
+          value={display}
+          onChangeText={handleChange}
+          onFocus={handleFocus}
+          editable={editable}
+          mode="flat"
+          keyboardType="decimal-pad"
+          placeholder={
+            placeholder ??
+            (editable ? (isFiat ? '0,00' : '0,0') : isFiat ? '0,00' : '0,0')
+          }
+          style={styles.input}
+          underlineColor="transparent"
+          selectionColor="#00000055"
+          textColor="#151515"
+          placeholderTextColor="#00000033"
+          activeUnderlineColor="transparent"
+          theme={{ colors: { primary: 'transparent', onSurface: '#151515' } }}
+        />
+      </Animated.View>
     </View>
   );
 };
@@ -118,6 +154,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#222',
     letterSpacing: 0.25,
+  },
+  inputWrapper: {
+    flex: 1,
   },
   input: {
     flex: 1,
