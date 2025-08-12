@@ -8,7 +8,13 @@ type QRResultRouteProp = RouteProp<RootStackParamList, 'QRResultScreen'>;
 
 export const QRResultScreen = () => {
   const route = useRoute<QRResultRouteProp>();
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<
+      import('@react-navigation/native-stack').NativeStackNavigationProp<
+        RootStackParamList,
+        'QRResultScreen'
+      >
+    >();
   const { address } = route.params;
 
   const { addWallet, isFavorite, toggleFavorite } = useScannedWallets();
@@ -42,7 +48,7 @@ export const QRResultScreen = () => {
 
       <Button
         title="Volver al inicio"
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('MainScreen')}
       />
     </View>
   );

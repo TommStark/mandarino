@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Code, CodeScannerFrame } from 'react-native-vision-camera';
 import {
   useCameraDevice,
@@ -23,7 +23,14 @@ export const useQRScanner = (
     'pending' | 'denied' | 'ready' | 'no-device'
   >('pending');
 
-  //TODO hacer esto con un object literal
+  const requestedOnceRef = useRef(false);
+  useEffect(() => {
+    if (!requestedOnceRef.current && !hasPermission) {
+      requestedOnceRef.current = true;
+      requestPermission();
+    }
+  }, [hasPermission, requestPermission]);
+
   useEffect(() => {
     if (!hasPermission) {
       setStatus('denied');
@@ -36,12 +43,8 @@ export const useQRScanner = (
 
   const handleScan = useCallback(
     (codes: Code[], _frame: CodeScannerFrame): void => {
-      if (codes.length > 0) {
-        const value = codes[0]?.value;
-        if (typeof value === 'string') {
-          onCodeScanned(value);
-        }
-      }
+      const value = codes[0]?.value;
+      if (typeof value === 'string') onCodeScanned(value);
     },
     [onCodeScanned],
   );
