@@ -23,7 +23,7 @@ type Props = SheetProps & {
 };
 
 const SelectCryptoSheet = forwardRef<ActionSheetRef, Props>(
-  ({ onSelect, sheetId, ...props }, ref) => {
+  ({ onSelect, ...props }, ref) => {
     const { data, isLoading } = useCoinsMarketsQuery({
       vs_currency: 'ars',
       page: 1,

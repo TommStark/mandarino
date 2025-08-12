@@ -1,158 +1,118 @@
-// src/components/ExchangeBox.tsx
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { ActivityIndicator, TextInput } from 'react-native-paper';
-import { useExchangeRateQuery } from '../hooks/useExchangeRateQuery';
-import { formatARS } from '../utils/format';
+import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
+import { Icon, TextInput } from 'react-native-paper';
+import {
+  sanitize,
+  formatBTCEditable,
+  formatReadOnly,
+  formatReadOnlyCrypto,
+} from '../utils/format';
 
-type Props = { onError?: (msg: string) => void };
+type Props = {
+  icon?: string;
+  symbol: string;
+  value: string;
+  editable?: boolean;
+  isFiat?: boolean;
+  onPress: () => void;
+  onChange?: (raw: string) => void;
+  placeholder?: string;
+};
 
-const groupThousands = (intStr: string) =>
-  intStr.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+export const ExchangeBox: React.FC<Props> = ({
+  icon,
+  symbol,
+  value,
+  editable = true,
+  isFiat = false,
+  onPress,
+  onChange,
+  placeholder,
+}) => {
+  const [display, setDisplay] = React.useState('');
 
-export const ExchangeBox: React.FC<Props> = ({ onError }) => {
-  const {
-    data: rate,
-    isFetching,
-    isError,
-    error,
-  } = useExchangeRateQuery('bitcoin', 'ars');
-
-  const [btcRaw, setBtcRaw] = React.useState('');
-  const [btcText, setBtcText] = React.useState('');
-  const [arsText, setArsText] = React.useState('');
+  const maxDecimalsEditable = isFiat ? 2 : 8;
+  const decimalsReadonly = isFiat ? 2 : 8;
 
   React.useEffect(() => {
-    if (isError && onError)
-      onError((error as any)?.message ?? 'Error cargando precio');
-  }, [isError, error, onError]);
-
-  const recalcARS = React.useCallback(
-    (raw: string) => {
-      if (
-        rate &&
-        raw !== '' &&
-        !raw.endsWith(',') &&
-        !Number.isNaN(Number(raw.replace(',', '.')))
-      ) {
-        setArsText(formatARS(Number(raw.replace(',', '.')) * rate));
-      } else if (raw === '') {
-        setArsText('');
-      }
-    },
-    [rate],
-  );
-
-  const normalizeBtcInput = (src: string) => {
-    const endsWithComma = src.endsWith(',');
-    let only = src.replace(/[^0-9,]/g, '');
-
-    const commaIndex = only.indexOf(',');
-    let intPart = '';
-    let decPart = '';
-
-    if (commaIndex >= 0) {
-      intPart = only.slice(0, commaIndex);
-      decPart = only.slice(commaIndex + 1).replace(/,/g, '');
+    if (editable) {
+      setDisplay(formatBTCEditable(value, maxDecimalsEditable));
     } else {
-      intPart = only;
+      setDisplay(
+        isFiat
+          ? formatReadOnly(value, decimalsReadonly)
+          : formatReadOnlyCrypto(value, decimalsReadonly),
+      );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, editable, isFiat]);
 
-    if (decPart.length > 8) decPart = decPart.slice(0, 8);
-    intPart = intPart.replace(/^0+(?=\d)/, '') || '0';
-
-    const raw = commaIndex >= 0 ? `${intPart},${decPart}` : intPart;
-    const displayInt = Number(intPart) >= 1 ? groupThousands(intPart) : intPart;
-
-    let display = displayInt;
-    if (commaIndex >= 0) {
-      display += `,${decPart}`;
-      if (endsWithComma && decPart === '') {
-        display = `${displayInt},`;
-      }
-    }
-    return { raw, display };
+  const handleChange = (t: string) => {
+    const sanitized = sanitize(t);
+    const nextDisplay = formatBTCEditable(sanitized, maxDecimalsEditable);
+    setDisplay(nextDisplay);
+    onChange?.(sanitized);
   };
 
-  const onChangeBTC = (text: string) => {
-    const { raw, display } = normalizeBtcInput(text);
-    setBtcRaw(raw);
-    setBtcText(display);
-    recalcARS(raw);
-  };
-
-  React.useEffect(() => {
-    recalcARS(btcRaw);
-  }, [rate]); // eslint-disable-line react-hooks/exhaustive-deps
+  const code = (symbol ?? '').toUpperCase();
+  const isUrl = !!icon && /^https?:\/\//.test(icon);
 
   return (
-    <View style={styles.wrapper}>
-      {/* BTC */}
-      <View style={styles.row}>
-        <View style={styles.currencyLabel}>
-          <Text style={styles.emoji}>🟠</Text>
-          <Text style={styles.acronym}>BTC</Text>
-        </View>
-        <TextInput
-          value={btcText}
-          onChangeText={onChangeBTC}
-          mode="flat"
-          keyboardType="decimal-pad"
-          placeholder="0,0"
-          style={styles.input}
-          underlineColor="transparent"
-          selectionColor="#00000055"
-          textColor="#151515"
-          placeholderTextColor="#00000033"
-          autoCapitalize="none"
-          autoCorrect={false}
-          right={
-            isFetching ? (
-              <TextInput.Icon icon={() => <ActivityIndicator />} />
-            ) : undefined
-          }
-        />
-      </View>
+    <View style={styles.row}>
+      <Pressable onPress={onPress} style={styles.currencyLabel} hitSlop={8}>
+        {icon ? (
+          isUrl ? (
+            <Image source={{ uri: icon }} style={styles.iconImg} />
+          ) : (
+            <Text style={styles.emoji}>{icon}</Text>
+          )
+        ) : (
+          <Text style={styles.emoji}>🏳️</Text>
+        )}
+        <Text style={styles.acronym}>{code}</Text>
+        <Icon source="chevron-down" size={16} color="#666" />
+      </Pressable>
 
-      {/* ARS */}
-      <View style={styles.row}>
-        <View style={styles.currencyLabel}>
-          <Text style={styles.emoji}>🇦🇷</Text>
-          <Text style={styles.acronym}>ARS</Text>
-        </View>
-        <TextInput
-          value={arsText}
-          editable={false}
-          mode="flat"
-          placeholder="0,00"
-          style={[styles.input, styles.readonly]}
-          underlineColor="transparent"
-          textColor="#151515"
-          placeholderTextColor="#00000033"
-        />
-      </View>
-
-      <Text style={styles.rateHint}>
-        {rate
-          ? `1 BTC ≈ ${formatARS(rate)} ARS`
-          : isFetching
-          ? 'Actualizando precio…'
-          : 'Sin precio'}
-      </Text>
+      <TextInput
+        value={display}
+        onChangeText={handleChange}
+        editable={editable}
+        mode="flat"
+        keyboardType="decimal-pad"
+        placeholder={
+          placeholder ??
+          (editable ? (isFiat ? '0,00' : '0,0') : isFiat ? '0,00' : '0,0')
+        }
+        style={styles.input}
+        underlineColor="transparent"
+        selectionColor="#00000055"
+        textColor="#151515"
+        placeholderTextColor="#00000033"
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: { gap: 12, paddingHorizontal: 16 },
-  row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   currencyLabel: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
     minWidth: 72,
   },
-  emoji: { fontSize: 18 },
+  emoji: {
+    fontSize: 18,
+  },
+  iconImg: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+  },
   acronym: {
     fontSize: 16,
     fontWeight: '600',
@@ -166,9 +126,8 @@ const styles = StyleSheet.create({
     lineHeight: 34,
     paddingVertical: 6,
     paddingHorizontal: 0,
+    textAlign: 'right',
   },
-  readonly: { opacity: 0.9 },
-  rateHint: { marginTop: 2, fontSize: 12, color: '#00000066', paddingLeft: 12 },
 });
 
 export default ExchangeBox;
