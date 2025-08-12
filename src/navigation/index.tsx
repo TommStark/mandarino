@@ -4,7 +4,7 @@ import CryptoListScreen from '../screens/cryptolist/CryptoListScreen';
 import MainTabsNavigator from './MainTabsNavigator';
 import { QRCodeScannerScreen } from '../screens/scan/QRCodeScannerScreen';
 import { QRResultScreen } from '../screens/scan/QRResultScreen';
-import { ExchangeScreen } from '../screens/exchange/ExchangeScreen';
+import ExchangeScreen from '../screens/exchange/ExchangeScreen';
 
 export type RootStackParamList = {
   Login: undefined;

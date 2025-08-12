@@ -29,7 +29,6 @@ export const QRCodeScannerScreen = () => {
 
   const { device, status, codeScanner, requestPermission, hasPermission } =
     useQRScanner(onCodeScanned);
-  console.log('hasPermission: ', hasPermission);
 
   useFocusEffect(
     useCallback(() => {

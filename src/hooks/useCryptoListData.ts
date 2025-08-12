@@ -5,7 +5,7 @@ import {
   type SortDir,
 } from './useMarketsInfinite';
 import { useMarketsSearch } from './useMarketsSearch';
-import type { CryptoMarket } from '../types/crypto';
+import type { CryptoMarket } from '../types/coingecko';
 
 export type UseCryptoListDataParams = {
   vsCurrency: string;
@@ -22,54 +22,69 @@ export function useCryptoListData({
   sortDir,
   perPage = 20,
 }: UseCryptoListDataParams) {
-  const searching = search.trim().length > 0;
+  const isSearching = search.trim().length > 0;
 
-  const inf = useMarketsInfinite({ vsCurrency, perPage, sortBy, sortDir });
-  const sea = useMarketsSearch({ vsCurrency, q: search, limit: 60 });
+  const infiniteQuery = useMarketsInfinite({
+    vsCurrency,
+    perPage,
+    sortBy,
+    sortDir,
+  });
+  const searchQuery = useMarketsSearch({
+    vsCurrency,
+    q: search,
+    limit: 60,
+    sortBy,
+    sortDir,
+  });
 
   const items = useMemo<CryptoMarket[]>(
-    () => (searching ? sea.items : inf.items) ?? [],
-    [searching, sea.items, inf.items],
+    () => (isSearching ? searchQuery.items : infiniteQuery.items) ?? [],
+    [isSearching, searchQuery.items, infiniteQuery.items],
   );
 
-  const isLoading = searching ? sea.isLoading : inf.isLoading;
-  const isFetchingList = searching ? sea.isFetching : inf.isFetching;
-  const isFetchingNext = searching ? false : inf.isFetchingNextPage;
-  const hasNext = searching ? false : inf.hasNextPage;
-  const error = searching ? sea.error : inf.error;
+  const isLoading = isSearching
+    ? searchQuery.isLoading
+    : infiniteQuery.isLoading;
+  const isFetchingList = isSearching
+    ? searchQuery.isFetching
+    : infiniteQuery.isFetching;
+  const isFetchingNext = isSearching ? false : infiniteQuery.isFetchingNextPage;
+  const hasNext = isSearching ? false : infiniteQuery.hasNextPage;
+  const error = isSearching ? searchQuery.error : infiniteQuery.error;
 
   const showSkeleton =
-    (searching &&
-      (sea.isDebouncing ||
-        !sea.isFetched ||
-        sea.isFetching ||
-        sea.isLoading)) ||
-    (!searching && inf.isLoading);
+    (isSearching &&
+      (searchQuery.isDebouncing ||
+        !searchQuery.isFetched ||
+        searchQuery.isFetching ||
+        searchQuery.isLoading)) ||
+    (!isSearching && infiniteQuery.isLoading);
 
-  const momentum = useRef(false);
+  const momentumRef = useRef(false);
   const onMomentumBegin = () => {
-    momentum.current = false;
+    momentumRef.current = false;
   };
 
   const onLoadMore = useCallback(() => {
     if (
-      searching ||
-      momentum.current ||
+      isSearching ||
+      momentumRef.current ||
       !hasNext ||
       isFetchingNext ||
-      inf.isFetching
+      infiniteQuery.isFetching
     )
       return;
-    momentum.current = true;
-    inf
+    momentumRef.current = true;
+    infiniteQuery
       .fetchNextPage()
-      .finally(() => setTimeout(() => (momentum.current = false), 120));
-  }, [searching, hasNext, isFetchingNext, inf]);
+      .finally(() => setTimeout(() => (momentumRef.current = false), 120));
+  }, [isSearching, hasNext, isFetchingNext, infiniteQuery]);
 
   const onRefresh = useCallback(() => {
-    if (searching) sea.refetch();
-    else inf.refetchFirstPage();
-  }, [searching, sea, inf]);
+    if (isSearching) searchQuery.refetch();
+    else infiniteQuery.refetchFirstPage();
+  }, [isSearching, searchQuery, infiniteQuery]);
 
   return {
     items,

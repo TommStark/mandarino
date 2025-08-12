@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { useCoinsMarketsQuery } from '../../hooks/useCoinsMarketsQuery';
-import { CryptoMarket } from '../../types/crypto';
+import { CryptoMarket } from '../../types/coingecko';
 import ActionSheet, {
   SheetProps,
   ActionSheetRef,
@@ -23,7 +23,7 @@ type Props = SheetProps & {
 };
 
 const SelectCryptoSheet = forwardRef<ActionSheetRef, Props>(
-  ({ onSelect, sheetId, ...props }, ref) => {
+  ({ onSelect, ...props }, ref) => {
     const { data, isLoading } = useCoinsMarketsQuery({
       vs_currency: 'ars',
       page: 1,

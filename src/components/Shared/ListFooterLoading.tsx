@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { IconButton } from 'react-native-paper';
-
+import { ActivityIndicator } from 'react-native-paper';
 export default function ListFooterLoading() {
   return (
     <View style={styles.footer}>
-      <IconButton icon="loading" animated />
+      <ActivityIndicator />
     </View>
   );
 }

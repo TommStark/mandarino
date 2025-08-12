@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { CryptoMarket } from '../types/crypto';
+import { CryptoMarket } from '../types/coingecko';
 import {
   formatAmount,
   formatPercent,

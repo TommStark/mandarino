@@ -1,96 +1,173 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
+  StyleSheet,
   View,
   Text,
-  StyleSheet,
-  TextInput,
   Pressable,
   Image,
+  Animated,
+  Easing,
 } from 'react-native';
+import { Icon, TextInput } from 'react-native-paper';
+import {
+  sanitize,
+  formatBTCEditable,
+  formatReadOnly,
+  formatReadOnlyCrypto,
+} from '../utils/format';
+import { useFocusEffect } from '@react-navigation/native';
 
 type Props = {
-  label: string;
-  iconUri?: string;
-  currencyCode: string;
+  icon?: string;
+  symbol: string;
   value: string;
   editable?: boolean;
+  isFiat?: boolean;
   onPress: () => void;
-  onChangeText?: (text: string) => void;
+  onChange?: (raw: string) => void;
+  placeholder?: string;
 };
 
-export const ExchangeBox = ({
-  label,
-  iconUri,
-  currencyCode,
+export const ExchangeBox: React.FC<Props> = ({
+  icon,
+  symbol,
   value,
   editable = true,
+  isFiat = false,
   onPress,
-  onChangeText,
-}: Props) => {
+  onChange,
+  placeholder,
+}) => {
+  const [display, setDisplay] = React.useState('');
+
+  const SCALE_FOCUSED = 1.18;
+  const scale = React.useRef(new Animated.Value(1)).current;
+  const handleBlur = () => animateTo(1);
+  const animateTo = (to: number) => {
+    Animated.timing(scale, {
+      toValue: to,
+      duration: 160,
+      easing: Easing.out(Easing.quad),
+      useNativeDriver: true,
+    }).start();
+  };
+  const handleFocus = () => animateTo(SCALE_FOCUSED);
+
+  const maxDecimalsEditable = isFiat ? 2 : 8;
+  const decimalsReadonly = isFiat ? 2 : 8;
+
+  React.useEffect(() => {
+    if (editable) {
+      setDisplay(formatBTCEditable(value, maxDecimalsEditable));
+    } else {
+      setDisplay(
+        isFiat
+          ? formatReadOnly(value, decimalsReadonly)
+          : formatReadOnlyCrypto(value, decimalsReadonly),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, editable, isFiat]);
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        handleBlur();
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
+  const handleChange = (t: string) => {
+    const sanitized = sanitize(t);
+    const nextDisplay = formatBTCEditable(sanitized, maxDecimalsEditable);
+    setDisplay(nextDisplay);
+    onChange?.(sanitized);
+  };
+
+  const code = (symbol ?? '').toUpperCase();
+  const isUrl = !!icon && /^https?:\/\//.test(icon);
+
   return (
-    <>
-      <Text style={styles.label}>{label}</Text>
-      <Pressable onPress={onPress} style={styles.box}>
-        <View style={styles.left}>
-          {iconUri ? (
-            <Image source={{ uri: iconUri }} style={styles.icon} />
+    <View style={styles.row}>
+      <Pressable onPress={onPress} style={styles.currencyLabel} hitSlop={8}>
+        {icon ? (
+          isUrl ? (
+            <Image source={{ uri: icon }} style={styles.iconImg} />
           ) : (
-            <Text style={styles.flag}>{currencyCode}</Text>
-          )}
-          <Text style={styles.currency}>{currencyCode?.toUpperCase()}</Text>
-        </View>
-        <TextInput
-          style={styles.input}
-          keyboardType="decimal-pad"
-          editable={editable}
-          value={value}
-          onChangeText={onChangeText}
-        />
+            <Text style={styles.emoji}>{icon}</Text>
+          )
+        ) : (
+          <Text style={styles.emoji}>🏳️</Text>
+        )}
+        <Text style={styles.acronym}>{code}</Text>
+        <Icon source="chevron-down" size={16} color="#666" />
       </Pressable>
-    </>
+
+      <Animated.View style={[styles.inputWrapper, { transform: [{ scale }] }]}>
+        <TextInput
+          value={display}
+          onChangeText={handleChange}
+          onFocus={handleFocus}
+          editable={editable}
+          mode="flat"
+          keyboardType="decimal-pad"
+          placeholder={
+            placeholder ??
+            (editable ? (isFiat ? '0,00' : '0,0') : isFiat ? '0,00' : '0,0')
+          }
+          style={styles.input}
+          underlineColor="transparent"
+          selectionColor="#00000055"
+          textColor="#151515"
+          placeholderTextColor="#00000033"
+          activeUnderlineColor="transparent"
+          theme={{ colors: { primary: 'transparent', onSurface: '#151515' } }}
+          autoFocus
+        />
+      </Animated.View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  label: {
-    fontSize: 14,
-    color: '#999',
-  },
-  box: {
-    backgroundColor: '#f3f3f3',
-    borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    marginBottom: 12,
-  },
-  left: {
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
+  },
+  currencyLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    minWidth: 72,
+  },
+  emoji: {
+    fontSize: 18,
+  },
+  iconImg: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+  },
+  acronym: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#222',
+    letterSpacing: 0.25,
+  },
+  inputWrapper: {
     flex: 1,
   },
-  icon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    marginRight: 8,
-  },
-  flag: {
-    fontSize: 28,
-    marginRight: 8,
-  },
-  currency: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginTop: 4,
-  },
   input: {
-    fontSize: 32,
-    fontWeight: '500',
+    flex: 1,
+    backgroundColor: 'transparent',
+    fontSize: 28,
+    lineHeight: 34,
+    paddingVertical: 6,
+    paddingHorizontal: 0,
     textAlign: 'right',
-    minWidth: 120,
-    color: '#000',
   },
 });
+
+export default ExchangeBox;

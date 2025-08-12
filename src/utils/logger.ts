@@ -1,4 +1,4 @@
-export const DEBUG_AUTH = __DEV__; // podés forzar true/false si querés
+export const DEBUG_AUTH = false;
 
 function ts() {
   const d = new Date();
@@ -7,9 +7,6 @@ function ts() {
 
 export function logAuth(...args: any[]) {
   if (!DEBUG_AUTH) return;
-  // prefijo compacto para filtrar en consola
-  // ej: [AUTH 12:34:56.789] mensaje...
-  // @ts-ignore
   console.log('[AUTH', ts() + ']', ...args);
 }
 

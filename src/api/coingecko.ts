@@ -1,11 +1,17 @@
-import { CryptoMarket } from '../types/crypto';
 import cg from './http';
+import {
+  CryptoMarket,
+  MarketsOrder,
+  SearchResponse,
+  SimplePriceResponse,
+  SupportedVsCurrenciesResponse,
+} from '../types/coingecko';
 
 export const fetchCoinsMarkets = async (params: {
   vs_currency: string;
   page: number;
   per_page: number;
-  order: string;
+  order: MarketsOrder | string; // por si querés algo custom futuro
 }): Promise<CryptoMarket[]> => {
   const { data } = await cg.get<CryptoMarket[]>('/coins/markets', {
     params: { ...params, sparkline: false, price_change_percentage: '24h' },
@@ -13,19 +19,11 @@ export const fetchCoinsMarkets = async (params: {
   return data;
 };
 
-export const searchCoins = async (query: string) => {
-  const { data } = await cg.get('/search', {
+export const searchCoins = async (query: string): Promise<SearchResponse> => {
+  const { data } = await cg.get<SearchResponse>('/search', {
     params: { query },
   });
-  return data as {
-    coins: Array<{
-      id: string;
-      name: string;
-      symbol: string;
-      thumb: string;
-      market_cap_rank: number | null;
-    }>;
-  };
+  return data;
 };
 
 export const fetchCoinsMarketsByIds = async ({
@@ -35,13 +33,7 @@ export const fetchCoinsMarketsByIds = async ({
 }: {
   vs_currency: string;
   ids: string[];
-  order?:
-    | 'market_cap_desc'
-    | 'market_cap_asc'
-    | 'price_desc'
-    | 'price_asc'
-    | 'volume_desc'
-    | 'volume_asc';
+  order?: MarketsOrder;
 }): Promise<CryptoMarket[]> => {
   if (!ids.length) return [];
   const { data } = await cg.get<CryptoMarket[]>('/coins/markets', {
@@ -58,20 +50,29 @@ export const fetchCoinsMarketsByIds = async ({
   return data;
 };
 
-export const fetchExchangeRate = async ({
+export const fetchExchangeRate = async <
+  From extends string,
+  To extends string,
+>({
   from,
   to,
 }: {
-  from: string;
-  to: string;
+  from: From;
+  to: To;
 }): Promise<number> => {
-  const { data } = await cg.get('/simple/price', {
-    params: { ids: from, vs_currencies: to },
-  });
-  return data?.[from]?.[to];
+  const { data } = await cg.get<SimplePriceResponse<From, To>>(
+    '/simple/price',
+    {
+      params: { ids: from, vs_currencies: to },
+    },
+  );
+  return (data?.[from]?.[to] ?? NaN) as number;
 };
 
-export const fetchSupportedFiatCurrencies = async (): Promise<string[]> => {
-  const { data } = await cg.get<string[]>('/simple/supported_vs_currencies');
-  return data;
-};
+export const fetchSupportedFiatCurrencies =
+  async (): Promise<SupportedVsCurrenciesResponse> => {
+    const { data } = await cg.get<SupportedVsCurrenciesResponse>(
+      '/simple/supported_vs_currencies',
+    );
+    return data;
+  };

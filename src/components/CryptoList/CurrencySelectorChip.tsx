@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Chip, Menu, Divider, Text } from 'react-native-paper';
 import { getCurrencyName, getFlag } from '../../utils/fiat';
 import { CURRENCY_OPTIONS } from '../../constants/currencies';
-import { StyleSheet } from 'react-native';
 
 type Props = {
   value: string;
@@ -42,41 +41,42 @@ export default function CurrencySelectorChip({
   showNameOnChip = false,
   testID,
 }: Props) {
-  const [visible, setVisible] = useState(false);
-  const close = () => setVisible(false);
-  const toggle = () => setVisible(v => !v);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
-  const code = (value ?? '').toUpperCase();
-  const flag = getFlag(value);
-  const name = getCurrencyName(value);
+  const closeMenu = () => setIsMenuVisible(false);
+  const toggleMenu = () => setIsMenuVisible(prevState => !prevState);
 
-  const handleSelect = (opt: string) => {
-    close();
-    if (opt.toLowerCase() !== (value ?? '').toLowerCase()) {
-      onChange(opt);
+  const currencyCode = (value ?? '').toUpperCase();
+  const currencyFlag = getFlag(value);
+  const currencyName = getCurrencyName(value);
+
+  const handleSelectCurrency = (selectedOption: string) => {
+    closeMenu();
+    if (selectedOption.toLowerCase() !== (value ?? '').toLowerCase()) {
+      onChange(selectedOption);
     }
   };
 
   return (
     <View>
       <Menu
-        visible={visible}
-        onDismiss={close}
+        visible={isMenuVisible}
+        onDismiss={closeMenu}
         anchor={
           <Chip
             testID={testID}
             selected
             style={styles.chip}
-            onPress={toggle}
+            onPress={toggleMenu}
             selectedColor="#B95C00"
-            icon={() => <Text>{flag}</Text>}
+            icon={() => <Text>{currencyFlag}</Text>}
           >
             {showNameOnChip ? (
               <Text numberOfLines={1} ellipsizeMode="tail">
-                {flag} {code} · {name}
+                {currencyFlag} {currencyCode} · {currencyName}
               </Text>
             ) : (
-              code
+              currencyCode
             )}
           </Chip>
         }
@@ -91,22 +91,23 @@ export default function CurrencySelectorChip({
           Seleccionar moneda Vs
         </Text>
         <Divider />
-        {options.map(opt => {
-          const c = opt.toUpperCase();
-          const f = getFlag(opt);
-          const n = getCurrencyName(opt);
-          const active = opt.toLowerCase() === (value ?? '').toLowerCase();
+        {options.map(optionValue => {
+          const optionCode = optionValue.toUpperCase();
+          const optionFlag = getFlag(optionValue);
+          const optionName = getCurrencyName(optionValue);
+          const isActive =
+            optionValue.toLowerCase() === (value ?? '').toLowerCase();
 
           return (
             <Menu.Item
-              key={opt}
-              onPress={() => handleSelect(opt)}
+              key={optionValue}
+              onPress={() => handleSelectCurrency(optionValue)}
               title={
                 <CurrencyMenuItemRow
-                  flag={f}
-                  code={c}
-                  name={n}
-                  active={active}
+                  flag={optionFlag}
+                  code={optionCode}
+                  name={optionName}
+                  active={isActive}
                 />
               }
             />
