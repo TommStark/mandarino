@@ -3,32 +3,49 @@ import { useQuery } from '@tanstack/react-query';
 import { searchCoins, fetchCoinsMarketsByIds } from '../api/coingecko';
 import type { CryptoMarket } from '../types/coingecko';
 import useDebouncedValue from './useDebouncedValue';
+import type { SortBy, SortDir } from './useMarketsInfinite';
+
+function mapOrder(sortBy: SortBy, sortDir: SortDir) {
+  if (sortBy === 'market_cap') {
+    return sortDir === 'asc' ? 'market_cap_asc' : 'market_cap_desc';
+  }
+  if (sortBy === 'price') {
+    return sortDir === 'asc' ? 'price_asc' : 'price_desc';
+  }
+  // volume
+  return sortDir === 'asc' ? 'volume_asc' : 'volume_desc';
+}
 
 export function useMarketsSearch({
   vsCurrency,
-  q,
+  q: queryText,
   limit = 60,
+  sortBy = 'market_cap',
+  sortDir = 'desc',
 }: {
   vsCurrency: string;
   q: string;
   limit?: number;
+  sortBy?: SortBy;
+  sortDir?: SortDir;
 }) {
-  const [debouncedQ, isDebouncing] = useDebouncedValue(q, 400);
+  const [debouncedQuery, isDebouncing] = useDebouncedValue(queryText, 400);
+  const order = mapOrder(sortBy, sortDir);
 
   const query = useQuery<CryptoMarket[], Error>({
-    queryKey: ['markets-search', vsCurrency, debouncedQ, limit],
+    queryKey: ['markets-search', vsCurrency, debouncedQuery, limit, order],
     queryFn: async () => {
-      const qTrim = debouncedQ.trim();
-      if (!qTrim) return [];
-      const res = await searchCoins(qTrim);
-      const ids = (res?.coins ?? [])
-        .map(c => c.id)
+      const trimmedQuery = debouncedQuery.trim();
+      if (!trimmedQuery) return [];
+      const searchResponse = await searchCoins(trimmedQuery);
+      const coinIds = (searchResponse?.coins ?? [])
+        .map(coin => coin.id)
         .slice(0, Math.min(limit, 100));
-      if (!ids.length) return [];
+      if (!coinIds.length) return [];
       return await fetchCoinsMarketsByIds({
         vs_currency: vsCurrency,
-        ids,
-        order: 'market_cap_desc',
+        ids: coinIds,
+        order,
       });
     },
     staleTime: 60_000,
