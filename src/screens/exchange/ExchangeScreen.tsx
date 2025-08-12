@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -15,6 +15,7 @@ import SelectCryptoSheet from '../../components/exchange/SelectCryptoSheet';
 import SelectFiatSheet from '../../components/exchange/SelectFiatSheet';
 import { getCurrencyName, getFlag } from '../../utils/fiat';
 import { ExchangeBox } from '../../components/ExchangeBox';
+import { useFocusEffect } from '@react-navigation/native';
 
 type Direction = 'cryptoToFiat' | 'fiatToCrypto';
 
@@ -60,6 +61,15 @@ export const ExchangeScreen = () => {
     }
     return '0';
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setFromValue('');
+        setToValue('0');
+      };
+    }, []),
+  );
 
   const handleChange = (value: string) => {
     setFromValue(value);
