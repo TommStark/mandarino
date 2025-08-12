@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -34,7 +40,7 @@ function buildBoxes(
   direction: Direction,
   coin: CryptoMarket,
   fiat: { code: string; name: string; flag: string },
-  refs: {
+  sheetRefs: {
     crypto: React.RefObject<ActionSheetRef>;
     fiat: React.RefObject<ActionSheetRef>;
   },
@@ -43,35 +49,35 @@ function buildBoxes(
 
   if (direction === 'cryptoToFiat') {
     return {
-      top: {
+      fromBox: {
         icon: coin.image,
         symbol: fromSymbol,
         isFiat: false,
-        onPress: () => refs.crypto.current?.show(),
+        onPress: () => sheetRefs.crypto.current?.show(),
         placeholder: '0.00',
       },
-      bottom: {
+      toBox: {
         icon: fiat.flag,
         symbol: fiat.code.toUpperCase(),
         isFiat: true,
-        onPress: () => refs.fiat.current?.show(),
+        onPress: () => sheetRefs.fiat.current?.show(),
         placeholder: '0.00',
       },
     };
   }
   return {
-    top: {
+    fromBox: {
       icon: fiat.flag,
       symbol: fiat.code.toUpperCase(),
       isFiat: true,
-      onPress: () => refs.fiat.current?.show(),
+      onPress: () => sheetRefs.fiat.current?.show(),
       placeholder: '0.00',
     },
-    bottom: {
+    toBox: {
       icon: coin.image,
       symbol: fromSymbol,
       isFiat: false,
-      onPress: () => refs.crypto.current?.show(),
+      onPress: () => sheetRefs.crypto.current?.show(),
       placeholder: '0.00',
     },
   };
@@ -106,19 +112,22 @@ export const ExchangeScreen = () => {
     flag: getFlag(selectedFiatCode),
   };
 
-  const { data: rate } = useExchangeRate(selectedCoin.id, selectedFiat.code);
+  const { data: exchangeRate } = useExchangeRate(
+    selectedCoin.id,
+    selectedFiat.code,
+  );
 
   const [fromValue, setFromValue] = useState('');
   const [toValue, setToValue] = useState('');
 
-  const convert = (input: string, dir: Direction = direction) => {
-    const numeric = parseFloat(input.replace(',', '.') || '0');
-    if (!isNaN(numeric) && rate) {
-      if (dir === 'cryptoToFiat') {
-        return (numeric * rate).toFixed(2);
+  const convert = (input: string, directionParam: Direction = direction) => {
+    const numericValue = parseFloat(input.replace(',', '.') || '0');
+    if (!isNaN(numericValue) && exchangeRate) {
+      if (directionParam === 'cryptoToFiat') {
+        return (numericValue * exchangeRate).toFixed(2);
       } else {
-        if (rate === 0) return '0';
-        return (numeric / rate).toFixed(8);
+        if (exchangeRate === 0) return '0';
+        return (numericValue / exchangeRate).toFixed(8);
       }
     }
     return '0';
@@ -132,9 +141,9 @@ export const ExchangeScreen = () => {
   useEffect(() => {
     setToValue(convert(fromValue));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rate, selectedCoin, selectedFiatCode, direction]);
+  }, [exchangeRate, selectedCoin, selectedFiatCode, direction]);
 
-  const swap = () => {
+  const handleSwap = () => {
     const newDirection: Direction =
       direction === 'cryptoToFiat' ? 'fiatToCrypto' : 'cryptoToFiat';
     setDirection(newDirection);
@@ -142,7 +151,7 @@ export const ExchangeScreen = () => {
     setToValue('');
   };
 
-  const resetAll = useCallback(() => {
+  const resetAllState = useCallback(() => {
     setDirection(INITIAL_DIRECTION);
     setSelectedCoin(INITIAL_COIN);
     setSelectedFiatCode(INITIAL_FIAT);
@@ -155,30 +164,34 @@ export const ExchangeScreen = () => {
   useFocusEffect(
     useCallback(() => {
       return () => {
-        resetAll();
+        resetAllState();
       };
-    }, [resetAll]),
+    }, [resetAllState]),
   );
 
-  const { top, bottom } = buildBoxes(direction, selectedCoin, selectedFiat, {
+  const { fromBox, toBox } = buildBoxes(direction, selectedCoin, selectedFiat, {
     crypto: cryptoSheetRef,
     fiat: fiatSheetRef,
   });
 
-  const formatCryptoHint = (n: number, max = 8) => {
-    const s = n.toFixed(max).replace(/0+$/, '').replace(/\.$/, '');
-    return s.replace('.', ',');
+  const formatCryptoHint = (value: number, precision: number = 8) => {
+    const formatted = value
+      .toFixed(precision)
+      .replace(/0+$/, '')
+      .replace(/\.$/, '');
+    return formatted.replace('.', ',');
   };
-  const unitHint = React.useMemo(() => {
-    if (!rate || rate === 0) return 'Sin precio';
+
+  const unitHint = useMemo(() => {
+    if (!exchangeRate || exchangeRate === 0) return 'Sin precio';
     if (direction === 'cryptoToFiat') {
-      return `1 ${selectedCoin.symbol.toUpperCase()} ≈ ${rate} ${selectedFiat.code.toUpperCase()}`;
+      return `1 ${selectedCoin.symbol.toUpperCase()} ≈ ${exchangeRate} ${selectedFiat.code.toUpperCase()}`;
     }
-    const inv = 1 / rate;
+    const inverseRate = 1 / exchangeRate;
     return `1 ${selectedFiat.code.toUpperCase()} ≈ ${formatCryptoHint(
-      inv,
+      inverseRate,
     )} ${selectedCoin.symbol.toUpperCase()}`;
-  }, [rate, direction, selectedCoin.symbol, selectedFiat.code]);
+  }, [exchangeRate, direction, selectedCoin.symbol, selectedFiat.code]);
 
   return (
     <ScreenWrapper title="Exchange">
@@ -190,27 +203,31 @@ export const ExchangeScreen = () => {
           <MottoSpyMode />
 
           <ExchangeBox
-            icon={top.icon}
-            symbol={top.symbol}
+            icon={fromBox.icon}
+            symbol={fromBox.symbol}
             value={fromValue}
-            placeholder={top.placeholder}
+            placeholder={fromBox.placeholder}
             onChange={handleChange}
-            onPress={top.onPress}
-            isFiat={top.isFiat}
+            onPress={fromBox.onPress}
+            isFiat={fromBox.isFiat}
           />
 
-          <Pressable onPress={swap} style={styles.swapButton} hitSlop={10}>
+          <Pressable
+            onPress={handleSwap}
+            style={styles.swapButton}
+            hitSlop={10}
+          >
             <Text style={styles.swapText}>⇅</Text>
           </Pressable>
 
           <ExchangeBox
-            icon={bottom.icon}
-            symbol={bottom.symbol}
+            icon={toBox.icon}
+            symbol={toBox.symbol}
             value={toValue}
-            placeholder={bottom.placeholder}
+            placeholder={toBox.placeholder}
             editable={false}
-            isFiat={bottom.isFiat}
-            onPress={bottom.onPress}
+            isFiat={toBox.isFiat}
+            onPress={toBox.onPress}
           />
           <Text style={styles.hint}>{unitHint}</Text>
         </ScrollView>

@@ -29,7 +29,7 @@ function ResultsListImpl({
 }: Props) {
   if (showSkeleton) return SkeletonComponent;
 
-  const contentContainerStyle = { paddingBottom: 16 };
+  const contentContainerStyle = { paddingBottom: 180 };
 
   return (
     <FlatList

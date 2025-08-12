@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Icon, IconButton, Portal, Dialog, Button } from 'react-native-paper';
+import { IconButton, Portal, Dialog, Button } from 'react-native-paper';
 import { useAuth } from '../../context/AuthContext';
 
 type Props = {
