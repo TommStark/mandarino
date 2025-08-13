@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  Image,
-} from 'react-native';
+import { View, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import {
   Text,
   TextInput,
@@ -20,6 +14,8 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../navigation';
 import { ScreenBackground } from '../../components/Shared/ScreenBackground';
 import color from '../../ui/token/colors';
+import { styles } from './LoginScreen.styles';
+import { te } from './i18n/te';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -34,17 +30,17 @@ export default function LoginScreen({}: Props) {
 
   const tryPasswordLogin = () => {
     if (!email || !pass) {
-      setLocalError('Completá email y contraseña.');
+      setLocalError(te('fillEmailPass'));
       return;
     }
     setLocalError(null);
-    showSnack('Por ahora solo podés iniciar sesión con Google ✨');
+    showSnack(te('onlyGoogleSnack'));
   };
 
   if (isHydrating) {
     return (
       <View style={styles.center}>
-        <Text variant="bodyMedium">Preparando todo…</Text>
+        <Text variant="bodyMedium">{te('preparing')}</Text>
       </View>
     );
   }
@@ -58,16 +54,16 @@ export default function LoginScreen({}: Props) {
 
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.brand}>Mandarino</Text>
-          <Text style={styles.subtitle}>Tu mundo cripto, simple y bonito</Text>
+          <Text style={styles.brand}>{te('brand')}</Text>
+          <Text style={styles.subtitle}>{te('subtitle')}</Text>
         </View>
 
         <Surface style={styles.card} elevation={3}>
-          <Text style={styles.cardTitle}>Ingresá a tu cuenta</Text>
+          <Text style={styles.cardTitle}>{te('cardTitle')}</Text>
 
           <TextInput
             mode="outlined"
-            label="Email"
+            label={te('emailLabel')}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -77,12 +73,13 @@ export default function LoginScreen({}: Props) {
           />
           <TextInput
             mode="outlined"
-            label="Contraseña"
+            label={te('passwordLabel')}
             value={pass}
             onChangeText={setPass}
             secureTextEntry
             style={styles.input}
           />
+
           {!!localError && (
             <HelperText type="error" visible>
               {localError}
@@ -94,14 +91,14 @@ export default function LoginScreen({}: Props) {
             onPress={tryPasswordLogin}
             disabled={loading}
             style={[styles.primaryBtn, { backgroundColor: color.brand }]}
-            labelStyle={{ color: color.white, fontWeight: '700' }}
+            labelStyle={styles.primaryLabel}
           >
-            Ingresar
+            {te('login')}
           </Button>
 
           <View style={styles.dividerRow}>
             <Divider style={styles.flex1} />
-            <Text style={styles.o}>o</Text>
+            <Text style={styles.o}>{te('or')}</Text>
             <Divider style={styles.flex1} />
           </View>
 
@@ -112,27 +109,24 @@ export default function LoginScreen({}: Props) {
             icon="logo-google"
             contentStyle={{ height: 48 }}
             style={[styles.googleBtn, { backgroundColor: color.blue300 }]}
-            labelStyle={{ color: color.white, fontWeight: '700' }}
+            labelStyle={styles.googleLabel}
           >
-            {loading ? 'Conectando…' : 'Continuar con Google'}
+            {loading ? te('connecting') : te('continueWithGoogle')}
           </Button>
 
           {!!error && (
-            <HelperText type="error" visible style={{ textAlign: 'center' }}>
+            <HelperText type="error" visible style={styles.centerText}>
               {error}
             </HelperText>
           )}
 
-          <Text style={styles.terms}>
-            Al continuar aceptás nuestras políticas de privacidad y manejo de
-            datos.
-          </Text>
+          <Text style={styles.terms}>{te('terms')}</Text>
         </Surface>
 
         <View style={styles.footerArt}>
           <Image
             source={require('../../assets/splash/mandarino_logo.png')}
-            style={{ width: 120, height: 120, opacity: 0.15 }}
+            style={styles.footerArtImg}
           />
         </View>
 
@@ -140,7 +134,7 @@ export default function LoginScreen({}: Props) {
           visible={!!snack}
           onDismiss={() => setSnack(null)}
           duration={2500}
-          style={{ marginBottom: 12 }}
+          style={styles.snack}
         >
           {snack}
         </Snackbar>
@@ -148,52 +142,3 @@ export default function LoginScreen({}: Props) {
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  flex1: { flex: 1 },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  brand: {
-    fontSize: 38,
-    fontWeight: '900',
-    color: color.brand,
-    letterSpacing: 0.3,
-  },
-  subtitle: { fontSize: 14, color: color.blueGray600, marginTop: 4 },
-  card: {
-    borderRadius: 16,
-    padding: 20,
-    backgroundColor: color.white,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  input: { marginTop: 8 },
-  dividerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 14,
-    gap: 8,
-  },
-  o: { marginHorizontal: 6, color: color.blueGray600 },
-  primaryBtn: { borderRadius: 12, marginTop: 8 },
-  googleBtn: { borderRadius: 12 },
-  terms: {
-    marginTop: 12,
-    fontSize: 12,
-    color: color.blueGray600,
-    textAlign: 'center',
-  },
-  footerArt: { alignItems: 'center', marginTop: 20 },
-});

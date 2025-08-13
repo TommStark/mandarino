@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Pressable,
-  Alert,
-} from 'react-native';
+import { View, Text, FlatList, Pressable, Alert } from 'react-native';
 import { useScannedWallets, Wallet } from '../scan/hooks/useScannedWallets';
 import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { EmptyList } from '../../assets/svg';
 import { Icon, Switch } from 'react-native-paper';
 import color from '../../ui/token/colors';
+import { styles } from './WalletHistoryScreen.styles';
+import { te } from './i18n/te';
 
 export const WalletHistoryScreen = () => {
   const { wallets, toggleFavorite, removeWallet } = useScannedWallets();
@@ -20,7 +15,7 @@ export const WalletHistoryScreen = () => {
 
   const handleCopy = (address: string) => {
     Clipboard.setString(address);
-    Alert.alert('Copiado', 'La dirección fue copiada al portapapeles');
+    Alert.alert(te('copiedTitle'), te('copiedMsg'));
   };
 
   const filteredWallets = showOnlyFavorites
@@ -31,18 +26,14 @@ export const WalletHistoryScreen = () => {
     const date = new Date(item.scannedAt).toLocaleString();
 
     const handleDelete = (address: string) => {
-      Alert.alert(
-        'Eliminar dirección',
-        '¿Estás seguro que querés eliminar esta dirección del historial?',
-        [
-          { text: 'Cancelar', style: 'cancel' },
-          {
-            text: 'Eliminar',
-            style: 'destructive',
-            onPress: () => removeWallet(address),
-          },
-        ],
-      );
+      Alert.alert(te('deleteTitle'), te('deleteMsg'), [
+        { text: te('cancel'), style: 'cancel' },
+        {
+          text: te('delete'),
+          style: 'destructive',
+          onPress: () => removeWallet(address),
+        },
+      ]);
     };
 
     return (
@@ -52,10 +43,12 @@ export const WalletHistoryScreen = () => {
             <Text style={styles.star}>{item.favorite ? '★' : '☆'}</Text>
           </Pressable>
         </Text>
+
         <View style={styles.flex1}>
           <Text style={styles.address}>{item.address}</Text>
           <Text style={styles.date}>{date}</Text>
         </View>
+
         <View style={styles.marginRight10} />
 
         <Pressable onPress={() => handleCopy(item.address)}>
@@ -70,9 +63,9 @@ export const WalletHistoryScreen = () => {
   };
 
   return (
-    <ScreenWrapper title="Historial" blurAmount={20}>
+    <ScreenWrapper title={te('title')} blurAmount={20}>
       <View style={styles.headerRow}>
-        <Text style={styles.filterLabel}>Mostrar solo favoritos</Text>
+        <Text style={styles.filterLabel}>{te('filterOnlyFavorites')}</Text>
         <Switch
           value={showOnlyFavorites}
           onValueChange={setShowOnlyFavorites}
@@ -91,9 +84,7 @@ export const WalletHistoryScreen = () => {
           <View style={styles.emptyContainer}>
             <EmptyList width={128} height={128} />
             <Text style={styles.empty}>
-              {showOnlyFavorites
-                ? 'No hay direcciones favoritas.'
-                : 'Aún no escaneaste direcciones.'}
+              {showOnlyFavorites ? te('emptyFavorites') : te('emptyAll')}
             </Text>
           </View>
         }
@@ -102,70 +93,4 @@ export const WalletHistoryScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  flex1: { flex: 1 },
-  item: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: color.white,
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 10,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 2,
-  },
-  favoriteItem: {
-    backgroundColor: color.brandSoftBg,
-  },
-  address: { fontSize: 14, fontWeight: 'bold' },
-  date: { fontSize: 12, color: color.blueGray600 },
-  star: {
-    fontSize: 27,
-    marginHorizontal: 8,
-    color: color.brand,
-  },
-  walletIcon: {
-    fontSize: 20,
-    marginRight: 10,
-  },
-  empty: {
-    textAlign: 'center',
-    marginTop: 10,
-    fontSize: 16,
-    color: color.blueGray300,
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    marginTop: 40,
-  },
-  emptyImage: {
-    width: 120,
-    height: 120,
-    marginBottom: 12,
-  },
-  listContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 30,
-  },
-  headerRow: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  filterLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: color.blueGray700,
-  },
-  footerSpacer: {
-    height: 80,
-  },
-  marginRight10: {
-    marginRight: 10,
-  },
-});
+export default WalletHistoryScreen;

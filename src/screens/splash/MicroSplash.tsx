@@ -1,18 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import {
-  View,
-  StyleSheet,
-  Animated,
-  Easing,
-  Dimensions,
-  StatusBar,
-  Image,
-} from 'react-native';
+import { View, Animated, Easing, StatusBar, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import color from '../../ui/token/colors';
-
-const { width } = Dimensions.get('window');
-const SIZE = Math.min(width * 0.34, 160);
+import { styles } from './MicroSplash.styles';
+import { te } from './i18n/te';
 
 type Props = { onDone: () => void };
 
@@ -65,17 +56,15 @@ export const MicroSplash: React.FC<Props> = ({ onDone }) => {
     <View
       style={styles.container}
       accessibilityRole="image"
-      accessibilityLabel="Mandarino iniciando"
+      accessibilityLabel={te('accessLabel')}
     >
       <StatusBar barStyle="dark-content" />
-      <Animated.View
-        style={[StyleSheet.absoluteFillObject, { opacity: bgOpacity }]}
-      >
+      <Animated.View style={[styles.absFill, { opacity: bgOpacity }]}>
         <LinearGradient
           colors={[color.brandSoftBg, color.white]}
           start={{ x: 0.1, y: 0.2 }}
           end={{ x: 1, y: 1 }}
-          style={StyleSheet.absoluteFill}
+          style={styles.absFill}
         />
       </Animated.View>
 
@@ -83,8 +72,8 @@ export const MicroSplash: React.FC<Props> = ({ onDone }) => {
         style={[styles.circleWrapper, { transform: [{ scale: circleScale }] }]}
       >
         <Image
-          source={require('./../../assets/splash/mandarino_logo.png')}
-          style={{ width: SIZE, height: SIZE }}
+          source={require('../../assets/splash/mandarino_logo.png')}
+          style={styles.logo}
           resizeMode="contain"
         />
       </Animated.View>
@@ -95,14 +84,10 @@ export const MicroSplash: React.FC<Props> = ({ onDone }) => {
           { opacity: titleOpacity, transform: [{ translateY: titleY }] },
         ]}
       >
-        Mandarino
+        {te('brand')}
       </Animated.Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  circleWrapper: { marginBottom: 16, elevation: 6 },
-  title: { fontSize: 28, fontWeight: '800', color: color.black },
-});
+export default MicroSplash;
