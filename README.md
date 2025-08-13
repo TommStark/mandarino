@@ -93,4 +93,4 @@ yarn ios.         # para iOS
 
 ## Notas
 
-- En iOS Simulator no hay cámara física: se incluye fallback (pegar desde portapapeles, QR de prueba o ingreso manual).
+- En iOS Simulator no hay cámara física: se incluye fallback (QR de prueba).
