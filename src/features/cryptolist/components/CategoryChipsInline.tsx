@@ -16,7 +16,7 @@ export const DEFAULT_CATEGORY_OPTIONS: CategoryOption[] = [
 type Props = {
   value: string;
   onChange: (next: string) => void;
-  options?: CategoryOption[]; // opcional: permite inyectar lista dinámica del backend
+  options?: CategoryOption[];
   testID?: string;
 };
 
