@@ -13,12 +13,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import { styles } from './CryptoListScreen.styles';
 import { te } from './i18n/te';
 import { t } from 'i18next';
+import { CategoryChipsInline } from './components/CategoryChipsInline';
 
 export default function CryptoListScreen() {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<SortBy>('market_cap');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
   const [vsCurrency, setVsCurrency] = useState('usd');
+  const [category, setCategory] = useState<string>('all');
 
   useFocusEffect(
     useCallback(() => {
@@ -38,7 +40,14 @@ export default function CryptoListScreen() {
     onLoadMore,
     onRefresh,
     onMomentumBegin,
-  } = useCryptoListData({ vsCurrency, search, sortBy, sortDir, perPage: 20 });
+  } = useCryptoListData({
+    vsCurrency,
+    search,
+    sortBy,
+    sortDir,
+    perPage: 20,
+    category: category === 'all' ? null : category,
+  });
 
   if (error) {
     return (
@@ -69,7 +78,14 @@ export default function CryptoListScreen() {
         />
       </View>
 
+      <CategoryChipsInline value={category} onChange={setCategory} />
+
       <ResultsList
+        listKey={
+          search.trim()
+            ? `search-${vsCurrency}`
+            : `infinite-${vsCurrency}-${category ?? 'all'}`
+        }
         items={items}
         isFetchingList={isFetchingList}
         isFetchingNext={isFetchingNext}

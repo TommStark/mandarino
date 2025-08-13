@@ -19,16 +19,18 @@ export function useMarketsInfinite({
   perPage = 20,
   sortBy = 'market_cap',
   sortDir = 'desc',
+  category = null,
 }: {
   vsCurrency: string;
   perPage?: number;
   sortBy?: SortBy;
   sortDir?: SortDir;
+  category?: string | null;
 }) {
   const order = mapOrder(sortBy, sortDir);
 
   const query = useInfiniteQuery<CryptoMarket[], Error>({
-    queryKey: ['markets', vsCurrency, perPage, order],
+    queryKey: ['markets', vsCurrency, perPage, order, category ?? 'all'],
     initialPageParam: 1,
     queryFn: ({ pageParam, signal }) =>
       fetchCoinsMarkets(
@@ -37,6 +39,7 @@ export function useMarketsInfinite({
           order,
           per_page: perPage,
           page: pageParam as number,
+          category: category ?? undefined,
         },
         signal,
       ),

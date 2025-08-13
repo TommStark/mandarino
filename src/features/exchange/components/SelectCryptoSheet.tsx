@@ -34,12 +34,7 @@ const SelectCryptoSheet = forwardRef<ActionSheetRef, Props>(
     };
 
     return (
-      <ActionSheet
-        ref={ref}
-        gestureEnabled
-        containerStyle={styles.sheetContainer}
-        {...props}
-      >
+      <ActionSheet ref={ref} containerStyle={styles.sheetContainer} {...props}>
         <Text style={styles.header}>{te('selectCryptoTitle')}</Text>
 
         {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
