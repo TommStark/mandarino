@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, FlatList, ListRenderItem } from 'react-native';
 import { Chip, Divider } from 'react-native-paper';
-import type { SortBy, SortDir } from '../../hooks/useMarketsInfinite';
 import CurrencySelectorChip from './CurrencySelectorChip';
-import color from '../../ui/token/colors';
+import color from '../../../ui/token/colors';
+import { SortBy, SortDir } from '../hooks/useMarketsInfinite';
 
 type Props = {
   sortBy: SortBy;

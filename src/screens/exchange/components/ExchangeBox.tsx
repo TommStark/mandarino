@@ -14,9 +14,9 @@ import {
   formatBTCEditable,
   formatReadOnly,
   formatReadOnlyCrypto,
-} from '../utils/format';
+} from '../../../utils/format';
 import { useFocusEffect } from '@react-navigation/native';
-import color from '../ui/token/colors';
+import color from '../../../ui/token/colors';
 
 type Props = {
   icon?: string;

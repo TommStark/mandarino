@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { useCoinsMarketsQuery } from '../../hooks/useCoinsMarketsQuery';
-import { CryptoCard } from '../CryptoCard';
-import { useUser } from '../../context/UserContext';
-import HttpErrorModal from '../Shared/HttpErrorModal';
-import { SkeletonCoinList } from '../Shared/SkeletonCoinRow';
-import color from '../../ui/token/colors';
+import { useCoinsMarketsQuery } from '../../exchange/hooks/useCoinsMarketsQuery';
+import { CryptoCard } from '../../../components/CryptoCard';
+import { useUser } from '../../../context/UserContext';
+import HttpErrorModal from '../../../components/Shared/HttpErrorModal';
+import { SkeletonCoinList } from '../../../components/Shared/SkeletonCoinRow';
+import color from '../../../ui/token/colors';
 
 export const HoldingsPreview = () => {
   const { data, isLoading, isError } = useCoinsMarketsQuery({

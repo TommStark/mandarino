@@ -9,13 +9,14 @@ import {
   ActivityIndicator,
   Dimensions,
 } from 'react-native';
-import { useCoinsMarketsQuery } from '../../hooks/useCoinsMarketsQuery';
-import { CryptoMarket } from '../../types/coingecko';
+
 import ActionSheet, {
   SheetProps,
   ActionSheetRef,
 } from 'react-native-actions-sheet';
-import color from '../../ui/token/colors';
+import { CryptoMarket } from '../../../types/coingecko';
+import { useCoinsMarketsQuery } from '../hooks/useCoinsMarketsQuery';
+import color from '../../../ui/token/colors';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 

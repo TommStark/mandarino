@@ -6,7 +6,7 @@ import {
   StyleSheet,
   GestureResponderEvent,
 } from 'react-native';
-import color from '../ui/token/colors';
+import color from '../../../ui/token/colors';
 
 type Props = {
   icon?: React.ReactNode;

@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
-import { CryptoCard } from '../../components/CryptoCard';
-import ListFooterLoading from '../../components/Shared/ListFooterLoading';
-import EmptyState from '../../components/Shared/EmptyState';
-import type { CryptoMarket } from '../../types/coingecko';
+import { CryptoMarket } from '../../../types/coingecko';
+import CryptoCard from '../../../components/CryptoCard';
+import ListFooterLoading from '../../../components/Shared/ListFooterLoading';
+import EmptyState from '../../../components/Shared/EmptyState';
 
 type Props = {
   items: CryptoMarket[];

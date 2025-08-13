@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { ActionButton } from '../ActionButton';
+import { ActionButton } from './ActionButton';
 import { Icon } from 'react-native-paper';
 import Sound from 'react-native-sound';
-import { isIOS } from '../../utils/openAppSettings';
-import color from '../../ui/token/colors';
+import { isIOS } from '../../../utils/openAppSettings';
+import color from '../../../ui/token/colors';
 
 Sound.setCategory(isIOS ? 'Ambient' : 'Playback', true);
 

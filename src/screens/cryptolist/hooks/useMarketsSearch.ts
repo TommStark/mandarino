@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { searchCoins, fetchCoinsMarketsByIds } from '../api/coingecko';
-import type { CryptoMarket } from '../types/coingecko';
-import useDebouncedValue from './useDebouncedValue';
 import type { SortBy, SortDir } from './useMarketsInfinite';
+import useDebouncedValue from '../../../hooks/useDebouncedValue';
+import { CryptoMarket } from '../../../types/coingecko';
+import { fetchCoinsMarketsByIds, searchCoins } from '../../../api/coingecko';
+import { QUERY_TIMINGS } from '../../../constants/http';
 
 function mapOrder(sortBy: SortBy, sortDir: SortDir) {
   if (sortBy === 'market_cap') {
@@ -48,7 +49,7 @@ export function useMarketsSearch({
         order,
       });
     },
-    staleTime: 60_000,
+    staleTime: QUERY_TIMINGS.markets.staleTime,
     refetchOnWindowFocus: false,
   });
 

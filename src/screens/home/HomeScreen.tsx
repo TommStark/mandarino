@@ -1,11 +1,11 @@
 import React from 'react';
-import { Header } from '../../components/Home/Header';
-import { BigBanner } from '../../components/Home/BigBanner';
-import { HoldingsPreview } from '../../components/Home/HoldingsPreview';
 import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
-import { ActionNav } from '../../components/Home/ActionNav';
 
 import { useUser } from '../../context/UserContext';
+import { Header } from './components/Header';
+import { BigBanner } from './components/BigBanner';
+import { ActionNav } from './components/ActionNav';
+import { HoldingsPreview } from './components/HoldingsPreview';
 
 export default function HomeScreen() {
   const { user } = useUser();

@@ -1,4 +1,3 @@
-// CryptoCard.tsx
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { CryptoMarket } from '../types/coingecko';

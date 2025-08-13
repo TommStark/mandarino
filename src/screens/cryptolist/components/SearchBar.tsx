@@ -1,7 +1,7 @@
 import React from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import color from '../../ui/token/colors';
+import color from '../../../ui/token/colors';
 
 type Props = {
   value: string;

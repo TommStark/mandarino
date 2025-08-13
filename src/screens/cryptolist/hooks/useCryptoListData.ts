@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useRef } from 'react';
+import { useMarketsSearch } from './useMarketsSearch';
 import {
   useMarketsInfinite,
   type SortBy,
   type SortDir,
 } from './useMarketsInfinite';
-import { useMarketsSearch } from './useMarketsSearch';
-import type { CryptoMarket } from '../types/coingecko';
+import { CryptoMarket } from '../../../types/coingecko';
 
 export type UseCryptoListDataParams = {
   vsCurrency: string;

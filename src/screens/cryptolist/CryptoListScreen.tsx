@@ -2,12 +2,12 @@ import React, { useState, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
 import HttpErrorModal from '../../components/Shared/HttpErrorModal';
-import SearchBar from '../../components/CryptoList/SearchBar';
-import SortControls from '../../components/CryptoList/SortControls';
-import ResultsList from '../../components/CryptoList/ResultsList';
+import SearchBar from './components//SearchBar';
+import SortControls from './components/SortControls';
+import ResultsList from './components/ResultsList';
 import { SkeletonCoinList } from '../../components/Shared/SkeletonCoinRow';
-import { useCryptoListData } from '../../hooks/useCryptoListData';
-import type { SortBy, SortDir } from '../../hooks/useMarketsInfinite';
+import { useCryptoListData } from './hooks/useCryptoListData';
+import type { SortBy, SortDir } from './hooks/useMarketsInfinite';
 import { CURRENCY_OPTIONS } from '../../constants/currencies';
 import { useFocusEffect } from '@react-navigation/native';
 

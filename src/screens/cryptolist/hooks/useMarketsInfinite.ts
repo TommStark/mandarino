@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchCoinsMarkets } from '../api/coingecko';
-import type { CryptoMarket } from '../types/coingecko';
+import { CryptoMarket } from '../../../types/coingecko';
+import { fetchCoinsMarkets } from '../../../api/coingecko';
+import { QUERY_TIMINGS } from '../../../constants/http';
 
 export type SortBy = 'market_cap' | 'price' | 'volume';
 export type SortDir = 'asc' | 'desc';
@@ -29,23 +30,24 @@ export function useMarketsInfinite({
   const query = useInfiniteQuery<CryptoMarket[], Error>({
     queryKey: ['markets', vsCurrency, perPage, order],
     initialPageParam: 1,
-    queryFn: ({ pageParam }) =>
-      fetchCoinsMarkets({
-        vs_currency: vsCurrency,
-        order,
-        per_page: perPage,
-        page: pageParam as number,
-      }),
+    queryFn: ({ pageParam, signal }) =>
+      fetchCoinsMarkets(
+        {
+          vs_currency: vsCurrency,
+          order,
+          per_page: perPage,
+          page: pageParam as number,
+        },
+        signal,
+      ),
     getNextPageParam: (lastPage, allPages) =>
       !lastPage || lastPage.length < perPage ? undefined : allPages.length + 1,
-    staleTime: 60_000,
-    gcTime: 10 * 60_000,
+    staleTime: QUERY_TIMINGS.markets.staleTime,
+    gcTime: QUERY_TIMINGS.markets.gcTime,
     refetchOnWindowFocus: false,
   });
 
   const items = useMemo(() => query.data?.pages.flat() ?? [], [query.data]);
-
-  const refetchFirstPage = () => query.refetch();
 
   return {
     items,
@@ -54,7 +56,7 @@ export function useMarketsInfinite({
     isFetchingNextPage: query.isFetchingNextPage,
     hasNextPage: !!query.hasNextPage,
     fetchNextPage: query.fetchNextPage,
-    refetchFirstPage,
+    refetchFirstPage: () => query.refetch({ throwOnError: false }),
     error: query.error ?? null,
   };
 }
