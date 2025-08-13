@@ -1,10 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import CryptoListScreen from '../screens/cryptolist/CryptoListScreen';
+import CryptoListScreen from '../features/cryptolist/CryptoListScreen';
 import MainTabsNavigator from './MainTabsNavigator';
-import { QRCodeScannerScreen } from '../screens/scan/QRCodeScannerScreen';
-import { QRResultScreen } from '../screens/scan/QRResultScreen';
-import ExchangeScreen from '../screens/exchange/ExchangeScreen';
+import { QRCodeScannerScreen } from '../features/scan/QRCodeScannerScreen';
+import { QRResultScreen } from '../features/scan/QRResultScreen';
+import ExchangeScreen from '../features/exchange/ExchangeScreen';
 
 export type RootStackParamList = {
   Login: undefined;

@@ -5,7 +5,7 @@ import { MD3LightTheme, PaperProvider } from 'react-native-paper';
 import { UserProvider } from './context/UserContext';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import RNBootSplash from 'react-native-bootsplash';
-import { MicroSplash } from './screens/splash/MicroSplash';
+import { MicroSplash } from './features/splash/MicroSplash';
 import { AuthProvider } from './context/AuthContext';
 import RootNavigator from './navigation/RootNavigator';
 import Config from 'react-native-config';
