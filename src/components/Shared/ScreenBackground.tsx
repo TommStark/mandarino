@@ -4,13 +4,16 @@ import { BlurView } from '@react-native-community/blur';
 import LinearGradient from 'react-native-linear-gradient';
 import { isIOS } from '../../utils/openAppSettings';
 
-export const ScreenBackground = () => {
+type Props = {
+  blurAmount?: number;
+};
+
+export const ScreenBackground = ({ blurAmount = 4 }: Props) => {
   const blurProps = isIOS
     ? { blurType: 'light' as const, blurAmount: 24 }
     : {
         blurType: 'light' as const,
-        blurAmount: 6,
-        overlayColor: 'rgba(255,255,255,0.06)',
+        blurAmount: blurAmount,
       };
 
   return (

@@ -195,7 +195,7 @@ export const ExchangeScreen = () => {
   }, [exchangeRate, direction, selectedCoin.symbol, selectedFiat.code]);
 
   return (
-    <ScreenWrapper title="Exchange">
+    <ScreenWrapper title="Exchange" blurAmount={25}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={isIOS ? 'padding' : undefined}
