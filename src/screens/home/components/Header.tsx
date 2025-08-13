@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { IconButton, Portal, Dialog, Button } from 'react-native-paper';
 import { useAuth } from '../../../context/AuthContext';
 import color from '../../../ui/token/colors';
+import { styles } from './Header.styles';
+import { th } from '../i18n/t';
 
-type Props = {
-  username: string;
-};
+type Props = { username: string };
 
 export const Header = ({ username }: Props) => {
   const { signOut, loading } = useAuth();
@@ -27,10 +27,8 @@ export const Header = ({ username }: Props) => {
     <>
       <View style={styles.container}>
         <View>
-          <Text style={styles.title}>Mandarino</Text>
-          <Text style={styles.subtitle}>
-            Buenos dias, <Text style={styles.name}>{username}</Text>
-          </Text>
+          <Text style={styles.title}>{th('brand')}</Text>
+          <Text style={styles.subtitle}>{th('greeting', { username })}</Text>
         </View>
 
         <View style={styles.icons}>
@@ -47,14 +45,14 @@ export const Header = ({ username }: Props) => {
 
       <Portal>
         <Dialog visible={visible} onDismiss={closeDialog}>
-          <Dialog.Title>Cerrar sesión</Dialog.Title>
+          <Dialog.Title>{th('logout.title')}</Dialog.Title>
           <Dialog.Content>
-            <Text>¿Querés cerrar la sesión de {username}?</Text>
+            <Text>{th('logout.message', { username })}</Text>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={closeDialog}>Cancelar</Button>
+            <Button onPress={closeDialog}>{th('logout.cancel')}</Button>
             <Button onPress={handleConfirmLogout} loading={loading}>
-              Cerrar sesión
+              {th('logout.confirm')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -62,35 +60,3 @@ export const Header = ({ username }: Props) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    paddingBottom: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  title: {
-    color: color.brand,
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: color.brandBorder,
-    marginTop: 2,
-  },
-  icons: {
-    flexDirection: 'row',
-    gap: 16,
-    alignItems: 'center',
-  },
-  icon: {
-    marginRight: 12,
-  },
-  name: {
-    fontWeight: 'bold',
-  },
-});
