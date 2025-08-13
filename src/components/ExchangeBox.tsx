@@ -90,7 +90,7 @@ export const ExchangeBox: React.FC<Props> = ({
 
   return (
     <View style={styles.row}>
-      <Pressable onPress={onPress} style={styles.currencyLabel} hitSlop={8}>
+      <Pressable onPress={onPress} style={styles.currencyLabel} hitSlop={18}>
         {icon ? (
           isUrl ? (
             <Image source={{ uri: icon }} style={styles.iconImg} />

@@ -1,4 +1,4 @@
-export const DEBUG_AUTH = false;
+export const DEBUG_AUTH = true;
 
 function ts() {
   const d = new Date();

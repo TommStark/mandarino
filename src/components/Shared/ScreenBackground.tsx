@@ -1,35 +1,44 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import LinearGradient from 'react-native-linear-gradient';
+import { isIOS } from '../../utils/openAppSettings';
 
-export const ScreenBackground = () => (
-  <View style={styles.container}>
-    <LinearGradient
-      colors={['#FFF3EA', '#FFFFFF']}
-      style={StyleSheet.absoluteFill}
-      start={{ x: 0.1, y: 0.2 }}
-      end={{ x: 1, y: 1 }}
-      locations={[0, 1]}
-    />
-    <View style={styles.blob1} />
-    <View style={styles.blob2} />
-    <View style={styles.blob3} />
+export const ScreenBackground = () => {
+  const blurProps = isIOS
+    ? { blurType: 'light' as const, blurAmount: 24 }
+    : {
+        blurType: 'light' as const,
+        blurAmount: 24,
+        overlayColor: 'rgba(255,255,255,0.06)',
+      };
 
-    <BlurView
-      style={StyleSheet.absoluteFill}
-      blurType="light"
-      blurAmount={28}
-      reducedTransparencyFallbackColor="#b6640dff"
-    />
-  </View>
-);
+  return (
+    <View pointerEvents="none" style={styles.container}>
+      <LinearGradient
+        colors={['#FFF3EA', '#FFFFFF']}
+        style={StyleSheet.absoluteFillObject}
+        start={{ x: 0.1, y: 0.2 }}
+        end={{ x: 1, y: 1 }}
+        locations={[0, 1]}
+      />
+      <View style={styles.blob1} />
+      <View style={styles.blob2} />
+      <View style={styles.blob3} />
+
+      <BlurView
+        {...blurProps}
+        style={StyleSheet.absoluteFillObject}
+        reducedTransparencyFallbackColor="#FFF7F0"
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    zIndex: -1,
-    overflow: 'hidden',
+    overflow: 'hidden', // OK en iOS y Android
   },
   blob1: {
     position: 'absolute',
