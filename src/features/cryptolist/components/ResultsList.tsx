@@ -17,6 +17,7 @@ type Props = {
   onMomentumBegin: () => void;
   showSkeleton: boolean;
   SkeletonComponent: React.ReactElement | null;
+  listKey: string;
 };
 
 function ResultsListImpl({
@@ -28,13 +29,15 @@ function ResultsListImpl({
   onMomentumBegin,
   showSkeleton,
   SkeletonComponent,
+  listKey,
 }: Props) {
   if (showSkeleton) return SkeletonComponent;
 
   return (
     <FlatList
+      key={listKey}
       data={items}
-      keyExtractor={it => it.id}
+      keyExtractor={item => `${item.id}-${item.symbol}`}
       renderItem={({ item }) => <CryptoCard coin={item} />}
       onEndReached={onLoadMore}
       onEndReachedThreshold={0.5}

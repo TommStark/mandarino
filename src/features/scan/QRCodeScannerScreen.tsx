@@ -20,10 +20,12 @@ import { useQRScanner } from './hooks/useQRScanner.ts';
 import color from '../../ui/token/colors.ts';
 import { styles } from './QRCodeScannerScreen.styles';
 import { te } from './i18n/te.ts';
+import { useUser } from '../../context/UserContext';
 
 export const QRCodeScannerScreen = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const { addWallet } = useUser();
 
   const [active, setActive] = useState(false);
   const [focusCount, setFocusCount] = useState(0);
@@ -48,13 +50,15 @@ export const QRCodeScannerScreen = () => {
       setScanned(true);
       Vibration.vibrate(80);
 
+      addWallet(addr);
+
       setTimeout(() => {
         navigation.dispatch(
           StackActions.replace('QRResultScreen', { address: addr }),
         );
       }, 60);
     },
-    [navigation],
+    [navigation, addWallet],
   );
 
   const onCodeScanned = (value: string) => {

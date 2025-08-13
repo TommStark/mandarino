@@ -13,11 +13,18 @@ export const fetchCoinsMarkets = async (
     page: number;
     per_page: number;
     order: MarketsOrder | string;
+    category?: string | null;
   },
   signal?: AbortSignal,
 ): Promise<CryptoMarket[]> => {
+  const { category, ...rest } = params;
   const { data } = await cg.get<CryptoMarket[]>('/coins/markets', {
-    params: { ...params, sparkline: false, price_change_percentage: '24h' },
+    params: {
+      ...rest,
+      ...(category ? { category } : {}),
+      sparkline: false,
+      price_change_percentage: '24h',
+    },
     signal,
   });
   return data;

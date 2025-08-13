@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, Pressable } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { useScannedWallets } from './hooks/useScannedWallets';
 import { RootStackParamList } from '../../navigation';
 import { styles } from './QRResultScreen.styles.ts';
 import { te } from './i18n/te.ts';
+import { useUser } from '../../context/UserContext';
 
 type QRResultRouteProp = RouteProp<RootStackParamList, 'QRResultScreen'>;
 
@@ -19,7 +19,7 @@ export const QRResultScreen = () => {
     >();
 
   const { address } = route.params;
-  const { addWallet, isFavorite, toggleFavorite } = useScannedWallets();
+  const { addWallet, isFavorite, toggleFavorite } = useUser();
   const [type, setType] = useState<'ETH' | 'BTC' | 'UNKNOWN'>('UNKNOWN');
 
   useEffect(() => {
