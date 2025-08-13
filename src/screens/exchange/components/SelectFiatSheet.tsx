@@ -2,22 +2,22 @@ import React, { forwardRef, useMemo } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   Pressable,
   FlatList,
   ActivityIndicator,
-  Dimensions,
 } from 'react-native';
 import ActionSheet, {
   ActionSheetRef,
   SheetProps,
 } from 'react-native-actions-sheet';
-import { getCurrencyName } from '../../../utils/fiat';
-import { getFiatFlag, isFiatCountry } from '../../../utils/fiat';
+import {
+  getCurrencyName,
+  getFiatFlag,
+  isFiatCountry,
+} from '../../../utils/fiat';
 import { useSupportedFiatCurrencies } from '../hooks/useSupportedFiatCurrencies';
-import color from '../../../ui/token/colors';
-
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+import { styles } from './SelectFiatSheet.styles';
+import { te } from '../i18n/te';
 
 interface Props extends SheetProps {
   onSelect: (fiat: { code: string; name: string; flag: string }) => void;
@@ -49,15 +49,13 @@ const SelectFiatSheet = forwardRef<ActionSheetRef, Props>(
         containerStyle={styles.sheetContainer}
         {...props}
       >
-        <Text style={styles.header}>Seleccionar moneda</Text>
+        <Text style={styles.header}>{te('selectFiatTitle')}</Text>
 
-        {isLoading && <ActivityIndicator style={{ marginTop: 16 }} />}
+        {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
 
         {!isLoading && rows.length === 0 && (
-          <View style={{ paddingVertical: 16 }}>
-            <Text style={{ textAlign: 'center', color: color.grayTrackOff }}>
-              No hay monedas disponibles
-            </Text>
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>{te('emptyFiatList')}</Text>
           </View>
         )}
 
@@ -81,47 +79,5 @@ const SelectFiatSheet = forwardRef<ActionSheetRef, Props>(
     );
   },
 );
-
-const styles = StyleSheet.create({
-  sheetContainer: {
-    maxHeight: SCREEN_HEIGHT * 0.6,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 24,
-  },
-  header: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  item: {
-    paddingVertical: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  left: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  flag: {
-    fontSize: 24,
-    marginRight: 8,
-  },
-  name: {
-    fontSize: 16,
-  },
-  code: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  listContent: {
-    paddingBottom: 44,
-  },
-});
 
 export default SelectFiatSheet;

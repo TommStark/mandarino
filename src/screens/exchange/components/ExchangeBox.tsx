@@ -1,13 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  Image,
-  Animated,
-  Easing,
-} from 'react-native';
+import { View, Text, Pressable, Image, Animated, Easing } from 'react-native';
 import { Icon, TextInput } from 'react-native-paper';
 import {
   sanitize,
@@ -17,6 +10,8 @@ import {
 } from '../../../utils/format';
 import { useFocusEffect } from '@react-navigation/native';
 import color from '../../../ui/token/colors';
+import { styles } from './ExchangeBox.styles';
+import { te } from '../i18n/te';
 
 type Props = {
   icon?: string;
@@ -40,7 +35,6 @@ export const ExchangeBox: React.FC<Props> = ({
   placeholder,
 }) => {
   const [display, setDisplay] = React.useState('');
-
   const SCALE_FOCUSED = 1.18;
   const scale = React.useRef(new Animated.Value(1)).current;
   const handleBlur = () => animateTo(1);
@@ -67,7 +61,7 @@ export const ExchangeBox: React.FC<Props> = ({
           : formatReadOnlyCrypto(value, decimalsReadonly),
       );
     }
-  }, [value, editable, isFiat]); // eslint-disable-line
+  }, [value, editable, isFiat]);
 
   useFocusEffect(
     useCallback(() => {
@@ -77,8 +71,8 @@ export const ExchangeBox: React.FC<Props> = ({
     }, []),
   );
 
-  const handleChange = (t: string) => {
-    const sanitized = sanitize(t);
+  const handleChange = (tText: string) => {
+    const sanitized = sanitize(tText);
     const nextDisplay = formatBTCEditable(sanitized, maxDecimalsEditable);
     setDisplay(nextDisplay);
     onChange?.(sanitized);
@@ -86,6 +80,8 @@ export const ExchangeBox: React.FC<Props> = ({
 
   const code = (symbol ?? '').toUpperCase();
   const isUrl = !!icon && /^https?:\/\//.test(icon);
+  const placeholderKey = isFiat ? 'placeholderFiat' : 'placeholderCrypto';
+  const placeholderText = placeholder ?? te(placeholderKey);
 
   return (
     <View style={styles.row}>
@@ -111,10 +107,7 @@ export const ExchangeBox: React.FC<Props> = ({
           editable={editable}
           mode="flat"
           keyboardType="decimal-pad"
-          placeholder={
-            placeholder ??
-            (editable ? (isFiat ? '0,00' : '0,0') : isFiat ? '0,00' : '0,0')
-          }
+          placeholder={placeholderText}
           style={styles.input}
           underlineColor="transparent"
           selectionColor={color.transparent6}
@@ -128,45 +121,5 @@ export const ExchangeBox: React.FC<Props> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  currencyLabel: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    minWidth: 72,
-  },
-  emoji: {
-    fontSize: 18,
-  },
-  iconImg: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-  },
-  acronym: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: color.black,
-    letterSpacing: 0.25,
-  },
-  inputWrapper: {
-    flex: 1,
-  },
-  input: {
-    flex: 1,
-    backgroundColor: 'transparent',
-    fontSize: 28,
-    lineHeight: 34,
-    paddingVertical: 6,
-    paddingHorizontal: 0,
-    textAlign: 'right',
-  },
-});
 
 export default ExchangeBox;

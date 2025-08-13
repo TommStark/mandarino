@@ -2,23 +2,19 @@ import React, { forwardRef } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   FlatList,
   Image,
   Pressable,
   ActivityIndicator,
-  Dimensions,
 } from 'react-native';
-
 import ActionSheet, {
   SheetProps,
   ActionSheetRef,
 } from 'react-native-actions-sheet';
 import { CryptoMarket } from '../../../types/coingecko';
 import { useCoinsMarketsQuery } from '../hooks/useCoinsMarketsQuery';
-import color from '../../../ui/token/colors';
-
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+import { styles } from './SelectCryptoSheet.styles';
+import { t } from '../../../i18n/t';
 
 type Props = SheetProps & {
   onSelect: (coin: CryptoMarket) => void;
@@ -44,9 +40,9 @@ const SelectCryptoSheet = forwardRef<ActionSheetRef, Props>(
         containerStyle={styles.sheetContainer}
         {...props}
       >
-        <Text style={styles.header}>Seleccionar criptomoneda</Text>
+        <Text style={styles.header}>{t('selectCryptoTitle')}</Text>
 
-        {isLoading && <ActivityIndicator style={{ marginTop: 16 }} />}
+        {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
 
         {data && (
           <FlatList
@@ -78,55 +74,5 @@ const SelectCryptoSheet = forwardRef<ActionSheetRef, Props>(
     );
   },
 );
-
-const styles = StyleSheet.create({
-  sheetContainer: {
-    maxHeight: SCREEN_HEIGHT * 0.6,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 24,
-  },
-  header: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-
-  listContent: {
-    paddingBottom: 44,
-  },
-  item: {
-    paddingVertical: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  left: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  icon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    marginRight: 8,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  symbol: {
-    fontSize: 12,
-    color: color.grayTrackOff,
-  },
-  price: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-});
 
 export default SelectCryptoSheet;
