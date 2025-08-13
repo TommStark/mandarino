@@ -13,6 +13,7 @@ export type UseCryptoListDataParams = {
   sortBy: SortBy;
   sortDir: SortDir;
   perPage?: number;
+  category?: string | null;
 };
 
 export function useCryptoListData({
@@ -21,6 +22,7 @@ export function useCryptoListData({
   sortBy,
   sortDir,
   perPage = 20,
+  category = null,
 }: UseCryptoListDataParams) {
   const isSearching = search.trim().length > 0;
 
@@ -29,7 +31,9 @@ export function useCryptoListData({
     perPage,
     sortBy,
     sortDir,
+    category,
   });
+
   const searchQuery = useMarketsSearch({
     vsCurrency,
     q: search,
@@ -38,10 +42,16 @@ export function useCryptoListData({
     sortDir,
   });
 
-  const items = useMemo<CryptoMarket[]>(
-    () => (isSearching ? searchQuery.items : infiniteQuery.items) ?? [],
-    [isSearching, searchQuery.items, infiniteQuery.items],
-  );
+  const items = useMemo<CryptoMarket[]>(() => {
+    const arr = (isSearching ? searchQuery.items : infiniteQuery.items) ?? [];
+    const seen = new Set<string>();
+    return arr.filter(it => {
+      const key = String(it.id);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [isSearching, searchQuery.items, infiniteQuery.items]);
 
   const isLoading = isSearching
     ? searchQuery.isLoading

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Pressable, Alert } from 'react-native';
-import { useScannedWallets, Wallet } from '../scan/hooks/useScannedWallets';
+import type { Wallet } from '../scan/hooks/useScannedWallets';
 import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { EmptyList } from '../../assets/svg';
@@ -8,9 +8,10 @@ import { Icon, Switch } from 'react-native-paper';
 import color from '../../ui/token/colors';
 import { styles } from './WalletHistoryScreen.styles';
 import { te } from './i18n/te';
+import { useUser } from '../../context/UserContext';
 
 export const WalletHistoryScreen = () => {
-  const { wallets, toggleFavorite, removeWallet } = useScannedWallets();
+  const { wallets, toggleFavorite, removeWallet } = useUser();
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
 
   const handleCopy = (address: string) => {

@@ -38,9 +38,9 @@ export function useMarketsSearch({
       const trimmedQuery = debouncedQuery.trim();
       if (!trimmedQuery) return [];
       const searchResponse = await searchCoins(trimmedQuery);
-      const coinIds = (searchResponse?.coins ?? [])
-        .map(coin => coin.id)
-        .slice(0, Math.min(limit, 100));
+      const coinIds = Array.from(
+        new Set((searchResponse?.coins ?? []).map(c => c.id)),
+      ).slice(0, Math.min(limit, 100));
       if (!coinIds.length) return [];
       return await fetchCoinsMarketsByIds({
         vs_currency: vsCurrency,

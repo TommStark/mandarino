@@ -5,7 +5,8 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
   sheetContainer: {
-    maxHeight: SCREEN_HEIGHT * 0.6,
+    height: SCREEN_HEIGHT * 0.6,
+    maxHeight: '85%',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingHorizontal: 16,

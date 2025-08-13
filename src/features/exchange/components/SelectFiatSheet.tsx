@@ -43,12 +43,7 @@ const SelectFiatSheet = forwardRef<ActionSheetRef, Props>(
     }, [fiatCodes]);
 
     return (
-      <ActionSheet
-        ref={ref}
-        gestureEnabled
-        containerStyle={styles.sheetContainer}
-        {...props}
-      >
+      <ActionSheet ref={ref} containerStyle={styles.sheetContainer} {...props}>
         <Text style={styles.header}>{te('selectFiatTitle')}</Text>
 
         {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
