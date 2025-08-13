@@ -4,6 +4,7 @@ import { CryptoMarket } from '../../../types/coingecko';
 import CryptoCard from '../../../components/CryptoCard/CryptoCard';
 import ListFooterLoading from '../../../components/Shared/ListFooterLoading';
 import EmptyState from '../../../components/Shared/EmptyState';
+import { styles } from './ResultsList.styles';
 
 type Props = {
   items: CryptoMarket[];
@@ -29,8 +30,6 @@ function ResultsListImpl({
 }: Props) {
   if (showSkeleton) return SkeletonComponent;
 
-  const contentContainerStyle = { paddingBottom: 180 };
-
   return (
     <FlatList
       data={items}
@@ -47,7 +46,7 @@ function ResultsListImpl({
           progressViewOffset={64}
         />
       }
-      contentContainerStyle={contentContainerStyle}
+      contentContainerStyle={styles.content}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
       initialNumToRender={12}
@@ -59,4 +58,5 @@ function ResultsListImpl({
     />
   );
 }
+
 export default memo(ResultsListImpl);

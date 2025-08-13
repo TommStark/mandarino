@@ -6,6 +6,7 @@ import ScanES from '../screens/scan/locales/es.json';
 import loginES from '../screens/login/locales/es.json';
 import splashES from '../screens/splash/locales/es.json';
 import walletES from '../screens/wallet/locales/es.json';
+import cryptolistES from '../screens/cryptolist/locales/es.json';
 
 i18n.use(initReactI18next).init({
   lng: 'es',
@@ -17,9 +18,10 @@ i18n.use(initReactI18next).init({
       login: loginES,
       splash: splashES,
       wallet: walletES,
+      cryptolist: cryptolistES,
     },
   },
-  ns: ['common', 'exchange', 'scan', 'login', 'splash', 'wallet'],
+  ns: ['common', 'exchange', 'scan', 'login', 'splash', 'wallet', 'cryptolist'],
   defaultNS: 'common',
   interpolation: { escapeValue: false },
   returnNull: false,

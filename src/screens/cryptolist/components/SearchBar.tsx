@@ -1,22 +1,22 @@
 import React from 'react';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import color from '../../../ui/token/colors';
+import { styles } from './SearchBar.styles';
+import { te } from '../i18n/te';
 
 type Props = {
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
 };
-export default function SearchBar({
-  value,
-  onChange,
-  placeholder = 'Buscar nombre',
-}: Props) {
+
+export default function SearchBar({ value, onChange, placeholder }: Props) {
+  const ph = placeholder ?? te('search.placeholder');
+
   return (
     <View style={styles.wrapper}>
       <TextInput
-        placeholder={placeholder}
+        placeholder={ph}
         value={value}
         onChangeText={onChange}
         autoCapitalize="none"
@@ -34,11 +34,3 @@ export default function SearchBar({
     </View>
   );
 }
-const styles = StyleSheet.create({
-  wrapper: { paddingHorizontal: 16, paddingTop: 8 },
-  input: {
-    backgroundColor: color.brandSoftBg2,
-    borderColor: color.brandBorder,
-    borderWidth: 1,
-  },
-});
