@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchExchangeRate } from '../api/coingecko';
+import { fetchExchangeRate } from '../../../api/coingecko';
 
 export const useExchangeRate = (from: string, to: string) => {
   return useQuery({

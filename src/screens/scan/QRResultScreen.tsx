@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button, Pressable } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { useScannedWallets } from '../../hooks/useScannedWallets';
+import { useScannedWallets } from './hooks/useScannedWallets';
 import { RootStackParamList } from '../../navigation/index';
 import color from '../../ui/token/colors';
 

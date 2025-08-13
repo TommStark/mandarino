@@ -18,7 +18,7 @@ import {
 
 import { Icon } from 'react-native-paper';
 import { openAppSettings } from '../../utils/openAppSettings';
-import { useQRScanner } from '../../hooks/useQRScanner.ts';
+import { useQRScanner } from './hooks/useQRScanner.ts';
 import color from '../../ui/token/colors.ts';
 
 export const QRCodeScannerScreen = () => {

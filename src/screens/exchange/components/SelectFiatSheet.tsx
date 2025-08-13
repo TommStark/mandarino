@@ -12,10 +12,10 @@ import ActionSheet, {
   ActionSheetRef,
   SheetProps,
 } from 'react-native-actions-sheet';
-import { useSupportedFiatCurrencies } from '../../hooks/useSupportedFiatCurrencies';
-import { getCurrencyName } from '../../utils/fiat';
-import { getFiatFlag, isFiatCountry } from '../../utils/fiat';
-import color from '../../ui/token/colors';
+import { getCurrencyName } from '../../../utils/fiat';
+import { getFiatFlag, isFiatCountry } from '../../../utils/fiat';
+import { useSupportedFiatCurrencies } from '../hooks/useSupportedFiatCurrencies';
+import color from '../../../ui/token/colors';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 

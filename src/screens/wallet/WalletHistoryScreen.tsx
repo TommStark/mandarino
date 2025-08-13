@@ -7,7 +7,7 @@ import {
   Pressable,
   Alert,
 } from 'react-native';
-import { useScannedWallets } from '../../hooks/useScannedWallets';
+import { useScannedWallets, Wallet } from '../scan/hooks/useScannedWallets';
 import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { EmptyList } from '../../assets/svg';
@@ -27,7 +27,7 @@ export const WalletHistoryScreen = () => {
     ? wallets.filter(w => w.favorite)
     : wallets;
 
-  const renderItem = ({ item }: any) => {
+  const renderItem = ({ item }: { item: Wallet }) => {
     const date = new Date(item.scannedAt).toLocaleString();
 
     const handleDelete = (address: string) => {

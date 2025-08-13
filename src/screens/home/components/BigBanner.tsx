@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-paper';
-import { useUser } from '../../context/UserContext';
-import color from '../../ui/token/colors';
+import { useUser } from '../../../context/UserContext';
+import color from '../../../ui/token/colors';
 
 type Props = {
   balance: number;

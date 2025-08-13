@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useState } from 'react';
 
-type Wallet = {
+export type Wallet = {
   address: string;
   favorite: boolean;
   scannedAt: number;

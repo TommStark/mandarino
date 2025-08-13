@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchCoinsMarkets } from '../api/coingecko';
-import type { CryptoMarket } from '../types/coingecko';
+import { AxiosError } from 'axios';
+import { fetchCoinsMarkets } from '../../../api/coingecko';
+import type { CryptoMarket } from '../../../types/coingecko';
+import { HTTP_STATUS, QUERY_TIMINGS } from '../../../constants/http';
 
 type Params = {
   vs_currency: string;
@@ -16,7 +18,7 @@ type Params = {
 };
 
 export function useCoinsMarketsQuery(params: Params) {
-  return useQuery<CryptoMarket[], Error>({
+  return useQuery<CryptoMarket[], AxiosError>({
     queryKey: ['coins-markets', params],
     queryFn: () =>
       fetchCoinsMarkets({
@@ -25,11 +27,16 @@ export function useCoinsMarketsQuery(params: Params) {
         per_page: Math.min(params.per_page, 250),
         order: params.order,
       }),
-    staleTime: 60_000,
+    staleTime: QUERY_TIMINGS.markets.staleTime,
     refetchOnWindowFocus: false,
-    retry: (count, error: any) => {
-      const status = error?.response?.status;
-      if (status === 401 || status === 403) return false;
+    retry: (count, error) => {
+      const status = error.response?.status;
+      if (
+        status === HTTP_STATUS.UNAUTHORIZED ||
+        status === HTTP_STATUS.FORBIDDEN
+      ) {
+        return false;
+      }
       return count < 2;
     },
   });

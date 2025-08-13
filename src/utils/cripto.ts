@@ -1,7 +1,7 @@
 export const truncate = (txt: string, max = 18) =>
   !txt ? '' : txt.length > max ? `${txt.slice(0, max - 1)}…` : txt;
 
-export const isNum = (v: any): v is number =>
+export const isNum = (v: number | null | undefined): v is number =>
   typeof v === 'number' && isFinite(v);
 
 export const formatPrice = (v: number | null | undefined) => {

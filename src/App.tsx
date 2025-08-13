@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MD3LightTheme, PaperProvider } from 'react-native-paper';
 import { UserProvider } from './context/UserContext';
 import Ionicons from '@react-native-vector-icons/ionicons';
@@ -12,8 +11,9 @@ import RootNavigator from './navigation/RootNavigator';
 import Config from 'react-native-config';
 import { isIOS } from './utils/openAppSettings';
 import color from './ui/token/colors';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './lib/queryClient';
 
-const queryClient = new QueryClient();
 const WEB_CLIENT_ID = Config.WEB_CLIENT_ID;
 const IOS_CLIENT_ID = Config.IOS_CLIENT_ID;
 

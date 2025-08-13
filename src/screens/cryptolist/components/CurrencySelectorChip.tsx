@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Chip, Menu, Divider, Text } from 'react-native-paper';
-import { getCurrencyName, getFlag } from '../../utils/fiat';
-import { CURRENCY_OPTIONS } from '../../constants/currencies';
-import color from '../../ui/token/colors';
+import { CURRENCY_OPTIONS } from '../../../constants/currencies';
+import { getCurrencyName, getFlag } from '../../../utils/fiat';
+import color from '../../../ui/token/colors';
 
 type Props = {
   value: string;

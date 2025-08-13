@@ -17,6 +17,11 @@ export type GoogleConfig = {
   forceCodeForRefreshToken?: boolean;
 };
 
+// type guard para errores del GoogleSignin
+type GSignInError = { code?: string; message?: string };
+const isGSignInError = (e: unknown): e is GSignInError =>
+  typeof e === 'object' && e !== null && ('code' in e || 'message' in e);
+
 export function useGoogleSignIn(config: GoogleConfig) {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -54,7 +59,7 @@ export function useGoogleSignIn(config: GoogleConfig) {
           current?.user?.email,
         );
         return current;
-      } catch (e) {
+      } catch (e: unknown) {
         logErrorAuth('getCurrentUser()', e);
         return null;
       }
@@ -85,14 +90,13 @@ export function useGoogleSignIn(config: GoogleConfig) {
           hasServerAuthCode: !!data?.serverAuthCode,
         });
 
-        // opcional: tokens (para depurar audience issues)
         try {
           const tokens = await GoogleSignin.getTokens();
           logAuth('getTokens()', {
             hasIdToken: !!tokens?.idToken,
             hasAccessToken: !!tokens?.accessToken,
           });
-        } catch (tokErr) {
+        } catch (tokErr: unknown) {
           logErrorAuth('getTokens()', tokErr);
         }
 
@@ -102,17 +106,19 @@ export function useGoogleSignIn(config: GoogleConfig) {
         logAuth('signIn(): cancelled');
         return null;
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       logErrorAuth('signIn()', e);
 
       let msg = 'No se pudo iniciar sesión.';
-      if (e?.code === statusCodes.IN_PROGRESS)
-        msg = 'Ya hay un login en curso.';
-      if (e?.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE)
-        msg = 'Play Services no disponible.';
-      if (e?.message?.includes('invalid_audience')) {
-        msg =
-          'Config de Google inválida (invalid_audience). Revisá webClientId/iosClientId.';
+      if (isGSignInError(e)) {
+        if (e.code === statusCodes.IN_PROGRESS)
+          msg = 'Ya hay un login en curso.';
+        if (e.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE)
+          msg = 'Play Services no disponible.';
+        if (e.message?.includes('invalid_audience')) {
+          msg =
+            'Config de Google inválida (invalid_audience). Revisá webClientId/iosClientId.';
+        }
       }
       setError(msg);
       return null;
@@ -129,7 +135,7 @@ export function useGoogleSignIn(config: GoogleConfig) {
     try {
       await GoogleSignin.signOut();
       logAuth('signOut(): done');
-    } catch (e) {
+    } catch (e: unknown) {
       logErrorAuth('signOut()', e);
     } finally {
       setLoading(false);
@@ -144,7 +150,7 @@ export function useGoogleSignIn(config: GoogleConfig) {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       logAuth('revokeAccess(): done');
-    } catch (e) {
+    } catch (e: unknown) {
       logErrorAuth('revokeAccess()', e);
     } finally {
       setLoading(false);

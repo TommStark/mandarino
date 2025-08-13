@@ -13,17 +13,18 @@ import {
   Text,
 } from 'react-native';
 import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
-import { useExchangeRate } from '../../hooks/useExchangeRate';
+import { useExchangeRate } from './hooks/useExchangeRate';
 import { CryptoMarket } from '../../types/coingecko';
 import { ActionSheetRef } from 'react-native-actions-sheet';
-import SelectCryptoSheet from '../../components/exchange/SelectCryptoSheet';
-import SelectFiatSheet from '../../components/exchange/SelectFiatSheet';
+
 import { getCurrencyName, getFlag } from '../../utils/fiat';
-import { ExchangeBox } from '../../components/ExchangeBox';
+import { ExchangeBox } from './components/ExchangeBox';
 import { useFocusEffect } from '@react-navigation/native';
 import { Icon } from 'react-native-paper';
 import { isIOS } from '../../utils/openAppSettings';
 import color from '../../ui/token/colors';
+import SelectFiatSheet from './components/SelectFiatSheet';
+import SelectCryptoSheet from './components/SelectCryptoSheet';
 
 type Direction = 'cryptoToFiat' | 'fiatToCrypto';
 

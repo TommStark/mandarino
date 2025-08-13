@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { IconButton, Portal, Dialog, Button } from 'react-native-paper';
-import { useAuth } from '../../context/AuthContext';
-import color from '../../ui/token/colors';
+import { useAuth } from '../../../context/AuthContext';
+import color from '../../../ui/token/colors';
 
 type Props = {
   username: string;
