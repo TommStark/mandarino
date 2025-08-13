@@ -15,6 +15,7 @@ import ActionSheet, {
 import { useSupportedFiatCurrencies } from '../../hooks/useSupportedFiatCurrencies';
 import { getCurrencyName } from '../../utils/fiat';
 import { getFiatFlag, isFiatCountry } from '../../utils/fiat';
+import color from '../../ui/token/colors';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -54,7 +55,7 @@ const SelectFiatSheet = forwardRef<ActionSheetRef, Props>(
 
         {!isLoading && rows.length === 0 && (
           <View style={{ paddingVertical: 16 }}>
-            <Text style={{ textAlign: 'center', color: '#777' }}>
+            <Text style={{ textAlign: 'center', color: color.grayTrackOff }}>
               No hay monedas disponibles
             </Text>
           </View>

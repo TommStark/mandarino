@@ -1,6 +1,7 @@
 import React from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import color from '../../ui/token/colors';
 
 type Props = {
   value: string;
@@ -36,8 +37,8 @@ export default function SearchBar({
 const styles = StyleSheet.create({
   wrapper: { paddingHorizontal: 16, paddingTop: 8 },
   input: {
-    backgroundColor: '#FFF3EA',
-    borderColor: '#B95C00',
+    backgroundColor: color.brandSoftBg2,
+    borderColor: color.brandBorder,
     borderWidth: 1,
   },
 });

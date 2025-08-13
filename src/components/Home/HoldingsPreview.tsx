@@ -5,6 +5,7 @@ import { CryptoCard } from '../CryptoCard';
 import { useUser } from '../../context/UserContext';
 import HttpErrorModal from '../Shared/HttpErrorModal';
 import { SkeletonCoinList } from '../Shared/SkeletonCoinRow';
+import color from '../../ui/token/colors';
 
 export const HoldingsPreview = () => {
   const { data, isLoading, isError } = useCoinsMarketsQuery({
@@ -70,11 +71,11 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: '600',
     fontSize: 16,
-    color: '#111',
+    color: color.black,
   },
   viewAll: {
     fontSize: 14,
-    color: '#FF6600',
+    color: color.brand,
   },
   separator: {
     height: 4,

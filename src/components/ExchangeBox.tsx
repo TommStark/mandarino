@@ -16,6 +16,7 @@ import {
   formatReadOnlyCrypto,
 } from '../utils/format';
 import { useFocusEffect } from '@react-navigation/native';
+import color from '../ui/token/colors';
 
 type Props = {
   icon?: string;
@@ -66,15 +67,13 @@ export const ExchangeBox: React.FC<Props> = ({
           : formatReadOnlyCrypto(value, decimalsReadonly),
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, editable, isFiat]);
+  }, [value, editable, isFiat]); // eslint-disable-line
 
   useFocusEffect(
     useCallback(() => {
       return () => {
         handleBlur();
       };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
 
@@ -101,7 +100,7 @@ export const ExchangeBox: React.FC<Props> = ({
           <Text style={styles.emoji}>🏳️</Text>
         )}
         <Text style={styles.acronym}>{code}</Text>
-        <Icon source="chevron-down" size={16} color="#666" />
+        <Icon source="chevron-down" size={16} color={color.blueGray700} />
       </Pressable>
 
       <Animated.View style={[styles.inputWrapper, { transform: [{ scale }] }]}>
@@ -118,11 +117,11 @@ export const ExchangeBox: React.FC<Props> = ({
           }
           style={styles.input}
           underlineColor="transparent"
-          selectionColor="#00000055"
-          textColor="#151515"
-          placeholderTextColor="#00000033"
+          selectionColor={color.transparent6}
+          textColor={color.black}
+          placeholderTextColor={color.blueGray300}
           activeUnderlineColor="transparent"
-          theme={{ colors: { primary: 'transparent', onSurface: '#151515' } }}
+          theme={{ colors: { primary: 'transparent', onSurface: color.black } }}
           autoFocus
         />
       </Animated.View>
@@ -153,7 +152,7 @@ const styles = StyleSheet.create({
   acronym: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#222',
+    color: color.black,
     letterSpacing: 0.25,
   },
   inputWrapper: {

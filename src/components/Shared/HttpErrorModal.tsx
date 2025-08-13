@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { HttpLost } from '../../assets/svg';
+import color from '../../ui/token/colors';
 
 const HttpErrorModal: React.FC = () => {
   return (
@@ -22,14 +23,14 @@ const styles = StyleSheet.create({
   },
   errorText: {
     marginHorizontal: 16,
-    color: '#656464ff',
+    color: color.grayTrackOff,
     fontSize: 16,
     marginTop: 8,
     textAlign: 'center',
   },
   errorTextBottom: {
     marginHorizontal: 16,
-    color: '#3d3c3cff',
+    color: color.blueGray700,
     fontSize: 19,
     marginTop: 8,
     textAlign: 'center',

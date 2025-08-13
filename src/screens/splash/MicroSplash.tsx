@@ -9,6 +9,7 @@ import {
   Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import color from '../../ui/token/colors';
 
 const { width } = Dimensions.get('window');
 const SIZE = Math.min(width * 0.34, 160);
@@ -71,7 +72,7 @@ export const MicroSplash: React.FC<Props> = ({ onDone }) => {
         style={[StyleSheet.absoluteFillObject, { opacity: bgOpacity }]}
       >
         <LinearGradient
-          colors={['#FFF3EA', '#FFFFFF']}
+          colors={[color.brandSoftBg, color.white]}
           start={{ x: 0.1, y: 0.2 }}
           end={{ x: 1, y: 1 }}
           style={StyleSheet.absoluteFill}
@@ -103,5 +104,5 @@ export const MicroSplash: React.FC<Props> = ({ onDone }) => {
 const styles = StyleSheet.create({
   container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   circleWrapper: { marginBottom: 16, elevation: 6 },
-  title: { fontSize: 28, fontWeight: '800', color: '#0F172A' },
+  title: { fontSize: 28, fontWeight: '800', color: color.black },
 });

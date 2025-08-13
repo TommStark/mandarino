@@ -3,6 +3,7 @@ import { StyleSheet, FlatList, ListRenderItem } from 'react-native';
 import { Chip, Divider } from 'react-native-paper';
 import type { SortBy, SortDir } from '../../hooks/useMarketsInfinite';
 import CurrencySelectorChip from './CurrencySelectorChip';
+import color from '../../ui/token/colors';
 
 type Props = {
   sortBy: SortBy;
@@ -55,7 +56,7 @@ export default function SortControls({
           onPress={onToggleDir}
           style={styles.chip}
           selected
-          selectedColor="#B95C00"
+          selectedColor={color.brandBorder}
           icon={sortDir === 'desc' ? 'arrow-down' : 'arrow-up'}
         >
           {sortDir === 'desc' ? 'Desc' : 'Asc'}
@@ -68,7 +69,7 @@ export default function SortControls({
           selected={sortBy === item.key}
           onPress={() => onChangeSortBy(item.key)}
           style={styles.chip}
-          selectedColor="#B95C00"
+          selectedColor={color.brandBorder}
           icon={sortBy === item.key ? 'checkmark' : undefined}
         >
           {item.label}
@@ -102,9 +103,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   chip: {
-    backgroundColor: '#FFF3EA',
+    backgroundColor: color.brandSoftBg2,
     marginRight: 8,
-    borderColor: '#B95C00',
+    borderColor: color.brandBorder,
     borderWidth: 1,
   },
 });

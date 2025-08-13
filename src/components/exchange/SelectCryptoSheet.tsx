@@ -15,6 +15,7 @@ import ActionSheet, {
   SheetProps,
   ActionSheetRef,
 } from 'react-native-actions-sheet';
+import color from '../../ui/token/colors';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
   },
   symbol: {
     fontSize: 12,
-    color: '#888',
+    color: color.grayTrackOff,
   },
   price: {
     fontSize: 14,

@@ -6,6 +6,7 @@ import {
   StyleSheet,
   GestureResponderEvent,
 } from 'react-native';
+import color from '../ui/token/colors';
 
 type Props = {
   icon?: React.ReactNode;
@@ -26,11 +27,11 @@ const styles = StyleSheet.create({
   container: {
     width: 80,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 12,
     padding: 7,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOpacity: 0.05,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 13,
-    color: '#111',
+    color: color.black,
     fontWeight: '500',
   },
 });

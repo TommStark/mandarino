@@ -11,6 +11,7 @@ import { AuthProvider } from './context/AuthContext';
 import RootNavigator from './navigation/RootNavigator';
 import Config from 'react-native-config';
 import { isIOS } from './utils/openAppSettings';
+import color from './ui/token/colors';
 
 const queryClient = new QueryClient();
 const WEB_CLIENT_ID = Config.WEB_CLIENT_ID;
@@ -20,7 +21,7 @@ const theme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
-    primary: '#ff7b009d',
+    primary: color.brand,
   },
 };
 

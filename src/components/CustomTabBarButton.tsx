@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, StyleSheet, Platform } from 'react-native';
 import { Icon } from 'react-native-paper';
+import color from '../ui/token/colors';
 
 type Props = {
   children: React.ReactNode;
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 32,
-    backgroundColor: '#f65621ff',
+    backgroundColor: color.brand,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     width: 63,
     height: 63,
     borderRadius: 32,
-    backgroundColor: '#f6562161',
+    backgroundColor: color.brandCircle,
     justifyContent: 'center',
     alignItems: 'center',
   },

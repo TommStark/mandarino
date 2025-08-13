@@ -10,6 +10,8 @@ import { WalletHistoryScreen } from '../screens/wallet/WalletHistoryScreen';
 import { RootStackParamList } from '.';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ExchangeScreen from '../screens/exchange/ExchangeScreen';
+import color from '../ui/token/colors';
+import { BlurView } from '@react-native-community/blur';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,8 +44,8 @@ const MainTabsNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarActiveTintColor: '#f65621ff',
-        tabBarInactiveTintColor: '#B0BEC5',
+        tabBarActiveTintColor: color.brand,
+        tabBarInactiveTintColor: color.blueGray300,
       }}
     >
       <Tab.Screen

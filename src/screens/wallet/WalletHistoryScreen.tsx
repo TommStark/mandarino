@@ -11,8 +11,8 @@ import { useScannedWallets } from '../../hooks/useScannedWallets';
 import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { EmptyList } from '../../assets/svg';
-import { Icon } from 'react-native-paper';
-import { Switch } from 'react-native-paper';
+import { Icon, Switch } from 'react-native-paper';
+import color from '../../ui/token/colors';
 
 export const WalletHistoryScreen = () => {
   const { wallets, toggleFavorite, removeWallet } = useScannedWallets();
@@ -63,7 +63,7 @@ export const WalletHistoryScreen = () => {
         </Pressable>
 
         <Pressable onPress={() => handleDelete(item.address)}>
-          <Icon source="trash" size={30} color="#FF3B30" />
+          <Icon source="trash" size={30} color={color.danger} />
         </Pressable>
       </View>
     );
@@ -76,8 +76,8 @@ export const WalletHistoryScreen = () => {
         <Switch
           value={showOnlyFavorites}
           onValueChange={setShowOnlyFavorites}
-          thumbColor={showOnlyFavorites ? '#f65621ff' : '#f4f3f4'}
-          trackColor={{ false: '#767577', true: '#FFE0B2' }}
+          thumbColor={showOnlyFavorites ? color.brand : color.grayThumbOff}
+          trackColor={{ false: color.grayTrackOff, true: color.brandTrackOn }}
         />
       </View>
 
@@ -107,25 +107,25 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: color.white,
     borderRadius: 10,
     padding: 12,
     marginBottom: 10,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 2,
   },
   favoriteItem: {
-    backgroundColor: '#FFF3E0',
+    backgroundColor: color.brandSoftBg,
   },
   address: { fontSize: 14, fontWeight: 'bold' },
-  date: { fontSize: 12, color: '#607D8B' },
+  date: { fontSize: 12, color: color.blueGray600 },
   star: {
     fontSize: 27,
     marginHorizontal: 8,
-    color: '#f65621ff',
+    color: color.brand,
   },
   walletIcon: {
     fontSize: 20,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     fontSize: 16,
-    color: '#B0BEC5',
+    color: color.blueGray300,
   },
   emptyContainer: {
     alignItems: 'center',
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   filterLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#455A64',
+    color: color.blueGray700,
   },
   footerSpacer: {
     height: 80,

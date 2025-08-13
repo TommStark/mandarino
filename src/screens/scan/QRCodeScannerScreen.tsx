@@ -19,6 +19,7 @@ import {
 import { Icon } from 'react-native-paper';
 import { openAppSettings } from '../../utils/openAppSettings';
 import { useQRScanner } from '../../hooks/useQRScanner.ts';
+import color from '../../ui/token/colors.ts';
 
 export const QRCodeScannerScreen = () => {
   const navigation = useNavigation();
@@ -133,7 +134,7 @@ export const QRCodeScannerScreen = () => {
           style={styles.closeButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon source="close" size={30} color="#000" />
+          <Icon source="close" size={30} color={color.black} />
         </Pressable>
       </View>
     );
@@ -163,7 +164,7 @@ export const QRCodeScannerScreen = () => {
       )}
 
       <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>
-        <Icon source="close" size={30} color="#fff" />
+        <Icon source="close" size={30} color={color.white} />
       </Pressable>
 
       <View style={styles.maskContainer}>
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingVertical: 14,
     paddingHorizontal: 16,
-    backgroundColor: '#FF8C00',
+    backgroundColor: color.brand,
     marginBottom: 12,
     alignItems: 'center',
   },
@@ -208,11 +209,11 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingVertical: 14,
     paddingHorizontal: 16,
-    backgroundColor: '#FFD4A7',
+    backgroundColor: color.brandTrackOn,
     marginBottom: 12,
     alignItems: 'center',
   },
-  actionText: { color: '#000', fontWeight: '700' },
+  actionText: { color: color.black, fontWeight: '700' },
   closeButton: {
     position: 'absolute',
     top: 40,
@@ -221,11 +222,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     zIndex: 10,
   },
+
   maskContainer: { ...StyleSheet.absoluteFillObject, flexDirection: 'column' },
   maskRow: { flex: 3, backgroundColor: 'rgba(0,0,0,0.5)' },
   qrRow: { flex: 4, flexDirection: 'row' },
   maskSide: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' },
-  qrBox: { flex: 7, borderColor: 'white', borderWidth: 3, borderRadius: 12 },
+  qrBox: {
+    flex: 7,
+    borderColor: color.white,
+    borderWidth: 3,
+    borderRadius: 12,
+  },
+
   caption: {
     fontSize: 14,
     opacity: 0.7,
@@ -237,20 +245,20 @@ const styles = StyleSheet.create({
     maxWidth: 320,
     paddingVertical: 14,
     borderRadius: 14,
-    backgroundColor: '#FF8C00',
+    backgroundColor: color.brand,
     alignItems: 'center',
     marginBottom: 10,
   },
-  primaryText: { color: '#000', fontWeight: '700' },
+  primaryText: { color: color.black, fontWeight: '700' },
   secondary: {
     width: '100%',
     maxWidth: 320,
     paddingVertical: 14,
     borderRadius: 14,
-    backgroundColor: '#FFE1BF',
+    backgroundColor: color.brandTrackOn,
     alignItems: 'center',
   },
-  secondaryText: { color: '#000', fontWeight: '700' },
+  secondaryText: { color: color.black, fontWeight: '700' },
   link: { marginTop: 16, padding: 8 },
   linkText: { textDecorationLine: 'underline', opacity: 0.8 },
 });
