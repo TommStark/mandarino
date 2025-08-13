@@ -1,0 +1,13 @@
+{
+  "title": "Listado de criptomonedas",
+  "search": {
+    "placeholder": "Buscar nombre"
+  },
+  "sortControls": {
+    "mktCap": "Mkt Cap",
+    "volume": "Volumen",
+    "asc": "Asc",
+    "desc": "Desc"
+  },
+  "selectVsCurrency": "Seleccionar moneda Vs"
+}

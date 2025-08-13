@@ -1,97 +1,212 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Mandarino — Mobile Challenge
 
-# Getting Started
+Aplicación **React Native CLI**
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+- **Login con Google**
+- **Listado de cryptos** con búsqueda, paginado, orden y refresh (CoinGecko)
+- **Exchange crypto ↔ fiat** en tiempo real
+- **Scanner de wallets (QR)** con historial y favoritos
 
-## Step 1: Start Metro
+> Stack: React Native CLI + TypeScript • React Navigation • react-native-actions-sheet • react-native-vision-camera • react-native-google-signin/google-signin • AsyncStorage • react-native-linear-gradient • @react-native-community/blur
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+---
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## 1) Requisitos
 
-```sh
-# Using npm
-npm start
+**Identificadores (confirmado)**
 
-# OR using Yarn
-yarn start
+- **Android `applicationId`**: `com.mandarino`
+- **iOS `PRODUCT_BUNDLE_IDENTIFIER`**: `com.mandarino`
+
+- **SO**: macOS 15.5 (arm64)
+- **Node**: 18.20.5
+- **npm / Yarn**: 10.8.2 / 1.22.22
+- **React Native**: 0.80.2 (CLI 19.1.1)
+- **Java JDK**: **17** recomendado para build (compatibilidad con AGP 8.x / Gradle 8.x)
+- **Android**: SDK 35 (compile/target), minSdk 24
+- **iOS**: Xcode 16.4, Swift 6.1.2, CocoaPods 1.13.0, iOS 15.1+
+
+**Usar JDK 17** para compilar Android:
+
+```bash
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export PATH="$JAVA_HOME/bin:$PATH"
+java -version  # debe mostrar 17
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## 2) Clonado e instalación
 
-### Android
+```bash
+# 1) Clonar
+git clone https://github.com/TommStark/mandarino.git
+cd mandarino
 
-```sh
-# Using npm
-npm run android
+# 2) Instalar dependencias
+yarn install
 
-# OR using Yarn
+# 3) Copiar el .env provisto (raíz del proyecto)
+cp /ruta/a/tu/.env ./.env   # o crea uno desde .env.example
+
+# 4) iOS: instalar pods
+cd ios && pod install && cd ..
+```
+
+### Quickstart para reviewers (5 minutos)
+
+**Android**
+
+```bash
+# (Recomendado) usar JDK 17
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export PATH="$JAVA_HOME/bin:$PATH"
+
+# Arrancar Metro
+yarn start
+
+# Nueva terminal → compilar y ejecutar en emulador/dispositivo
 yarn android
 ```
 
-### iOS
+**iOS**
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+```bash
+# Arrancar Metro
+yarn start
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
+# Nueva terminal → iOS (simulador por defecto)
 yarn ios
+# o desde Xcode: abrir ios/Mandarino.xcworkspace y Run (Debug)
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+⚠️ Copia el **.env provisto** en la raíz **antes** de probar el login con Google.
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+---
 
-## Step 3: Modify your app
+## 3) Configuración (.env y Google Sign‑In)
 
-Now that you have successfully run the app, let's make changes!
+Para evaluar el proyecto, **solo copiar el `.env` provisto** en la raíz. No se requieren pasos adicionales.
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+- **Android**: no se usa Firebase ni `google-services.json`. El login usa `@react-native-google-signin/google-signin` con Web Client ID desde `.env`.
+- **iOS**: `CFBundleURLSchemes` y `NSCameraUsageDescription` ya están configurados en `Info.plist`. El Bundle ID es `com.mandarino`.
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+Si en el futuro se rotan credenciales, actualizar el `.env` y (en iOS) el `CFBundleURLSchemes` con el reversed client id correspondiente.
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+---
 
-## Congratulations! :tada:
+## 4) Configuración: Cámara / QR (react-native-vision-camera)
 
-You've successfully run and modified your React Native App. :partying_face:
+### Permisos
 
-### Now what?
+**iOS (`ios/<App>/Info.plist`)**
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+```xml
+<key>NSCameraUsageDescription</key>
+<string>Necesitamos acceso a la cámara para escanear códigos QR.</string>
+```
 
-# Troubleshooting
+**Android (`android/app/src/main/AndroidManifest.xml`)**
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+```xml
+<uses-permission android:name="android.permission.CAMERA" />
+```
 
-# Learn More
+### Instalación
 
-To learn more about React Native, take a look at the following resources:
+La librería se autolinka. Tras `yarn install`, corre `cd ios && pod install`. En Android no requiere pasos extra. En iOS Simulator **no hay cámara**: se provee fallback (pegar desde portapapeles / QR de prueba / ingreso manual).
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+---
+
+## 5) UI y Navegación
+
+- **React Navigation** (Stack + Bottom Tabs)
+- **react-native-actions-sheet** para selectores (cripto/fiat)
+- **Gesture Handler & Reanimated** ya configurados.
+
+Babel incluye el plugin de Reanimated:
+
+`babel.config.js`
+
+```js
+module.exports = {
+  presets: ['module:metro-react-native-babel-preset'],
+  plugins: ['react-native-reanimated/plugin'],
+};
+```
+
+- Fondo visual con **LinearGradient**, blobs y **BlurView**.
+
+---
+
+## 6) Datos en tiempo real (CoinGecko)
+
+- `fetchCoinsMarkets` para listado con paginado, búsqueda, orden y variación 24h
+- `fetchExchangeRate` para conversiones en Exchange (crypto ↔ fiat)
+- Estrategia: refresh manual y revalidación al enfocar pantalla
+
+> CoinGecko permite endpoints públicos; la API key es **opcional** y mejora límites de rate. Las claves se gestionan con **react-native-config**.
+
+---
+
+## 7) Scripts
+
+```json
+{
+  "android": "react-native run-android",
+  "ios": "react-native run-ios",
+  "start": "react-native start",
+  "lint": "eslint .",
+  "test": "jest"
+}
+```
+
+### Librerías principales (versiones)
+
+- @react-navigation/native **7.1.17** + native-stack **7.3.24** + bottom-tabs **7.4.5**
+- **react-native-actions-sheet 0.9.7**
+- @react-native-google-signin/google-signin **15.0.0**
+- react-native-vision-camera **4.7.1**
+- react-native-reanimated **4.0.1** • react-native-gesture-handler **2.28.0** • react-native-screens **4.13.1**
+- react-native-linear-gradient **2.8.3** • @react-native-community/blur **4.4.1**
+- react-native-paper **5.14.5**
+- @react-native-async-storage/async-storage **2.2.0**
+- @tanstack/react-query **5.84.1** • axios **1.11.0**
+- react-native-config **1.5.6** (manejo de `.env`)
+- Otras: clipboard, svg (+ transformer), vector-icons, actions-sheet, bootsplash, skeleton-placeholder, sound, worklets
+
+---
+
+## 8) Estructura (resumen)
+
+```
+src/
+  components/
+  screens/
+  hooks/
+  context/
+  services/
+  utils/
+  navigation/
+```
+
+---
+
+## 9) Funcionalidades
+
+- **Login con Google** (sin Expo ni Firebase, mediante `@react-native-google-signin/google-signin`).
+- **Listado de criptomonedas**: búsqueda, paginado, orden asc/desc, variación 24h y refresh.
+- **Exchange crypto ↔ fiat**: selección de crypto y fiat, conversión bidireccional, tasa de referencia.
+- **Scanner de wallets (QR)**: lectura con cámara, historial local y favoritos; _fallback_ para iOS Simulator.
+
+---
+
+## 10) Calidad de código y buenas prácticas
+
+- **TypeScript** en todo el código
+- Componentes **presentacionales vs. contenedores**
+- Hooks para separar efectos/queries (`useExchangeRate`, `useScannedWallets`)
+- **FlatList** con `keyExtractor`, `getItemLayout` cuando aplica, `removeClippedSubviews`
+- **Estado de red**: loading / error por pantalla y por componente
+- **Persistencia**: AsyncStorage para preferencias e historial de QR
+- **Accesibilidad**: labels, tamaños táctiles ≥ 44x44

@@ -1,0 +1,12 @@
+{
+  "title": "Historial",
+  "filterOnlyFavorites": "Mostrar solo favoritos",
+  "emptyFavorites": "No hay direcciones favoritas.",
+  "emptyAll": "Aún no escaneaste direcciones.",
+  "copiedTitle": "Copiado",
+  "copiedMsg": "La dirección fue copiada al portapapeles",
+  "deleteTitle": "Eliminar dirección",
+  "deleteMsg": "¿Estás seguro que querés eliminar esta dirección del historial?",
+  "cancel": "Cancelar",
+  "delete": "Eliminar"
+}

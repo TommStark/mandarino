@@ -1,0 +1,10 @@
+{
+  "httpError": {
+    "title": "¡Ups!",
+    "message": "Tuvimos un problema cargando tus criptos."
+  },
+  "emptyState": {
+    "title": "No hay resultados",
+    "message": "Intenta ajustar tus filtros o buscar otra criptomoneda."
+  }
+}

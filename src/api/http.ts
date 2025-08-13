@@ -1,10 +1,14 @@
-import axios, { AxiosError, AxiosHeaders } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosHeaders,
+  AxiosRequestConfig,
+  RawAxiosRequestHeaders,
+} from 'axios';
 import Config from 'react-native-config';
+import { HTTP_STATUS, RETRY_CONFIG } from '../constants/http';
 
-export const COINGECKO_BASE_URL = 'https://api.coingecko.com/api/v3';
-
-const RAW = (Config.COINGECKO_API_KEY ?? '').trim().replace(/^"+|"+$/g, '');
-const COINGECKO_API_KEY = RAW.startsWith('CG-') ? RAW : RAW ? `CG-${RAW}` : '';
+const COINGECKO_BASE_URL = 'https://api.coingecko.com/api/v3';
+const COINGECKO_API_KEY = Config.COINGECKO_API_KEY ?? '';
 
 const cg = axios.create({
   baseURL: COINGECKO_BASE_URL,
@@ -16,14 +20,11 @@ const cg = axios.create({
 cg.interceptors.request.use(config => {
   if (!COINGECKO_API_KEY) return config;
 
-  if ((config.headers as any)?.set) {
-    (config.headers as AxiosHeaders).set(
-      'x-cg-demo-api-key',
-      COINGECKO_API_KEY,
-    );
+  if (config.headers instanceof AxiosHeaders) {
+    config.headers.set('x-cg-demo-api-key', COINGECKO_API_KEY);
   } else {
     config.headers = new AxiosHeaders({
-      ...(config.headers as any),
+      ...(config.headers as RawAxiosRequestHeaders | undefined),
       'x-cg-demo-api-key': COINGECKO_API_KEY,
     });
   }
@@ -31,12 +32,19 @@ cg.interceptors.request.use(config => {
   return config;
 });
 
-const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+type RetriableConfig = AxiosRequestConfig & { _retryCount?: number };
+
 cg.interceptors.response.use(undefined, async (error: AxiosError) => {
-  const cfg: any = error.config;
-  if (error.response?.status === 429 && (cfg?._retryCount ?? 0) < 3) {
+  const cfg = error.config as RetriableConfig;
+  if (
+    error.response?.status === HTTP_STATUS.TOO_MANY_REQUESTS &&
+    (cfg._retryCount ?? 0) < RETRY_CONFIG.MAX_RETRIES_429
+  ) {
     cfg._retryCount = (cfg._retryCount ?? 0) + 1;
-    await sleep(800 * 2 ** (cfg._retryCount - 1));
+    const delay = RETRY_CONFIG.BASE_DELAY_MS * 2 ** (cfg._retryCount - 1);
+    await sleep(delay);
     return cg(cfg);
   }
   throw error;

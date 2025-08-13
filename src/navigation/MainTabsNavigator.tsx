@@ -1,15 +1,16 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/home/HomeScreen';
-import CryptoListScreen from '../screens/cryptolist/CryptoListScreen';
+import HomeScreen from '../features/home/HomeScreen';
+import CryptoListScreen from '../features/cryptolist/CryptoListScreen';
 import type { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { CustomTabBarButton } from '../components/CustomTabBarButton';
-import { WalletHistoryScreen } from '../screens/wallet/WalletHistoryScreen';
+import { CustomTabBarButton } from '../components/TabBarButton/CustomTabBarButton';
+import { WalletHistoryScreen } from '../features/wallet/WalletHistoryScreen';
 import { RootStackParamList } from '.';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import ExchangeScreen from '../screens/exchange/ExchangeScreen';
+import ExchangeScreen from '../features/exchange/ExchangeScreen';
+import color from '../ui/token/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,8 +43,8 @@ const MainTabsNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarActiveTintColor: '#f65621ff',
-        tabBarInactiveTintColor: '#B0BEC5',
+        tabBarActiveTintColor: color.brand,
+        tabBarInactiveTintColor: color.blueGray300,
       }}
     >
       <Tab.Screen

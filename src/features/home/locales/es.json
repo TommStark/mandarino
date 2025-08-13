@@ -1,0 +1,23 @@
+{
+  "brand": "Mandarino",
+  "greeting": "Buenos días, {{username}}",
+  "logout": {
+    "title": "Cerrar sesión",
+    "message": "¿Querés cerrar la sesión de {{username}}?",
+    "cancel": "Cancelar",
+    "confirm": "Cerrar sesión"
+  },
+  "title": "Tus Crypto",
+  "viewAll": "Ver Todo",
+  "banner": {
+    "label": "Balance Total",
+    "today": "Hoy",
+    "hidden": " •••••••"
+  },
+  "actions": {
+    "buy": "Comprar",
+    "sell": "Vender",
+    "send": "Enviar",
+    "receive": "Recibir"
+  }
+}

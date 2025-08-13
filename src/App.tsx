@@ -1,17 +1,21 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MD3LightTheme, PaperProvider } from 'react-native-paper';
 import { UserProvider } from './context/UserContext';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import RNBootSplash from 'react-native-bootsplash';
-import { MicroSplash } from './screens/splash/MicroSplash';
+import { MicroSplash } from './features/splash/MicroSplash';
 import { AuthProvider } from './context/AuthContext';
 import RootNavigator from './navigation/RootNavigator';
 import Config from 'react-native-config';
+import { isIOS } from './utils/openAppSettings';
+import color from './ui/token/colors';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './lib/queryClient';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n/i18n';
 
-const queryClient = new QueryClient();
 const WEB_CLIENT_ID = Config.WEB_CLIENT_ID;
 const IOS_CLIENT_ID = Config.IOS_CLIENT_ID;
 
@@ -19,14 +23,19 @@ const theme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
-    primary: '#ff7b009d',
+    primary: color.brand,
   },
 };
 
 const App = () => {
   const [showMicroSplash, setShowMicroSplash] = useState(true);
-  if (!WEB_CLIENT_ID || !IOS_CLIENT_ID) {
-    throw new Error('Missing Google client IDs in environment configuration.');
+
+  if (!WEB_CLIENT_ID || (isIOS && !IOS_CLIENT_ID)) {
+    throw new Error(
+      isIOS
+        ? 'Faltan WEB_CLIENT_ID o IOS_CLIENT_ID en el .env'
+        : 'Falta WEB_CLIENT_ID en el .env',
+    );
   }
 
   if (showMicroSplash) {
@@ -46,6 +55,9 @@ const App = () => {
         config={{
           webClientId: WEB_CLIENT_ID,
           iosClientId: IOS_CLIENT_ID,
+          scopes: ['profile', 'email'],
+          offlineAccess: true,
+          forceCodeForRefreshToken: true,
         }}
       >
         <UserProvider>
@@ -53,9 +65,11 @@ const App = () => {
             settings={{ icon: props => <Ionicons {...props} /> }}
             theme={theme}
           >
-            <NavigationContainer>
-              <RootNavigator />
-            </NavigationContainer>
+            <I18nextProvider i18n={i18n}>
+              <NavigationContainer>
+                <RootNavigator />
+              </NavigationContainer>
+            </I18nextProvider>
           </PaperProvider>
         </UserProvider>
       </AuthProvider>

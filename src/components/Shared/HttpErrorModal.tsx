@@ -1,15 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { HttpLost } from '../../assets/svg';
+import color from '../../ui/token/colors';
+type Props = {
+  title: string;
+  message: string;
+};
 
-const HttpErrorModal: React.FC = () => {
+const HttpErrorModal: React.FC<Props> = ({ title, message }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.errorText}>¡Ups!</Text>
+      <Text style={styles.errorText}>{title}</Text>
       <HttpLost height={110} width={120} />
-      <Text style={styles.errorTextBottom}>
-        Tuvimos un problema cargando tus criptos.
-      </Text>
+      <Text style={styles.errorTextBottom}>{message}</Text>
     </View>
   );
 };
@@ -22,14 +25,14 @@ const styles = StyleSheet.create({
   },
   errorText: {
     marginHorizontal: 16,
-    color: '#656464ff',
+    color: color.grayTrackOff,
     fontSize: 16,
     marginTop: 8,
     textAlign: 'center',
   },
   errorTextBottom: {
     marginHorizontal: 16,
-    color: '#3d3c3cff',
+    color: color.blueGray700,
     fontSize: 19,
     marginTop: 8,
     textAlign: 'center',

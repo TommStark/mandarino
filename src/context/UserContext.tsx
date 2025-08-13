@@ -49,13 +49,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [showBalances, setShowBalances] = useState(true);
 
   useEffect(() => {
-    const loadVisibility = async () => {
+    (async () => {
       const stored = await AsyncStorage.getItem('showBalances');
-      if (stored !== null) {
-        setShowBalances(stored === 'true');
-      }
-    };
-    loadVisibility();
+      if (stored !== null) setShowBalances(stored === 'true');
+    })();
   }, []);
 
   const toggleShowBalances = async () => {
@@ -65,7 +62,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const email = authUser?.user?.email ?? 'user@mandarino.app';
-  const name = email.split('@')[0];
+  const name = (authUser?.user?.name ?? email.split('@')[0]) || 'user';
   const avatarUrl = authUser?.user?.photo ?? 'https://i.pravatar.cc/150?img=10';
 
   const userData: UserData = {
@@ -74,10 +71,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     avatarUrl,
     totalBalanceUSD: 12452.55,
     holdings: mockHoldings,
-    balanceChange: {
-      amount: 512.35,
-      percent: 4.29,
-    },
+    balanceChange: { amount: 512.35, percent: 4.29 },
   };
 
   return (
