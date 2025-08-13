@@ -19,6 +19,7 @@ import { useAuth } from '../../context/AuthContext';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../navigation';
 import { ScreenBackground } from '../../components/Shared/ScreenBackground';
+import color from '../../ui/token/colors';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -53,7 +54,7 @@ export default function LoginScreen({}: Props) {
       style={styles.flex1}
       behavior={Platform.select({ ios: 'padding', android: undefined })}
     >
-      <ScreenBackground />
+      <ScreenBackground blurAmount={20} />
 
       <View style={styles.container}>
         <View style={styles.header}>
@@ -92,8 +93,8 @@ export default function LoginScreen({}: Props) {
             mode="contained"
             onPress={tryPasswordLogin}
             disabled={loading}
-            style={[styles.primaryBtn, { backgroundColor: '#ff7b00a9' }]}
-            labelStyle={{ color: '#fff', fontWeight: '700' }}
+            style={[styles.primaryBtn, { backgroundColor: color.brand }]}
+            labelStyle={{ color: color.white, fontWeight: '700' }}
           >
             Ingresar
           </Button>
@@ -110,8 +111,8 @@ export default function LoginScreen({}: Props) {
             disabled={loading}
             icon="logo-google"
             contentStyle={{ height: 48 }}
-            style={[styles.googleBtn, { backgroundColor: '#007bffa6' }]}
-            labelStyle={{ color: '#fff', fontWeight: '700' }}
+            style={[styles.googleBtn, { backgroundColor: color.blue300 }]}
+            labelStyle={{ color: color.white, fontWeight: '700' }}
           >
             {loading ? 'Conectando…' : 'Continuar con Google'}
           </Button>
@@ -163,14 +164,14 @@ const styles = StyleSheet.create({
   brand: {
     fontSize: 38,
     fontWeight: '900',
-    color: '#ff7a00',
+    color: color.brand,
     letterSpacing: 0.3,
   },
-  subtitle: { fontSize: 14, color: '#6b6b6b', marginTop: 4 },
+  subtitle: { fontSize: 14, color: color.blueGray600, marginTop: 4 },
   card: {
     borderRadius: 16,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   cardTitle: {
     fontSize: 18,
@@ -185,13 +186,13 @@ const styles = StyleSheet.create({
     marginVertical: 14,
     gap: 8,
   },
-  o: { marginHorizontal: 6, color: '#8b8b8b' },
+  o: { marginHorizontal: 6, color: color.blueGray600 },
   primaryBtn: { borderRadius: 12, marginTop: 8 },
   googleBtn: { borderRadius: 12 },
   terms: {
     marginTop: 12,
     fontSize: 12,
-    color: '#8b8b8b',
+    color: color.blueGray600,
     textAlign: 'center',
   },
   footerArt: { alignItems: 'center', marginTop: 20 },

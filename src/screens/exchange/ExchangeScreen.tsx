@@ -23,6 +23,7 @@ import { ExchangeBox } from '../../components/ExchangeBox';
 import { useFocusEffect } from '@react-navigation/native';
 import { Icon } from 'react-native-paper';
 import { isIOS } from '../../utils/openAppSettings';
+import color from '../../ui/token/colors';
 
 type Direction = 'cryptoToFiat' | 'fiatToCrypto';
 
@@ -37,7 +38,7 @@ const INITIAL_COIN: CryptoMarket = {
 } as CryptoMarket;
 const INITIAL_FIAT = 'ars';
 
-function buildBoxes(
+const buildBoxes = (
   direction: Direction,
   coin: CryptoMarket,
   fiat: { code: string; name: string; flag: string },
@@ -45,7 +46,7 @@ function buildBoxes(
     crypto: React.RefObject<ActionSheetRef>;
     fiat: React.RefObject<ActionSheetRef>;
   },
-) {
+) => {
   const fromSymbol = coin.symbol.toUpperCase();
 
   if (direction === 'cryptoToFiat') {
@@ -82,7 +83,7 @@ function buildBoxes(
       placeholder: '0.00',
     },
   };
-}
+};
 
 const MottoSpyMode = () => {
   return (
@@ -141,8 +142,7 @@ export const ExchangeScreen = () => {
 
   useEffect(() => {
     setToValue(convert(fromValue));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exchangeRate, selectedCoin, selectedFiatCode, direction]);
+  }, [exchangeRate, selectedCoin, selectedFiatCode, direction]); // eslint-disable-line
 
   const handleSwap = () => {
     const newDirection: Direction =
@@ -216,10 +216,10 @@ export const ExchangeScreen = () => {
           <Pressable
             onPress={handleSwap}
             style={styles.swapButton}
-            hitSlop={10}
+            hitSlop={20}
           >
             <Text style={styles.swapText}>
-              <Icon source="sync" size={24} color="#000" />
+              <Icon source="sync" size={24} color={color.black} />
             </Text>
           </Pressable>
 
@@ -267,49 +267,49 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 12,
-    backgroundColor: 'rgba(0,0,0,0.06)',
+    backgroundColor: color.grayThumbOff,
   },
   swapText: {
     fontSize: 18,
     fontWeight: '600',
   },
   title: { fontSize: 20, fontWeight: 'bold' },
-  label: { fontSize: 14, color: '#999' },
+  label: { fontSize: 14, color: color.blueGray600 },
   button: {
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
     marginTop: 32,
   },
-  buttonText: { fontWeight: 'bold', fontSize: 16, color: '#fff' },
-  buttonDisabled: { backgroundColor: '#aaa' },
-  buttonEnabled: { backgroundColor: '#000' },
+  buttonText: { fontWeight: 'bold', fontSize: 16, color: color.white },
+  buttonDisabled: { backgroundColor: color.blueGray300 },
+  buttonEnabled: { backgroundColor: color.black },
   hint: {
     textAlign: 'left',
     fontSize: 13,
-    color: '#00000080',
+    color: color.blueGray700,
   },
   motto: {
     padding: 12,
     borderRadius: 12,
-    backgroundColor: 'rgba(0,0,0,0.04)',
+    backgroundColor: color.grayThumbOff,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(0,0,0,0.08)',
+    borderColor: color.blueGray300,
     gap: 2,
   },
   mottoTitle: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#000000CC',
+    color: color.black,
   },
   mottoSub: {
     fontSize: 12,
-    color: '#00000099',
+    color: color.blueGray600,
   },
   mottoMeta: {
     marginTop: 2,
     fontSize: 11,
-    color: '#00000066',
+    color: color.blueGray300,
   },
 });
 

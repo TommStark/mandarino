@@ -4,6 +4,7 @@ import { ActionButton } from '../ActionButton';
 import { Icon } from 'react-native-paper';
 import Sound from 'react-native-sound';
 import { isIOS } from '../../utils/openAppSettings';
+import color from '../../ui/token/colors';
 
 Sound.setCategory(isIOS ? 'Ambient' : 'Playback', true);
 
@@ -92,7 +93,7 @@ export const ActionNav = () => {
       {actions.map(({ icon, label }) => (
         <ActionButton
           key={label}
-          icon={<Icon source={icon} size={20} color="#0d0c0cff" />}
+          icon={<Icon source={icon} size={20} color={color.black} />}
           label={label}
           onPress={() => handlePress(label)}
         />

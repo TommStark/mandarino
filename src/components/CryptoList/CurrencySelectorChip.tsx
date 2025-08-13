@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Chip, Menu, Divider, Text } from 'react-native-paper';
 import { getCurrencyName, getFlag } from '../../utils/fiat';
 import { CURRENCY_OPTIONS } from '../../constants/currencies';
+import color from '../../ui/token/colors';
 
 type Props = {
   value: string;
@@ -68,7 +69,7 @@ export default function CurrencySelectorChip({
             selected
             style={styles.chip}
             onPress={toggleMenu}
-            selectedColor="#B95C00"
+            selectedColor={color.brandBorder}
             icon={() => <Text>{currencyFlag}</Text>}
           >
             {showNameOnChip ? (
@@ -85,7 +86,7 @@ export default function CurrencySelectorChip({
           style={{
             paddingHorizontal: 12,
             paddingVertical: 6,
-            color: 'rgba(0,0,0,0.6)',
+            color: color.transparent6,
           }}
         >
           Seleccionar moneda Vs
@@ -125,9 +126,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   chip: {
-    backgroundColor: '#FFF3EA',
+    backgroundColor: color.brandSoftBg,
     marginRight: 8,
-    borderColor: '#B95C00',
+    borderColor: color.brandBorder,
     borderWidth: 1,
   },
 });

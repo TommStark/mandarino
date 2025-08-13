@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, Pressable } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useScannedWallets } from '../../hooks/useScannedWallets';
 import { RootStackParamList } from '../../navigation/index';
+import color from '../../ui/token/colors';
 
 type QRResultRouteProp = RouteProp<RootStackParamList, 'QRResultScreen'>;
 
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
   favoriteButton: {
     marginBottom: 20,
     padding: 10,
-    backgroundColor: '#f65621ff',
+    backgroundColor: color.brand,
     borderRadius: 10,
   },
   favoriteText: { color: 'white', fontWeight: 'bold' },

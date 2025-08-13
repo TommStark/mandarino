@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { IconButton, Portal, Dialog, Button } from 'react-native-paper';
 import { useAuth } from '../../context/AuthContext';
+import color from '../../ui/token/colors';
 
 type Props = {
   username: string;
@@ -36,7 +37,7 @@ export const Header = ({ username }: Props) => {
           <IconButton
             icon="power"
             size={20}
-            iconColor="#be4c06ff"
+            iconColor={color.brandBorder}
             onPress={openDialog}
             disabled={loading}
             style={{ margin: 0 }}
@@ -72,13 +73,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: '#F66000',
+    color: color.brand,
     fontSize: 22,
     fontWeight: 'bold',
   },
   subtitle: {
     fontSize: 14,
-    color: '#c57d51ff',
+    color: color.brandBorder,
     marginTop: 2,
   },
   icons: {

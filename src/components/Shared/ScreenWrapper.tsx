@@ -11,6 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from 'react-native-paper';
 import { ScreenBackground } from './ScreenBackground';
+import color from '../../ui/token/colors';
 
 type Props = {
   children: React.ReactNode;
@@ -68,7 +69,7 @@ export const ScreenWrapper = ({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   content: {
     flexGrow: 1,
