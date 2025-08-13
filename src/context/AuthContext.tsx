@@ -1,8 +1,12 @@
 import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { User as GoogleUser } from '@react-native-google-signin/google-signin';
+import type {
+  User as GoogleUser,
+  SignInSilentlyResponse,
+} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useGoogleSignIn, type GoogleConfig } from '../hooks/useGoogleSignIn';
 import { logAuth, logErrorAuth } from '../utils/logger';
+import { getJSON, getSecret } from '../services/secureStorage';
 
 type AuthState = {
   user: GoogleUser | null;
@@ -24,9 +28,9 @@ export const useAuth = () => {
   return ctx;
 };
 
-const STORAGE_KEY = '@auth:user';
-
 type Props = { children: React.ReactNode; config: GoogleConfig };
+
+const SESSION_KEY = 'google.session';
 
 export function AuthProvider({ children, config }: Props) {
   const {
@@ -35,7 +39,6 @@ export function AuthProvider({ children, config }: Props) {
     signIn: gSignIn,
     signOut: gSignOut,
     revokeAccess: gRevoke,
-    getCurrentUser,
   } = useGoogleSignIn(config);
 
   const [state, setState] = React.useState<AuthState>({
@@ -47,51 +50,63 @@ export function AuthProvider({ children, config }: Props) {
 
   React.useEffect(() => {
     (async () => {
+      logAuth('hydrate(): start');
       try {
-        logAuth('hydrate(): start');
-        const live = await getCurrentUser();
-        if (live) {
-          logAuth('hydrate(): live session', live?.user?.email);
+        try {
+          const silent: SignInSilentlyResponse =
+            await GoogleSignin.signInSilently();
+          if (silent?.type === 'success') {
+            logAuth('hydrate(): live session', silent.data.user?.email);
+            setState({
+              user: silent.data,
+              isHydrating: false,
+              loading: false,
+              error: null,
+            });
+            return;
+          }
+        } catch {}
+
+        const session = await getJSON<{ exp?: number; user?: any }>(
+          SESSION_KEY,
+        );
+        const idToken = await getSecret('google.idToken');
+
+        const nowSec = Math.floor(Date.now() / 1000);
+        const valid = idToken && (session?.exp ? session.exp > nowSec : true);
+
+        if (valid && session?.user) {
+          logAuth('hydrate(): from keychain', session.user?.email);
+          const pseudoUser: GoogleUser = {
+            idToken: idToken || null,
+            serverAuthCode: null,
+            scopes: [],
+            user: {
+              id: session.user?.id,
+              email: session.user?.email,
+              name: session.user?.name,
+              photo: session.user?.photo,
+              familyName: null,
+              givenName: null,
+            },
+          } as any;
+
           setState({
-            user: live,
+            user: pseudoUser,
             isHydrating: false,
             loading: false,
             error: null,
           });
           return;
         }
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const cached: GoogleUser = JSON.parse(raw);
-          logAuth('hydrate(): from storage', cached?.user?.email);
-          setState({
-            user: cached,
-            isHydrating: false,
-            loading: false,
-            error: null,
-          });
-          return;
-        }
+
+        setState(s => ({ ...s, isHydrating: false }));
+        logAuth('hydrate(): no session');
       } catch (e) {
         logErrorAuth('hydrate()', e);
+        setState(s => ({ ...s, isHydrating: false }));
       }
-      setState(s => ({ ...s, isHydrating: false }));
-      logAuth('hydrate(): no session');
     })();
-  }, [getCurrentUser]);
-
-  const persistUser = React.useCallback(async (user: GoogleUser | null) => {
-    try {
-      if (user) {
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-        logAuth('persistUser(): saved', user?.user?.email);
-      } else {
-        await AsyncStorage.removeItem(STORAGE_KEY);
-        logAuth('persistUser(): cleared');
-      }
-    } catch (e) {
-      logErrorAuth('persistUser()', e);
-    }
   }, []);
 
   const signIn = React.useCallback(async () => {
@@ -99,7 +114,6 @@ export function AuthProvider({ children, config }: Props) {
     logAuth('AuthContext.signIn(): call hook');
     const user = await gSignIn();
     if (user) {
-      await persistUser(user);
       setState({ user, isHydrating: false, loading: false, error: null });
       logAuth('AuthContext.signIn(): success', user?.user?.email);
     } else {
@@ -107,25 +121,23 @@ export function AuthProvider({ children, config }: Props) {
       setState(s => ({ ...s, loading: false, error: err }));
       logAuth('AuthContext.signIn(): fail', err);
     }
-  }, [gSignIn, gError, persistUser]);
+  }, [gSignIn, gError]);
 
   const signOut = React.useCallback(async () => {
     setState(s => ({ ...s, loading: true, error: null }));
     logAuth('AuthContext.signOut(): call hook');
     await gSignOut();
-    await persistUser(null);
     setState({ user: null, isHydrating: false, loading: false, error: null });
     logAuth('AuthContext.signOut(): done');
-  }, [gSignOut, persistUser]);
+  }, [gSignOut]);
 
   const revokeAccess = React.useCallback(async () => {
     setState(s => ({ ...s, loading: true, error: null }));
     logAuth('AuthContext.revokeAccess(): call hook');
     await gRevoke();
-    await persistUser(null);
     setState({ user: null, isHydrating: false, loading: false, error: null });
     logAuth('AuthContext.revokeAccess(): done');
-  }, [gRevoke, persistUser]);
+  }, [gRevoke]);
 
   return (
     <AuthContext.Provider
