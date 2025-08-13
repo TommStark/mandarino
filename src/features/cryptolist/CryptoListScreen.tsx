@@ -8,7 +8,7 @@ import ResultsList from './components/ResultsList';
 import { SkeletonCoinList } from '../../components/Shared/SkeletonCoinRow';
 import { useCryptoListData } from './hooks/useCryptoListData';
 import type { SortBy, SortDir } from './hooks/useMarketsInfinite';
-import { CURRENCY_OPTIONS } from '../../constants/currencies';
+import { CURRENCY_OPTIONS } from './constants/currencies';
 import { useFocusEffect } from '@react-navigation/native';
 import { styles } from './CryptoListScreen.styles';
 import { te } from './i18n/te';
