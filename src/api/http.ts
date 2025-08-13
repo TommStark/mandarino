@@ -7,10 +7,8 @@ import axios, {
 import Config from 'react-native-config';
 import { HTTP_STATUS, RETRY_CONFIG } from '../constants/http';
 
-export const COINGECKO_BASE_URL = 'https://api.coingecko.com/api/v3';
-
-const RAW = (Config.COINGECKO_API_KEY ?? '').trim().replace(/^"+|"+$/g, '');
-const COINGECKO_API_KEY = RAW.startsWith('CG-') ? RAW : RAW ? `CG-${RAW}` : '';
+const COINGECKO_BASE_URL = 'https://api.coingecko.com/api/v3';
+const COINGECKO_API_KEY = Config.COINGECKO_API_KEY ?? '';
 
 const cg = axios.create({
   baseURL: COINGECKO_BASE_URL,

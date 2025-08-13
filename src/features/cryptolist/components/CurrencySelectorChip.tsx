@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text } from 'react-native';
 import { Chip, Menu, Divider } from 'react-native-paper';
-import { CURRENCY_OPTIONS } from '../../../constants/currencies';
+import { CURRENCY_OPTIONS } from '../constants/currencies';
 import { getCurrencyName, getFlag } from '../../../utils/fiat';
 import { styles } from './CurrencySelectorChip.styles';
 import color from '../../../ui/token/colors';
