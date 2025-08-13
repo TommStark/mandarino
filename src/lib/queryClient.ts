@@ -5,7 +5,6 @@ import { HTTP_STATUS, QUERY_TIMINGS } from '../constants/http';
 const shouldRetry = (failureCount: number, error: unknown) => {
   const status = (error as AxiosError)?.response?.status;
 
-  // Errores 4xx típicos -> no reintentar
   if (
     status === HTTP_STATUS.BAD_REQUEST ||
     status === HTTP_STATUS.UNAUTHORIZED ||
@@ -14,10 +13,8 @@ const shouldRetry = (failureCount: number, error: unknown) => {
   )
     return false;
 
-  // 429 lo maneja el interceptor axios -> no reintentar aquí
   if (status === HTTP_STATUS.TOO_MANY_REQUESTS) return false;
 
-  // 5xx -> hasta 3 veces
   return failureCount < 3;
 };
 

@@ -24,7 +24,6 @@ type GSignInError = { code?: string; message?: string };
 const isGSignInError = (e: unknown): e is GSignInError =>
   typeof e === 'object' && e !== null && ('code' in e || 'message' in e);
 
-// payload de idToken (para leer exp)
 type IdTokenPayload = {
   exp?: number;
   email?: string;
@@ -62,19 +61,15 @@ export function useGoogleSignIn(config: GoogleConfig) {
   const getCurrentUser =
     React.useCallback(async (): Promise<GoogleUser | null> => {
       try {
-        // 1) intento silencioso: devuelve SignInSilentlyResponse (con .type y .data)
         try {
           const silent: SignInSilentlyResponse =
             await GoogleSignin.signInSilently();
           if (silent?.type === 'success') {
             logAuth('signInSilently()', silent.data.user?.email ?? 'OK');
-            return silent.data; // <- GoogleUser
+            return silent.data;
           }
-        } catch {
-          // sin credencial guardada o error de red: seguimos al fallback
-        }
+        } catch {}
 
-        // 2) fallback a getCurrentUser(): devuelve User | null (sin wrapper)
         const current = await GoogleSignin.getCurrentUser();
         logAuth(
           'getCurrentUser()',
@@ -105,7 +100,7 @@ export function useGoogleSignIn(config: GoogleConfig) {
       logAuth('signIn(): response.type', res?.type);
 
       if (res.type === 'success') {
-        const { data } = res as SignInSuccessResponse; // <- acá está el user
+        const { data } = res as SignInSuccessResponse;
         logAuth('signIn(): success -> user', {
           email: data?.user?.email,
           id: data?.user?.id,
@@ -113,7 +108,6 @@ export function useGoogleSignIn(config: GoogleConfig) {
           hasServerAuthCode: !!data?.serverAuthCode,
         });
 
-        // TOKENS -> Keychain
         try {
           const tokens = await GoogleSignin.getTokens();
           logAuth('getTokens()', {
@@ -126,9 +120,7 @@ export function useGoogleSignIn(config: GoogleConfig) {
             try {
               const payload = jwtDecode<IdTokenPayload>(tokens.idToken);
               exp = payload?.exp;
-            } catch {
-              // si no quieres jwt-decode, podés comentar este bloque
-            }
+            } catch {}
 
             await setSecret('google.idToken', tokens.idToken);
             if (tokens.accessToken)
