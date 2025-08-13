@@ -55,6 +55,9 @@ const App = () => {
         config={{
           webClientId: WEB_CLIENT_ID,
           iosClientId: IOS_CLIENT_ID,
+          scopes: ['profile', 'email'],
+          offlineAccess: true,
+          forceCodeForRefreshToken: true,
         }}
       >
         <UserProvider>

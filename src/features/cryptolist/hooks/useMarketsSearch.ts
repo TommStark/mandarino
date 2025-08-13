@@ -13,7 +13,6 @@ function mapOrder(sortBy: SortBy, sortDir: SortDir) {
   if (sortBy === 'price') {
     return sortDir === 'asc' ? 'price_asc' : 'price_desc';
   }
-  // volume
   return sortDir === 'asc' ? 'volume_asc' : 'volume_desc';
 }
 
