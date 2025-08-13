@@ -110,8 +110,6 @@ export function useGoogleSignIn(config: GoogleConfig) {
         msg = 'Ya hay un login en curso.';
       if (e?.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE)
         msg = 'Play Services no disponible.';
-      // iOS AppAuth comunes:
-      // invalid_audience / invalid_client -> suelen ser IDs cruzados o URL scheme
       if (e?.message?.includes('invalid_audience')) {
         msg =
           'Config de Google inválida (invalid_audience). Revisá webClientId/iosClientId.';

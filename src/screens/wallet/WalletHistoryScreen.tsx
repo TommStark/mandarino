@@ -70,7 +70,7 @@ export const WalletHistoryScreen = () => {
   };
 
   return (
-    <ScreenWrapper title="Historial">
+    <ScreenWrapper title="Historial" blurAmount={20}>
       <View style={styles.headerRow}>
         <Text style={styles.filterLabel}>Mostrar solo favoritos</Text>
         <Switch

@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     padding: 20,
     marginBottom: 16,
-    elevation: 3,
     paddingVertical: 30,
   },
   topRow: {

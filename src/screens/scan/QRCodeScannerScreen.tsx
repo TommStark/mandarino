@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -6,25 +6,64 @@ import {
   Pressable,
   Vibration,
   Alert,
+  StyleSheet as RNStyleSheet,
 } from 'react-native';
 import { Camera } from 'react-native-vision-camera';
 import {
   StackActions,
   useFocusEffect,
   useNavigation,
+  useIsFocused,
 } from '@react-navigation/native';
-import { useQRScanner } from '../../hooks/useQRScanner.ts';
+
 import { Icon } from 'react-native-paper';
-import { openAppSettings } from '../../utils/openAppSettings.ts';
+import { openAppSettings } from '../../utils/openAppSettings';
+import { useQRScanner } from '../../hooks/useQRScanner.ts';
 
 export const QRCodeScannerScreen = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  const [active, setActive] = useState(false);
+  const [focusCount, setFocusCount] = useState(0);
+  const [scanned, setScanned] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setActive(true);
+      setScanned(false);
+      setFocusCount(c => c + 1);
+      return () => {
+        setActive(false);
+      };
+    }, []),
+  );
+
+  const handledRef = useRef(false);
+  const safeNavigate = useCallback(
+    (addr: string) => {
+      if (handledRef.current) return;
+      handledRef.current = true;
+
+      setActive(false);
+      setScanned(true);
+
+      Vibration.vibrate(80);
+
+      setTimeout(() => {
+        navigation.dispatch(
+          StackActions.replace('QRResultScreen', { address: addr }),
+        );
+      }, 60);
+    },
+    [navigation],
+  );
 
   const onCodeScanned = (value: string) => {
-    Vibration.vibrate(100);
-    navigation.dispatch(
-      StackActions.replace('QRResultScreen', { address: value }),
-    );
+    if (typeof value !== 'string') return;
+    const trimmed = value.trim();
+    if (!trimmed || scanned) return;
+    safeNavigate(trimmed);
   };
 
   const { device, status, codeScanner, requestPermission, hasPermission } =
@@ -41,7 +80,11 @@ export const QRCodeScannerScreen = () => {
       Alert.alert('Sin datos', 'No encontramos un valor para continuar.');
       return;
     }
-    onCodeScanned(val);
+    safeNavigate(val);
+  };
+
+  const onCameraInitialized = () => {
+    handledRef.current = false;
   };
 
   if (status === 'denied') {
@@ -72,7 +115,7 @@ export const QRCodeScannerScreen = () => {
   if (status === 'no-device') {
     return (
       <View style={[styles.center, { padding: 24 }]}>
-        <Text style={styles.title}>Cámara no disponible en el simulador</Text>
+        <Text style={styles.title}>Cámara no disponible</Text>
         <Text style={styles.subtitle}>
           Probá en un dispositivo físico o usá una de estas opciones:
         </Text>
@@ -104,15 +147,18 @@ export const QRCodeScannerScreen = () => {
     );
   }
 
+  const shouldRenderCamera = !!device && isFocused && active && !scanned;
+
   return (
     <View style={styles.container}>
-      {device && (
+      {shouldRenderCamera && (
         <Camera
-          style={StyleSheet.absoluteFill}
+          key={`focus-${focusCount}`}
+          style={RNStyleSheet.absoluteFill}
           device={device}
-          isActive
+          isActive={true}
           codeScanner={codeScanner}
-          onInitialized={() => {}}
+          onInitialized={onCameraInitialized}
         />
       )}
 
@@ -175,13 +221,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     zIndex: 10,
   },
-
   maskContainer: { ...StyleSheet.absoluteFillObject, flexDirection: 'column' },
   maskRow: { flex: 3, backgroundColor: 'rgba(0,0,0,0.5)' },
   qrRow: { flex: 4, flexDirection: 'row' },
   maskSide: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' },
   qrBox: { flex: 7, borderColor: 'white', borderWidth: 3, borderRadius: 12 },
-
   caption: {
     fontSize: 14,
     opacity: 0.7,

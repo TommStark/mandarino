@@ -10,6 +10,7 @@ import { MicroSplash } from './screens/splash/MicroSplash';
 import { AuthProvider } from './context/AuthContext';
 import RootNavigator from './navigation/RootNavigator';
 import Config from 'react-native-config';
+import { isIOS } from './utils/openAppSettings';
 
 const queryClient = new QueryClient();
 const WEB_CLIENT_ID = Config.WEB_CLIENT_ID;
@@ -25,8 +26,13 @@ const theme = {
 
 const App = () => {
   const [showMicroSplash, setShowMicroSplash] = useState(true);
-  if (!WEB_CLIENT_ID || !IOS_CLIENT_ID) {
-    throw new Error('Missing Google client IDs in environment configuration.');
+
+  if (!WEB_CLIENT_ID || (isIOS && !IOS_CLIENT_ID)) {
+    throw new Error(
+      isIOS
+        ? 'Faltan WEB_CLIENT_ID o IOS_CLIENT_ID en el .env'
+        : 'Falta WEB_CLIENT_ID en el .env',
+    );
   }
 
   if (showMicroSplash) {

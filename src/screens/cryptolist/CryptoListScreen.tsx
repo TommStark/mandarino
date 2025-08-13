@@ -46,7 +46,7 @@ export default function CryptoListScreen() {
   }
 
   return (
-    <ScreenWrapper title="Crypto List">
+    <ScreenWrapper title="Crypto List" blurAmount={10}>
       <View style={styles.header}>
         <SearchBar value={search} onChange={setSearch} />
         <SortControls

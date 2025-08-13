@@ -18,6 +18,7 @@ type Props = {
   style?: ViewStyle;
   title?: string;
   showBack?: boolean;
+  blurAmount?: number;
 };
 
 export const ScreenWrapper = ({
@@ -26,12 +27,13 @@ export const ScreenWrapper = ({
   style,
   title,
   showBack = false,
+  blurAmount = 4,
 }: Props) => {
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScreenBackground />
+      <ScreenBackground blurAmount={blurAmount} />
 
       {title && (
         <View style={styles.header}>

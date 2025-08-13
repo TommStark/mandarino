@@ -8,7 +8,6 @@ import React, {
 import {
   StyleSheet,
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   Pressable,
   Text,
@@ -22,6 +21,8 @@ import SelectFiatSheet from '../../components/exchange/SelectFiatSheet';
 import { getCurrencyName, getFlag } from '../../utils/fiat';
 import { ExchangeBox } from '../../components/ExchangeBox';
 import { useFocusEffect } from '@react-navigation/native';
+import { Icon } from 'react-native-paper';
+import { isIOS } from '../../utils/openAppSettings';
 
 type Direction = 'cryptoToFiat' | 'fiatToCrypto';
 
@@ -194,10 +195,10 @@ export const ExchangeScreen = () => {
   }, [exchangeRate, direction, selectedCoin.symbol, selectedFiat.code]);
 
   return (
-    <ScreenWrapper title="Exchange">
+    <ScreenWrapper title="Exchange" blurAmount={25}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={isIOS ? 'padding' : undefined}
       >
         <ScrollView contentContainerStyle={styles.container}>
           <MottoSpyMode />
@@ -217,7 +218,9 @@ export const ExchangeScreen = () => {
             style={styles.swapButton}
             hitSlop={10}
           >
-            <Text style={styles.swapText}>⇅</Text>
+            <Text style={styles.swapText}>
+              <Icon source="sync" size={24} color="#000" />
+            </Text>
           </Pressable>
 
           <ExchangeBox
