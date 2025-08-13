@@ -12,6 +12,7 @@ import { CURRENCY_OPTIONS } from '../../constants/currencies';
 import { useFocusEffect } from '@react-navigation/native';
 import { styles } from './CryptoListScreen.styles';
 import { te } from './i18n/te';
+import { t } from 'i18next';
 
 export default function CryptoListScreen() {
   const [search, setSearch] = useState('');
@@ -42,7 +43,10 @@ export default function CryptoListScreen() {
   if (error) {
     return (
       <ScreenWrapper>
-        <HttpErrorModal />
+        <HttpErrorModal
+          title={t('shared:httpError.title')}
+          message={t('shared:httpError.message')}
+        />
       </ScreenWrapper>
     );
   }

@@ -7,6 +7,7 @@ import HttpErrorModal from '../../../components/Shared/HttpErrorModal';
 import { SkeletonCoinList } from '../../../components/Shared/SkeletonCoinRow';
 import { styles } from './HoldingsPreview.styles';
 import { th } from '../i18n/t';
+import { t } from 'i18next';
 
 const ListSeparator = () => <View style={styles.separator} />;
 
@@ -30,7 +31,10 @@ export const HoldingsPreview = () => {
       {isLoading && <SkeletonCoinList count={5} />}
 
       {!isLoading && (isError || !data || data.length === 0) && (
-        <HttpErrorModal />
+        <HttpErrorModal
+          title={t('shared:httpError.title')}
+          message={t('shared:httpError.message')}
+        />
       )}
 
       {!isLoading && data && data.length > 0 && (

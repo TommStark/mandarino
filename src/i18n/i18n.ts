@@ -8,6 +8,7 @@ import splashES from '../screens/splash/locales/es.json';
 import walletES from '../screens/wallet/locales/es.json';
 import cryptolistES from '../screens/cryptolist/locales/es.json';
 import homeES from '../screens/home/locales/es.json';
+import sharedES from '../locales/es.json';
 
 i18n.use(initReactI18next).init({
   lng: 'es',
@@ -21,6 +22,7 @@ i18n.use(initReactI18next).init({
       wallet: walletES,
       cryptolist: cryptolistES,
       home: homeES,
+      shared: sharedES,
     },
   },
   ns: [
@@ -32,6 +34,7 @@ i18n.use(initReactI18next).init({
     'wallet',
     'cryptolist',
     'home',
+    'shared',
   ],
   defaultNS: 'common',
   interpolation: { escapeValue: false },
