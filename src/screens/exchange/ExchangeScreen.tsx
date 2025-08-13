@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {
   useRef,
   useState,
@@ -6,7 +7,6 @@ import React, {
   useMemo,
 } from 'react';
 import {
-  StyleSheet,
   KeyboardAvoidingView,
   ScrollView,
   Pressable,
@@ -16,7 +16,6 @@ import { ScreenWrapper } from '../../components/Shared/ScreenWrapper';
 import { useExchangeRate } from './hooks/useExchangeRate';
 import { CryptoMarket } from '../../types/coingecko';
 import { ActionSheetRef } from 'react-native-actions-sheet';
-
 import { getCurrencyName, getFlag } from '../../utils/fiat';
 import { ExchangeBox } from './components/ExchangeBox';
 import { useFocusEffect } from '@react-navigation/native';
@@ -25,6 +24,8 @@ import { isIOS } from '../../utils/openAppSettings';
 import color from '../../ui/token/colors';
 import SelectFiatSheet from './components/SelectFiatSheet';
 import SelectCryptoSheet from './components/SelectCryptoSheet';
+import { styles } from './ExchangeScreen.styles';
+import { te } from './i18n/te';
 
 type Direction = 'cryptoToFiat' | 'fiatToCrypto';
 
@@ -86,13 +87,17 @@ const buildBoxes = (
   };
 };
 
-const MottoSpyMode = () => {
+const MottoSpyMode = ({
+  title,
+  subtitle,
+}: {
+  title: string;
+  subtitle: string;
+}) => {
   return (
     <Pressable accessibilityRole="summary" style={styles.motto} hitSlop={8}>
-      <Text style={styles.mottoTitle}>👀 Modo espiar precios</Text>
-      <Text style={styles.mottoSub}>
-        Te mostramos la cotización… pero la compra queda en tus manos.
-      </Text>
+      <Text style={styles.mottoTitle}>{title}</Text>
+      <Text style={styles.mottoSub}>{subtitle}</Text>
     </Pressable>
   );
 };
@@ -143,7 +148,8 @@ export const ExchangeScreen = () => {
 
   useEffect(() => {
     setToValue(convert(fromValue));
-  }, [exchangeRate, selectedCoin, selectedFiatCode, direction]); // eslint-disable-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exchangeRate, selectedCoin, selectedFiatCode, direction]);
 
   const handleSwap = () => {
     const newDirection: Direction =
@@ -185,30 +191,41 @@ export const ExchangeScreen = () => {
   };
 
   const unitHint = useMemo(() => {
-    if (!exchangeRate || exchangeRate === 0) return 'Sin precio';
+    if (!exchangeRate || exchangeRate === 0) return te('noPrice');
     if (direction === 'cryptoToFiat') {
-      return `1 ${selectedCoin.symbol.toUpperCase()} ≈ ${exchangeRate} ${selectedFiat.code.toUpperCase()}`;
+      return te('unitHint.cryptoToFiat', {
+        crypto: selectedCoin.symbol.toUpperCase(),
+        fiat: selectedFiat.code.toUpperCase(),
+        rate: exchangeRate,
+      });
     }
     const inverseRate = 1 / exchangeRate;
-    return `1 ${selectedFiat.code.toUpperCase()} ≈ ${formatCryptoHint(
-      inverseRate,
-    )} ${selectedCoin.symbol.toUpperCase()}`;
+    return te('unitHint.fiatToCrypto', {
+      fiat: selectedFiat.code.toUpperCase(),
+      crypto: selectedCoin.symbol.toUpperCase(),
+      rate: formatCryptoHint(inverseRate),
+    });
   }, [exchangeRate, direction, selectedCoin.symbol, selectedFiat.code]);
 
   return (
-    <ScreenWrapper title="Exchange" blurAmount={25}>
+    <ScreenWrapper title={te('exchangeTitle')} blurAmount={25}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={isIOS ? 'padding' : undefined}
       >
         <ScrollView contentContainerStyle={styles.container}>
-          <MottoSpyMode />
+          <MottoSpyMode
+            title={te('spyModeTitle')}
+            subtitle={te('spyModeSubtitle')}
+          />
 
           <ExchangeBox
             icon={fromBox.icon}
             symbol={fromBox.symbol}
             value={fromValue}
-            placeholder={fromBox.placeholder}
+            placeholder={
+              fromBox.isFiat ? te('placeholderFiat') : te('placeholderCrypto')
+            }
             onChange={handleChange}
             onPress={fromBox.onPress}
             isFiat={fromBox.isFiat}
@@ -228,7 +245,9 @@ export const ExchangeScreen = () => {
             icon={toBox.icon}
             symbol={toBox.symbol}
             value={toValue}
-            placeholder={toBox.placeholder}
+            placeholder={
+              toBox.isFiat ? te('placeholderFiat') : te('placeholderCrypto')
+            }
             editable={false}
             isFiat={toBox.isFiat}
             onPress={toBox.onPress}
@@ -257,61 +276,5 @@ export const ExchangeScreen = () => {
     </ScreenWrapper>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 24,
-    gap: 24,
-  },
-  swapButton: {
-    alignSelf: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 12,
-    backgroundColor: color.grayThumbOff,
-  },
-  swapText: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  title: { fontSize: 20, fontWeight: 'bold' },
-  label: { fontSize: 14, color: color.blueGray600 },
-  button: {
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 32,
-  },
-  buttonText: { fontWeight: 'bold', fontSize: 16, color: color.white },
-  buttonDisabled: { backgroundColor: color.blueGray300 },
-  buttonEnabled: { backgroundColor: color.black },
-  hint: {
-    textAlign: 'left',
-    fontSize: 13,
-    color: color.blueGray700,
-  },
-  motto: {
-    padding: 12,
-    borderRadius: 12,
-    backgroundColor: color.grayThumbOff,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: color.blueGray300,
-    gap: 2,
-  },
-  mottoTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: color.black,
-  },
-  mottoSub: {
-    fontSize: 12,
-    color: color.blueGray600,
-  },
-  mottoMeta: {
-    marginTop: 2,
-    fontSize: 11,
-    color: color.blueGray300,
-  },
-});
 
 export default ExchangeScreen;

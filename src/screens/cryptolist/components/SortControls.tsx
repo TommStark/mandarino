@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, FlatList, ListRenderItem } from 'react-native';
+import { FlatList, ListRenderItem } from 'react-native';
 import { Chip, Divider } from 'react-native-paper';
 import CurrencySelectorChip from './CurrencySelectorChip';
 import color from '../../../ui/token/colors';
 import { SortBy, SortDir } from '../hooks/useMarketsInfinite';
+import { styles } from './SortControls.styles';
+import { te } from '../i18n/te';
 
 type Props = {
   sortBy: SortBy;
@@ -34,8 +36,8 @@ export default function SortControls({
   const controls: ControlItem[] = [
     { type: 'currency' },
     { type: 'dir' },
-    { type: 'sort', key: 'market_cap', label: 'Mkt Cap' },
-    { type: 'sort', key: 'volume', label: 'Volumen' },
+    { type: 'sort', key: 'market_cap', label: te('sortControls.mktCap') },
+    { type: 'sort', key: 'volume', label: te('sortControls.volume') },
   ];
 
   const renderItem: ListRenderItem<ControlItem> = ({ item }) => {
@@ -59,7 +61,9 @@ export default function SortControls({
           selectedColor={color.brandBorder}
           icon={sortDir === 'desc' ? 'arrow-down' : 'arrow-up'}
         >
-          {sortDir === 'desc' ? 'Desc' : 'Asc'}
+          {sortDir === 'desc'
+            ? te('sortControls.desc')
+            : te('sortControls.asc')}
         </Chip>
       );
     }
@@ -95,17 +99,3 @@ export default function SortControls({
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  list: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
-    gap: 8,
-  },
-  chip: {
-    backgroundColor: color.brandSoftBg2,
-    marginRight: 8,
-    borderColor: color.brandBorder,
-    borderWidth: 1,
-  },
-});

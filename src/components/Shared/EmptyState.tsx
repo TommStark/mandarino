@@ -2,10 +2,12 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 
-export default function EmptyState({
-  title = 'No hay resultados',
-  subtitle = 'Probá con otro término o revisá tu conexión.',
-}) {
+type Props = {
+  title: string;
+  subtitle: string;
+};
+
+export default function EmptyState({ title, subtitle }: Props) {
   return (
     <View style={styles.box}>
       <Text variant="titleMedium" style={styles.title}>

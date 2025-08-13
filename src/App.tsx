@@ -13,6 +13,8 @@ import { isIOS } from './utils/openAppSettings';
 import color from './ui/token/colors';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/queryClient';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n/i18n';
 
 const WEB_CLIENT_ID = Config.WEB_CLIENT_ID;
 const IOS_CLIENT_ID = Config.IOS_CLIENT_ID;
@@ -60,9 +62,11 @@ const App = () => {
             settings={{ icon: props => <Ionicons {...props} /> }}
             theme={theme}
           >
-            <NavigationContainer>
-              <RootNavigator />
-            </NavigationContainer>
+            <I18nextProvider i18n={i18n}>
+              <NavigationContainer>
+                <RootNavigator />
+              </NavigationContainer>
+            </I18nextProvider>
           </PaperProvider>
         </UserProvider>
       </AuthProvider>

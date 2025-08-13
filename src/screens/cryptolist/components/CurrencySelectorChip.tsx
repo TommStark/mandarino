@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Chip, Menu, Divider, Text } from 'react-native-paper';
+import React, { useState, useCallback } from 'react';
+import { View, Text } from 'react-native';
+import { Chip, Menu, Divider } from 'react-native-paper';
 import { CURRENCY_OPTIONS } from '../../../constants/currencies';
 import { getCurrencyName, getFlag } from '../../../utils/fiat';
+import { styles } from './CurrencySelectorChip.styles';
 import color from '../../../ui/token/colors';
+import { te } from '../i18n/te';
 
 type Props = {
   value: string;
@@ -13,7 +15,7 @@ type Props = {
   testID?: string;
 };
 
-function CurrencyMenuItemRow({
+const CurrencyMenuItemRow = ({
   flag,
   code,
   name,
@@ -23,17 +25,19 @@ function CurrencyMenuItemRow({
   code: string;
   name: string;
   active: boolean;
-}) {
+}) => {
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-      <Text style={{ width: 20, textAlign: 'center' }}>{flag}</Text>
-      <Text style={{ fontWeight: active ? '700' : '400' }}>{code}</Text>
-      <Text style={{ opacity: 0.6 }} numberOfLines={1} ellipsizeMode="tail">
+    <View style={styles.row}>
+      <Text style={styles.flag}>{flag}</Text>
+      <Text style={[styles.code, active && styles.codeActive]}>{code}</Text>
+      <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
         · {name}
       </Text>
     </View>
   );
-}
+};
+
+const CurrencyIcon = ({ flag }: { flag: string }) => <Text>{flag}</Text>;
 
 export default function CurrencySelectorChip({
   value,
@@ -43,13 +47,17 @@ export default function CurrencySelectorChip({
   testID,
 }: Props) {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-
   const closeMenu = () => setIsMenuVisible(false);
-  const toggleMenu = () => setIsMenuVisible(prevState => !prevState);
+  const toggleMenu = () => setIsMenuVisible(p => !p);
 
   const currencyCode = (value ?? '').toUpperCase();
   const currencyFlag = getFlag(value);
   const currencyName = getCurrencyName(value);
+
+  const renderIcon = useCallback(
+    () => <CurrencyIcon flag={currencyFlag} />,
+    [currencyFlag],
+  );
 
   const handleSelectCurrency = (selectedOption: string) => {
     closeMenu();
@@ -70,7 +78,7 @@ export default function CurrencySelectorChip({
             style={styles.chip}
             onPress={toggleMenu}
             selectedColor={color.brandBorder}
-            icon={() => <Text>{currencyFlag}</Text>}
+            icon={renderIcon}
           >
             {showNameOnChip ? (
               <Text numberOfLines={1} ellipsizeMode="tail">
@@ -82,15 +90,7 @@ export default function CurrencySelectorChip({
           </Chip>
         }
       >
-        <Text
-          style={{
-            paddingHorizontal: 12,
-            paddingVertical: 6,
-            color: color.transparent6,
-          }}
-        >
-          Seleccionar moneda Vs
-        </Text>
+        <Text style={styles.header}>{te('selectVsCurrency')}</Text>
         <Divider />
         {options.map(optionValue => {
           const optionCode = optionValue.toUpperCase();
@@ -118,17 +118,3 @@ export default function CurrencySelectorChip({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  list: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
-    gap: 8,
-  },
-  chip: {
-    backgroundColor: color.brandSoftBg,
-    marginRight: 8,
-    borderColor: color.brandBorder,
-    borderWidth: 1,
-  },
-});

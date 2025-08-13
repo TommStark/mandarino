@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { ActionButton } from './ActionButton';
 import { Icon } from 'react-native-paper';
 import Sound from 'react-native-sound';
 import { isIOS } from '../../../utils/openAppSettings';
 import color from '../../../ui/token/colors';
+import { styles } from './ActionNav.styles';
+import { th } from '../i18n/t';
 
 Sound.setCategory(isIOS ? 'Ambient' : 'Playback', true);
 
@@ -31,6 +33,13 @@ export const ActionNav = () => {
     [],
   );
 
+  const labelKey: Record<Label, 'buy' | 'sell' | 'send' | 'receive'> = {
+    Buy: 'buy',
+    Sell: 'sell',
+    Send: 'send',
+    Receive: 'receive',
+  };
+
   const soundsRef = useRef<Record<Label, Sound | null>>({
     Buy: null,
     Sell: null,
@@ -45,43 +54,49 @@ export const ActionNav = () => {
   });
 
   useEffect(() => {
+    const currentSounds: Record<Label, Sound | null> = {
+      Buy: null,
+      Sell: null,
+      Send: null,
+      Receive: null,
+    };
+
+    const soundsRefCurrent = soundsRef.current;
+    const loadedRefCurrent = loadedRef.current;
+
     (Object.keys(files) as Label[]).forEach(label => {
-      const s = new Sound(files[label], Sound.MAIN_BUNDLE, err => {
-        if (err) {
-          console.warn(`[sound] load error ${label}:`, err);
-          return;
-        }
-        loadedRef.current[label] = true;
+      const sound = new Sound(files[label], Sound.MAIN_BUNDLE, err => {
+        if (err) return;
+        loadedRefCurrent[label] = true;
       });
-      soundsRef.current[label] = s;
+      soundsRefCurrent[label] = sound;
+      currentSounds[label] = sound;
     });
 
     return () => {
-      (Object.keys(soundsRef.current) as Label[]).forEach(label => {
-        soundsRef.current[label]?.release();
-        soundsRef.current[label] = null;
-        loadedRef.current[label] = false;
+      (Object.keys(currentSounds) as Label[]).forEach(label => {
+        currentSounds[label]?.release();
+        soundsRefCurrent[label] = null;
+        loadedRefCurrent[label] = false;
       });
     };
   }, [files]);
 
   const handlePress = (label: Label) => {
-    const s = soundsRef.current[label];
-    if (!s) return;
-    if (loadedRef.current[label] || s.isLoaded()) {
-      s.stop(() => {
-        s.setCurrentTime(0);
-        s.play(success => {
-          if (!success) console.warn(`[sound] playback fail ${label}`);
-        });
+    const sound = soundsRef.current[label];
+    if (!sound) return;
+    if (loadedRef.current[label] || sound.isLoaded()) {
+      sound.stop(() => {
+        sound.setCurrentTime(0);
+        sound.play();
       });
     } else {
-      s.setNumberOfLoops(0);
+      sound.setNumberOfLoops(0);
       const tryPlay = setInterval(() => {
-        if (s.isLoaded()) {
+        if (sound.isLoaded()) {
           clearInterval(tryPlay);
-          s.setCurrentTime(0);
-          s.play();
+          sound.setCurrentTime(0);
+          sound.play();
         }
       }, 50);
       setTimeout(() => clearInterval(tryPlay), 2000);
@@ -94,20 +109,10 @@ export const ActionNav = () => {
         <ActionButton
           key={label}
           icon={<Icon source={icon} size={20} color={color.black} />}
-          label={label}
+          label={th(`actions.${labelKey[label]}`)}
           onPress={() => handlePress(label)}
         />
       ))}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginHorizontal: 16,
-    marginBottom: 24,
-    marginTop: 8,
-  },
-});

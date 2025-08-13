@@ -1,11 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { useCoinsMarketsQuery } from '../../exchange/hooks/useCoinsMarketsQuery';
-import { CryptoCard } from '../../../components/CryptoCard';
+import { CryptoCard } from '../../../components/CryptoCard/CryptoCard';
 import { useUser } from '../../../context/UserContext';
 import HttpErrorModal from '../../../components/Shared/HttpErrorModal';
 import { SkeletonCoinList } from '../../../components/Shared/SkeletonCoinRow';
-import color from '../../../ui/token/colors';
+import { styles } from './HoldingsPreview.styles';
+import { th } from '../i18n/t';
+import { t } from 'i18next';
+
+const ListSeparator = () => <View style={styles.separator} />;
 
 export const HoldingsPreview = () => {
   const { data, isLoading, isError } = useCoinsMarketsQuery({
@@ -16,17 +20,21 @@ export const HoldingsPreview = () => {
   });
 
   const { user, showBalances } = useUser();
+
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Text style={styles.title}>Tus Crypto</Text>
-        <Text style={styles.viewAll}>Ver Todo</Text>
+        <Text style={styles.title}>{th('title')}</Text>
+        <Text style={styles.viewAll}>{th('viewAll')}</Text>
       </View>
 
       {isLoading && <SkeletonCoinList count={5} />}
 
       {!isLoading && (isError || !data || data.length === 0) && (
-        <HttpErrorModal />
+        <HttpErrorModal
+          title={t('shared:httpError.title')}
+          message={t('shared:httpError.message')}
+        />
       )}
 
       {!isLoading && data && data.length > 0 && (
@@ -43,44 +51,13 @@ export const HoldingsPreview = () => {
               <CryptoCard
                 coin={item}
                 userAmount={showBalances ? userAmount : undefined}
-                showUserAmount={true}
+                showUserAmount
               />
             );
           }}
-          ItemSeparatorComponent={Separator}
+          ItemSeparatorComponent={ListSeparator}
         />
       )}
     </View>
   );
 };
-
-const Separator = () => <View style={styles.separator} />;
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 0,
-    marginTop: 12,
-    marginBottom: 24,
-  },
-  headerRow: {
-    marginHorizontal: 16,
-    marginBottom: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  title: {
-    fontWeight: '600',
-    fontSize: 16,
-    color: color.black,
-  },
-  viewAll: {
-    fontSize: 14,
-    color: color.brand,
-  },
-  separator: {
-    height: 4,
-  },
-  loadingIndicator: {
-    marginVertical: 16,
-  },
-});

@@ -1,0 +1,15 @@
+{
+  "exchangeTitle": "Exchange",
+  "spyModeTitle": "👀 Modo espiar precios",
+  "spyModeSubtitle": "Te mostramos la cotización… pero la compra queda en tus manos.",
+  "noPrice": "Sin precio",
+  "unitHint": {
+    "cryptoToFiat": "1 {{crypto}} ≈ {{rate}} {{fiat}}",
+    "fiatToCrypto": "1 {{fiat}} ≈ {{rate}} {{crypto}}"
+  },
+  "selectFiatTitle": "Seleccionar moneda",
+  "emptyFiatList": "No hay monedas disponibles",
+  "placeholderFiat": "0,00",
+  "placeholderCrypto": "0,0",
+  "selectCryptoTitle": "Seleccionar criptomoneda"
+}

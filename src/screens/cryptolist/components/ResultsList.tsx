@@ -1,9 +1,11 @@
 import React, { memo } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { CryptoMarket } from '../../../types/coingecko';
-import CryptoCard from '../../../components/CryptoCard';
+import CryptoCard from '../../../components/CryptoCard/CryptoCard';
 import ListFooterLoading from '../../../components/Shared/ListFooterLoading';
 import EmptyState from '../../../components/Shared/EmptyState';
+import { styles } from './ResultsList.styles';
+import { t } from 'i18next';
 
 type Props = {
   items: CryptoMarket[];
@@ -29,8 +31,6 @@ function ResultsListImpl({
 }: Props) {
   if (showSkeleton) return SkeletonComponent;
 
-  const contentContainerStyle = { paddingBottom: 180 };
-
   return (
     <FlatList
       data={items}
@@ -47,16 +47,22 @@ function ResultsListImpl({
           progressViewOffset={64}
         />
       }
-      contentContainerStyle={contentContainerStyle}
+      contentContainerStyle={styles.content}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
       initialNumToRender={12}
       windowSize={5}
       removeClippedSubviews
       ListEmptyComponent={
-        !isFetchingList && items.length === 0 ? <EmptyState /> : null
+        !isFetchingList && items.length === 0 ? (
+          <EmptyState
+            title={t('shared:emptyState.title')}
+            subtitle={t('shared:emptyState.message')}
+          />
+        ) : null
       }
     />
   );
 }
+
 export default memo(ResultsListImpl);
