@@ -8,7 +8,7 @@ import {
   Alert,
   StyleSheet as RNStyleSheet,
 } from 'react-native';
-import { Camera, type CameraRuntimeError } from 'react-native-vision-camera';
+import { Camera } from 'react-native-vision-camera';
 import {
   StackActions,
   useFocusEffect,
@@ -39,20 +39,17 @@ export const QRCodeScannerScreen = () => {
     }, []),
   );
 
-  // Debounce
   const handledRef = useRef(false);
   const safeNavigate = useCallback(
     (addr: string) => {
       if (handledRef.current) return;
       handledRef.current = true;
 
-      // 1) Apaga la cámara antes de navegar
       setActive(false);
       setScanned(true);
 
       Vibration.vibrate(80);
 
-      // 2) Da un respiro al cierre del session (mitiga AVD que se quedan en blanco)
       setTimeout(() => {
         navigation.dispatch(
           StackActions.replace('QRResultScreen', { address: addr }),
@@ -87,12 +84,7 @@ export const QRCodeScannerScreen = () => {
   };
 
   const onCameraInitialized = () => {
-    handledRef.current = false; // reset del debounce
-  };
-
-  const onCameraError = (e: CameraRuntimeError) => {
-    // Mirá este log con `adb logcat | grep -i VisionCamera`
-    console.log('[Camera][onError]', e.code, e.message);
+    handledRef.current = false;
   };
 
   if (status === 'denied') {
@@ -155,20 +147,18 @@ export const QRCodeScannerScreen = () => {
     );
   }
 
-  // Montar cámara sólo si está enfocada, activa y no se escaneó aún
   const shouldRenderCamera = !!device && isFocused && active && !scanned;
 
   return (
     <View style={styles.container}>
       {shouldRenderCamera && (
         <Camera
-          key={`focus-${focusCount}`} // remount limpio en cada foco
+          key={`focus-${focusCount}`}
           style={RNStyleSheet.absoluteFill}
           device={device}
           isActive={true}
           codeScanner={codeScanner}
           onInitialized={onCameraInitialized}
-          onError={onCameraError}
         />
       )}
 

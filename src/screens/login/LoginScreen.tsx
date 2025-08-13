@@ -110,7 +110,7 @@ export default function LoginScreen({}: Props) {
             disabled={loading}
             icon="logo-google"
             contentStyle={{ height: 48 }}
-            style={[styles.googleBtn, { backgroundColor: '#007bff78' }]}
+            style={[styles.googleBtn, { backgroundColor: '#007bffa6' }]}
             labelStyle={{ color: '#fff', fontWeight: '700' }}
           >
             {loading ? 'Conectando…' : 'Continuar con Google'}

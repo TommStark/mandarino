@@ -8,7 +8,6 @@ import React, {
 import {
   StyleSheet,
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   Pressable,
   Text,

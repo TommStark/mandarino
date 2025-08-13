@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { ActionButton } from '../ActionButton';
 import { Icon } from 'react-native-paper';
 import Sound from 'react-native-sound';
