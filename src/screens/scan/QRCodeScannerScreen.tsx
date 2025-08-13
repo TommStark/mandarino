@@ -2,7 +2,6 @@ import React, { useCallback, useRef, useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   Pressable,
   Vibration,
   Alert,
@@ -15,11 +14,12 @@ import {
   useNavigation,
   useIsFocused,
 } from '@react-navigation/native';
-
 import { Icon } from 'react-native-paper';
-import { openAppSettings } from '../../utils/openAppSettings';
+import { openAppSettings } from '../../utils/openAppSettings.ts';
 import { useQRScanner } from './hooks/useQRScanner.ts';
 import color from '../../ui/token/colors.ts';
+import { styles } from './QRCodeScannerScreen.styles';
+import { te } from './i18n/te.ts';
 
 export const QRCodeScannerScreen = () => {
   const navigation = useNavigation();
@@ -34,9 +34,7 @@ export const QRCodeScannerScreen = () => {
       setActive(true);
       setScanned(false);
       setFocusCount(c => c + 1);
-      return () => {
-        setActive(false);
-      };
+      return () => setActive(false);
     }, []),
   );
 
@@ -48,7 +46,6 @@ export const QRCodeScannerScreen = () => {
 
       setActive(false);
       setScanned(true);
-
       Vibration.vibrate(80);
 
       setTimeout(() => {
@@ -78,7 +75,7 @@ export const QRCodeScannerScreen = () => {
 
   const goWith = (val: string) => {
     if (!val) {
-      Alert.alert('Sin datos', 'No encontramos un valor para continuar.');
+      Alert.alert(te('noDataTitle'), te('noDataMessage'));
       return;
     }
     safeNavigate(val);
@@ -91,23 +88,19 @@ export const QRCodeScannerScreen = () => {
   if (status === 'denied') {
     return (
       <View style={styles.center}>
-        <Text style={styles.title}>
-          Necesitamos permiso para usar la cámara
-        </Text>
-        <Text style={styles.caption}>
-          Si lo negaste por error, podés intentarlo de nuevo o abrir Ajustes.
-        </Text>
+        <Text style={styles.title}>{te('permissionTitle')}</Text>
+        <Text style={styles.caption}>{te('permissionSubtitle')}</Text>
 
         <Pressable style={styles.primary} onPress={requestPermission}>
-          <Text style={styles.primaryText}>Permitir cámara</Text>
+          <Text style={styles.primaryText}>{te('allowCamera')}</Text>
         </Pressable>
 
         <Pressable style={styles.secondary} onPress={openAppSettings}>
-          <Text style={styles.secondaryText}>Abrir Ajustes</Text>
+          <Text style={styles.secondaryText}>{te('openSettings')}</Text>
         </Pressable>
 
         <Pressable style={styles.link} onPress={() => navigation.goBack()}>
-          <Text style={styles.linkText}>Cancelar</Text>
+          <Text style={styles.linkText}>{te('cancel')}</Text>
         </Pressable>
       </View>
     );
@@ -116,18 +109,18 @@ export const QRCodeScannerScreen = () => {
   if (status === 'no-device') {
     return (
       <View style={[styles.center, { padding: 24 }]}>
-        <Text style={styles.title}>Cámara no disponible</Text>
-        <Text style={styles.subtitle}>
-          Probá en un dispositivo físico o usá una de estas opciones:
-        </Text>
+        <Text style={styles.title}>{te('cameraUnavailableTitle')}</Text>
+        <Text style={styles.subtitle}>{te('cameraUnavailableDesc')}</Text>
+
         <Pressable
           style={styles.actionSecondary}
           onPress={() => goWith('bc1qexampleaddressfor-test-only-123')}
         >
-          <Text style={styles.actionText}>Usar QR de prueba</Text>
+          <Text style={styles.actionText}>{te('useTestQR')}</Text>
         </Pressable>
+
         <Pressable style={styles.link} onPress={() => navigation.goBack()}>
-          <Text style={styles.linkText}>Cancelar</Text>
+          <Text style={styles.linkText}>{te('cancel')}</Text>
         </Pressable>
 
         <Pressable
@@ -143,7 +136,7 @@ export const QRCodeScannerScreen = () => {
   if (status !== 'ready') {
     return (
       <View style={styles.center}>
-        <Text>Cargando cámara...</Text>
+        <Text>{te('loadingCamera')}</Text>
       </View>
     );
   }
@@ -180,85 +173,4 @@ export const QRCodeScannerScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 14,
-    opacity: 0.7,
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  action: {
-    width: '100%',
-    borderRadius: 14,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    backgroundColor: color.brand,
-    marginBottom: 12,
-    alignItems: 'center',
-  },
-  actionSecondary: {
-    width: '100%',
-    borderRadius: 14,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    backgroundColor: color.brandTrackOn,
-    marginBottom: 12,
-    alignItems: 'center',
-  },
-  actionText: { color: color.black, fontWeight: '700' },
-  closeButton: {
-    position: 'absolute',
-    top: 40,
-    left: 20,
-    padding: 10,
-    borderRadius: 20,
-    zIndex: 10,
-  },
-
-  maskContainer: { ...StyleSheet.absoluteFillObject, flexDirection: 'column' },
-  maskRow: { flex: 3, backgroundColor: 'rgba(0,0,0,0.5)' },
-  qrRow: { flex: 4, flexDirection: 'row' },
-  maskSide: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' },
-  qrBox: {
-    flex: 7,
-    borderColor: color.white,
-    borderWidth: 3,
-    borderRadius: 12,
-  },
-
-  caption: {
-    fontSize: 14,
-    opacity: 0.7,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  primary: {
-    width: '100%',
-    maxWidth: 320,
-    paddingVertical: 14,
-    borderRadius: 14,
-    backgroundColor: color.brand,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  primaryText: { color: color.black, fontWeight: '700' },
-  secondary: {
-    width: '100%',
-    maxWidth: 320,
-    paddingVertical: 14,
-    borderRadius: 14,
-    backgroundColor: color.brandTrackOn,
-    alignItems: 'center',
-  },
-  secondaryText: { color: color.black, fontWeight: '700' },
-  link: { marginTop: 16, padding: 8 },
-  linkText: { textDecorationLine: 'underline', opacity: 0.8 },
-});
+export default QRCodeScannerScreen;

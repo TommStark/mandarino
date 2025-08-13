@@ -1,0 +1,17 @@
+{
+  "permissionTitle": "Necesitamos permiso para usar la cámara",
+  "permissionSubtitle": "Si lo negaste por error, podés intentarlo de nuevo o abrir Ajustes.",
+  "allowCamera": "Permitir cámara",
+  "openSettings": "Abrir Ajustes",
+  "cancel": "Cancelar",
+  "cameraUnavailableTitle": "Cámara no disponible",
+  "cameraUnavailableDesc": "Probá en un dispositivo físico o usá una de estas opciones:",
+  "useTestQR": "Usar QR de prueba",
+  "loadingCamera": "Cargando cámara...",
+
+  "resultTitle": "Dirección escaneada",
+  "typeLabel": "Tipo: {{type}}",
+  "markFavorite": "☆ Marcar como favorita",
+  "unmarkFavorite": "★ Marcar como NO favorita",
+  "backHome": "Volver al inicio"
+}

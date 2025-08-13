@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useCoinsMarketsQuery } from '../../exchange/hooks/useCoinsMarketsQuery';
-import { CryptoCard } from '../../../components/CryptoCard';
+import { CryptoCard } from '../../../components/CryptoCard/CryptoCard';
 import { useUser } from '../../../context/UserContext';
 import HttpErrorModal from '../../../components/Shared/HttpErrorModal';
 import { SkeletonCoinList } from '../../../components/Shared/SkeletonCoinRow';

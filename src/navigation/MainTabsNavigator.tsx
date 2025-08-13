@@ -5,13 +5,12 @@ import CryptoListScreen from '../screens/cryptolist/CryptoListScreen';
 import type { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { CustomTabBarButton } from '../components/CustomTabBarButton';
+import { CustomTabBarButton } from '../components/TabBarButton/CustomTabBarButton';
 import { WalletHistoryScreen } from '../screens/wallet/WalletHistoryScreen';
 import { RootStackParamList } from '.';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ExchangeScreen from '../screens/exchange/ExchangeScreen';
 import color from '../ui/token/colors';
-import { BlurView } from '@react-native-community/blur';
 
 const Tab = createBottomTabNavigator();
 

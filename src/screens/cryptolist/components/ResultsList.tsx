@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { CryptoMarket } from '../../../types/coingecko';
-import CryptoCard from '../../../components/CryptoCard';
+import CryptoCard from '../../../components/CryptoCard/CryptoCard';
 import ListFooterLoading from '../../../components/Shared/ListFooterLoading';
 import EmptyState from '../../../components/Shared/EmptyState';
 

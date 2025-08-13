@@ -14,7 +14,7 @@ import ActionSheet, {
 import { CryptoMarket } from '../../../types/coingecko';
 import { useCoinsMarketsQuery } from '../hooks/useCoinsMarketsQuery';
 import { styles } from './SelectCryptoSheet.styles';
-import { t } from '../../../i18n/t';
+import { te } from '../i18n/te';
 
 type Props = SheetProps & {
   onSelect: (coin: CryptoMarket) => void;
@@ -40,7 +40,7 @@ const SelectCryptoSheet = forwardRef<ActionSheetRef, Props>(
         containerStyle={styles.sheetContainer}
         {...props}
       >
-        <Text style={styles.header}>{t('selectCryptoTitle')}</Text>
+        <Text style={styles.header}>{te('selectCryptoTitle')}</Text>
 
         {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
 

@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { CryptoMarket } from '../types/coingecko';
+import { CryptoMarket } from '../../types/coingecko';
 import {
   formatAmount,
   formatPercent,
   formatPrice,
   isNum,
   truncate,
-} from '../utils/cripto';
-import color from '../ui/token/colors';
+} from '../../utils/cripto';
+import color from '../../ui/token/colors';
 
 type Props = {
   coin: CryptoMarket;

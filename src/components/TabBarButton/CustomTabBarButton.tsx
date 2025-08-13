@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, StyleSheet, Platform } from 'react-native';
 import { Icon } from 'react-native-paper';
-import color from '../ui/token/colors';
+import color from '../../ui/token/colors';
 
 type Props = {
   children: React.ReactNode;
