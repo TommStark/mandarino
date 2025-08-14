@@ -3,7 +3,7 @@
 <p align="center">
   <img src="docs/demo2.gif" alt="Demo Mandarino 2" width="25%" />
   <img src="docs/demo1.gif" alt="Demo Mandarino 1" width="25%" />
-  <img src="docs/demo3.gif" alt="Demo Mandarino 2" width="25%" />
+  <img src="docs/demo4.gif" alt="Demo Mandarino 4" width="25%" />
 </p>
 
 ---
