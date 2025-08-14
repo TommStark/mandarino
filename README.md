@@ -1,5 +1,11 @@
 <p align="center"> <img src="src/assets/icon.png" alt="Mandarino logo" width="128" height="128"> </p> <h1 align="center">MANDARINO</h1> <p align="center">“Exprime tus crypto, saborea la ganancia”</p>
 
+<p align="center">
+  <img src="docs/demo2.gif" alt="Demo Mandarino 2" width="25%" />
+  <img src="docs/demo1.gif" alt="Demo Mandarino 1" width="25%" />
+  <img src="docs/demo3.gif" alt="Demo Mandarino 2" width="25%" />
+</p>
+
 ---
 
 ## Aplicación React Native CLI
@@ -39,7 +45,7 @@ Esto evita almacenar información sensible en texto plano.
 
 ## Variables de entorno
 
-Se incluye un archivo `.env.template` con las siguientes variables **(todas obligatorias)**:
+Se incluye un archivo `.env.template` con las siguientes variables, consultar por los valores que correspondan **(todas obligatorias)**:
 
 ```
 COINGECKO_API_KEY=
@@ -77,7 +83,7 @@ cd mandarino
 # 2) Instalar dependencias
 yarn install
 
-# 3) Copiar .env
+# 3) Copiar las claves/valor en el .env (mirar en el email)
 cp .env.template .env
 
 # 4) iOS pods
