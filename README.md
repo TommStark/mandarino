@@ -1,9 +1,9 @@
 <p align="center"> <img src="src/assets/icon.png" alt="Mandarino logo" width="128" height="128"> </p> <h1 align="center">MANDARINO</h1> <p align="center">“Exprime tus crypto, saborea la ganancia”</p>
 
 <p align="center">
-  <img src="docs/demo2.gif" alt="Demo Mandarino 2" width="15%" />
-  <img src="docs/demo1.gif" alt="Demo Mandarino 1" width="15%" />
-  <img src="docs/demo3.gif" alt="Demo Mandarino 2" width="15%" />
+  <img src="docs/demo2.gif" alt="Demo Mandarino 2" width="25%" />
+  <img src="docs/demo1.gif" alt="Demo Mandarino 1" width="25%" />
+  <img src="docs/demo3.gif" alt="Demo Mandarino 2" width="25%" />
 </p>
 
 ---
